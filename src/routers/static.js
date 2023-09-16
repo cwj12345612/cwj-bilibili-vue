@@ -132,11 +132,18 @@ const space = {
 }
 //#endregion
 
-
+//#region 创作中心路由 以后需要动态从后台获取
+const platform={
+    path:'/platform',
+    name:'platform',
+    component:()=>import('@/views/platform/index.vue')
+}
+//#endgion
 const routes = [
     ...main,
     ...category,
     space,
+    platform,
     ...dev
 ]
 export default routes

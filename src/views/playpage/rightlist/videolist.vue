@@ -4,14 +4,14 @@
             <div class="videos">
                 <span>视频选集</span>
                 <span>(23/33)</span>
-                <span>
-                    <i class="colourless guanlishipin" ></i>
-                </span>
+              
             </div>
             <div class="playauto">
                 <span>自动连播</span>
-                <i class="colourless bofangqi-xiayiji"></i>
+                <span class="btn" >
+                    <i class="colourless bofangqi-xiayiji"></i>
                 <i class="colourless bofangqi-zanting" v-if="false"></i>
+                </span>
             </div>
           
         </div>
@@ -83,9 +83,14 @@ const mock = (str) => { return Mock.mock(str) }
     /* background-color: orangered; */
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
-
+.rightlist_videolist .header .videos .btn:hover{
+    color: #0aaee0;
+}
+.rightlist_videolist .header .playauto .btn{
+    cursor: pointer;
+}
 .rightlist_videolist .header .playauto {
 
     /* background-color: thistle; */

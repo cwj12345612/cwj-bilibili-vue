@@ -1,9 +1,12 @@
 <template>
     <div class="leftmain_videodesc"   >
-<div class="content sl" id="content">
+<div class="content"
+ id="content"
+ :class="!isshow ? 'sl':undefined"
+ >
     {{ mock('@cword(300)') }}
 </div>
-<button class="more" @click="more">展开简介</button>
+<button class="more" @click="isshow=!isshow">{{ isshow? '收起简介':'展开简介' }}</button>
     </div>
 </template>
 <script setup>
@@ -29,18 +32,10 @@ const mock = (str) => {
     return Mock.mock(str) }
 
 //#endregion
-const more=(e)=>{
-  const div=  e.currentTarget.previousElementSibling
-//   console.log(div)
-if(div.className.indexOf('sl')!=-1){
-    div.classList.remove('sl')
-    e.currentTarget.innerHTML='收起简介'
-}else{
-    div.classList.add('sl')
-    e.currentTarget.innerHTML='张开简介'   
-}
+const isshow=ref(false)
 
-}
+
+
 </script>
 <style scoped>
 .leftmain_videodesc {

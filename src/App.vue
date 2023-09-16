@@ -1,13 +1,12 @@
 <template>
  <index 
  
- v-if="route.name!='admindev'"
-
+ v-if="!notindexlist.includes(route.name)"
  ></index>
 
- <!-- #region 正常使用时删除 -->
- <router-view v-if="route.name=='admindev'"></router-view>
- <!-- #endregion 正常使用时删除 -->
+
+ <router-view v-if="notindexlist.includes(route.name)"></router-view>
+
 
 </template>
 <script setup>
@@ -21,7 +20,11 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
-
+const notindexlist=reactive(
+  [
+  'admindev','platform'
+]
+)
 onMounted(() => {
  
   //初始化页面
