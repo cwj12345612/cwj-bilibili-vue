@@ -1,7 +1,7 @@
 <template>
 <div class="searchpage_res">
 <searchpage_videolist></searchpage_videolist>
-<page :style="pageconfigStore.dynamicWH({normal:534,max:539.5,min:534})"></page>
+<page ></page>
 </div>
 </template>
 <script setup>

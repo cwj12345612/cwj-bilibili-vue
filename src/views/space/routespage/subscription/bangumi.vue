@@ -1,4 +1,5 @@
 <template>
+   <div class="king">
     <ul class="content">
         <li
         v-for="index in 14"
@@ -35,8 +36,9 @@
         </li>
     </ul>
     <page
-    class="page"
-    :style="pageconfigStore.dynamicWH({normal:534,max:539.5,min:534})"></page>
+ 
+    ></page>
+   </div>
 </template>
 <script setup>
 // #region  引入组件
@@ -132,8 +134,11 @@ li .img{
 .sys .setting span:hover{
     color: #0aaee0;
 }
-.page{
-    
-    margin: 0 auto;
+
+.king {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
 }
 </style>

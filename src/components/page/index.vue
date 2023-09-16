@@ -47,6 +47,7 @@ const mock=(str)=>{return Mock.mock(str)}
     align-items: center;
 }
 .page button{
+    margin: 0 5px;
     color: #18191c;
     font-size: 14px;
     height: 32px;
