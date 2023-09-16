@@ -70,12 +70,13 @@
             </div>
             </li>
             </ul>
+<page></page>
         </div>
     </div>
 </template>
 <script setup>
 // #region  引入组件
-
+import page from '@/components/page'
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -108,6 +109,7 @@ watch(()=>route.params,()=>{
     /* background-color: #fff; */
     width: 100%;
     padding: 20px;
+  
     /* background-color: orange; */
 }
 
@@ -160,9 +162,13 @@ width: 100%;
 
 .content {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .content_header {
+   align-self: flex-end;
     height: 50px;
     background-color: #fff;
     display: flex;
@@ -171,6 +177,7 @@ width: 100%;
 }
 
 .content_header ul {
+
     display: flex;
 
 }
@@ -230,6 +237,7 @@ width: 100%;
     color: #0aaee0;
 }
 .content .items{
+    margin-bottom: 20px;
     /* background-color: darkkhaki; */
     width: 100%;
     /* height: 300px; */
