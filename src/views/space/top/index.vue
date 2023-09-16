@@ -30,6 +30,7 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .top{
+    
     display: flex;
     flex-direction: column;
     align-items: center;
