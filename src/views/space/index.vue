@@ -38,7 +38,7 @@ const mock = (str) => { return Mock.mock(str) }
 
 
     /* height: 1000px; */
-    background-color: orange;
+    /* background-color: orange; */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,7 +47,7 @@ const mock = (str) => { return Mock.mock(str) }
 .content{
     margin-top: 10px;
     width: 100%;
-    background-color: aqua;
+    /* background-color: aqua; */
     /* height: 700px; */
     border-radius: 8px;
 }

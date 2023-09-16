@@ -1,13 +1,9 @@
 <template>
-<div class="searchpage_res">
-<searchpage_videolist></searchpage_videolist>
-<page :style="pageconfigStore.dynamicWH({normal:534,max:539.5,min:534})"></page>
-</div>
+
 </template>
 <script setup>
 // #region  引入组件
-import searchpage_videolist from './videolist.vue'
-import page from '@/components/page'
+
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -29,11 +25,6 @@ const mock=(str)=>{return Mock.mock(str)}
 
 </script>
 <style scoped>
-.searchpage_res{
-    
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
+
 </style>
+

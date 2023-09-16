@@ -104,7 +104,24 @@ const space = {
         },
         {
             path: 'subscription',
-            component: () => import('@/views/space/routespage/subscription')
+            component: () => import('@/views/space/routespage/subscription'),
+            redirect:{name:'subscription_bangumi'},
+            children:[
+                {
+                    path:'bangumi',
+                    name:'subscription_bangumi',
+                    component:()=>import('@/views/space/routespage/subscription/bangumi')
+                },
+                {
+                    path:'cinema',
+                   
+                    component:()=>import('@/views/space/routespage/subscription/cinema')
+                },
+                {
+                    path:'label',
+                    component:()=>import('@/views/space/routespage/subscription/label')
+                }
+            ]
         },
         {
             path: 'setting',
