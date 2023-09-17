@@ -61,11 +61,13 @@
     </div>
     </li>
     </ul>
+    <page></page>
 </div>
+
 </template>
 <script setup>
 // #region  引入组件
-
+import page from '@/components/page'
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -91,9 +93,13 @@ const mock=(str)=>{return Mock.mock(str)}
     padding: 20px;
     width: 100%;
     /* background-color: orangered; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .header {
-    /* width: 100%; */
+   
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -137,7 +143,7 @@ border-bottom: 2px solid #0aaee0;
     display: flex;
     align-items: center;
 justify-content: space-between;
-background-color: #fff;
+/* background-color: #fff; */
 }
 .header .right .playall{
     border-radius: 6px;
@@ -194,6 +200,7 @@ flex-wrap: wrap;
     color: #0aaee0;
 }
 .items{
+    margin-bottom: 20px;
     margin-top: 20px;
     /* background-color: aquamarine; */
     width: 100%;

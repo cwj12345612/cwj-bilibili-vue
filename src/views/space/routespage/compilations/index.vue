@@ -1,6 +1,6 @@
 <template>
 <div class="spacepage_compilations">
-    合集和列表
+  <router-view></router-view>    
 </div>
 </template>
 <script setup>
@@ -27,5 +27,16 @@ const mock=(str)=>{return Mock.mock(str)}
 
 </script>
 <style scoped>
-
+.spacepage_compilations{
+    border-radius: 8px;
+    /* background-color: cornflowerblue; */
+    border: 1px solid #99a299;
+    width: 100%;
+    /* height: 600px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+overflow: hidden;
+padding: 20px;
+}
 </style>

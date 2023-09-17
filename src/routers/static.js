@@ -83,7 +83,21 @@ const space = {
         },
         {
             path: 'compilations',
-            component: () => import('@/views/space/routespage/compilations')
+            component: () => import('@/views/space/routespage/compilations'),
+            redirect:{name:'compilations_series'},
+            children:[
+                {
+                    path:'series',
+                    name:'compilations_series',
+                    component:()=>import('@/views/space/routespage/compilations/series.vue')
+              
+                },
+                {
+                    path:':id',
+                    component:()=>import('@/views/space/routespage/compilations/list.vue')
+                }
+              
+            ]
         },
         {
             path: 'favlist',

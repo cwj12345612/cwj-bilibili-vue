@@ -74,8 +74,7 @@ const rightlist=[
 <style scoped>
 
 .nav{
-    border-radius: 8px;
-    overflow: hidden;
+   
     background-color: #fff;
     width: 100%;
     padding: 0 20px;
