@@ -148,6 +148,7 @@ color: #99a299;
     color: #0aaee0;
 }
 .items{
+    margin-top: 20px;
     margin-bottom: 20px;
     width: 100%;
     /* background-color: chocolate; */

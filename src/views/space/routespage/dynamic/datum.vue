@@ -1,20 +1,11 @@
 <template>
-<div class="spacepage_dynamic">
-  
-   <ul class="list">
-   <li v-for="index in 6">
-    <spacepage_dynamic_card></spacepage_dynamic_card>
-   </li>
-
-   </ul>
-   <spacepage_dynamic_datum ></spacepage_dynamic_datum>
+<div class="datum">
+    个人资料
 </div>
-
 </template>
 <script setup>
 // #region  引入组件
-import spacepage_dynamic_datum from './datum.vue'
-import spacepage_dynamic_card from './card.vue'
+
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -36,14 +27,11 @@ const mock=(str)=>{return Mock.mock(str)}
 
 </script>
 <style scoped>
-.spacepage_dynamic{
-    display: flex;
-    justify-content: space-between;
-}
-.list{
-    display: flex;
-    flex-direction: column;
-    width: 920px;
-    background-color: cadetblue;
+.datum{
+    color: #99a299;
+    width: 350px;
+    height: 230px;
+    background-color: darkgoldenrod;
+    border: 1px solid #99a299;
 }
 </style>
