@@ -3,13 +3,13 @@
 
 >
 <li class="headavatar">
-            <a :href="headavatar.href">
+            <router-link :to="headavatar.href">
                 <img :src="headavatar.avatarsrc" :alt="headavatar.id">
-            </a>
+            </router-link>
         </li>
 
         <li class="item" v-for="li in list" >
-            <a :href="li.href" class="item"
+            <router-link :to="li.href" class="item"
             :title="li.title"
             :class="pageconfigStore.globalclass"
             >
@@ -17,7 +17,7 @@
                 <span 
                 v-if="isshowspan"
                 >{{li.title }}</span>
-            </a>
+            </router-link>
           
         </li>
         <li class="constcontribute"
@@ -66,17 +66,17 @@ const headavatar = reactive({
     href: '/space'
 })
 const constcontribute = reactive({
-    url: Mock.mock('@url()'),
+    url: '/platform',
     span: '投稿',
     icon: 'colourless tianjia'
 })
 const list = reactive([
-    { id: 1, title: '大会员', href: '#', icon: "colourless wodedahuiyuan" },
-    { id: 2, title: '消息', href: '#', icon: "colourless sixin" },
-    { id: 3, title: '动态', href: '#', icon: "colourless zhuti" },
-    { id: 4, title: '收藏', href: '#', icon: "colourless wodeshoucang" },
-    { id: 5, title: '历史', href: '#', icon: "colourless lishijilu1" },
-    { id: 6, title: '创作中心', href: '#', icon: "colourless chuangzuozhongxin" },
+    { id: 1, title: '大会员', href: '#', icon: "colourless wodedahuiyuan",href:'#' },
+    { id: 2, title: '消息', href: '#', icon: "colourless sixin" ,href:'#'},
+    { id: 3, title: '动态', href: '#', icon: "colourless zhuti",href:'#' },
+    { id: 4, title: '收藏', href: '#', icon: "colourless wodeshoucang",href:'/space/favlist' },
+    { id: 5, title: '历史', href: '#', icon: "colourless lishijilu1" ,href:'#'},
+    { id: 6, title: '创作中心', href: '#', icon: "colourless chuangzuozhongxin",href:'/platform' },
 ])
 //#endregion
 

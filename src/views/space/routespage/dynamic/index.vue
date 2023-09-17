@@ -14,7 +14,7 @@
 <script setup>
 // #region  引入组件
 import spacepage_dynamic_datum from './datum.vue'
-import spacepage_dynamic_card from './card.vue'
+import spacepage_dynamic_card from './card'
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -44,6 +44,17 @@ const mock=(str)=>{return Mock.mock(str)}
     display: flex;
     flex-direction: column;
     width: 920px;
-    background-color: cadetblue;
+    /* background-color: cadetblue; */
+}
+.list li{
+    overflow: hidden;
+    /* background-color: gold; */
+    height: 260px;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px;
+   border: 1px solid #99a299;
+   display: flex;
+   flex-direction: column;
 }
 </style>
