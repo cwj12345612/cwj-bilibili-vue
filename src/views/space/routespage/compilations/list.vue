@@ -159,7 +159,7 @@ color: #99a299;
 
 }
 .items li{
-    height: 180px;
+    height: 130px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
