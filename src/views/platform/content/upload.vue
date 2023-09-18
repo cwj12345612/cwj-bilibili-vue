@@ -1,11 +1,9 @@
 <template>
-<div class="content">
-<upload></upload>
-</div>
+<div class="upload"></div>
 </template>
 <script setup>
 // #region  引入组件
-import upload from './upload.vue'
+
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -27,12 +25,7 @@ const mock=(str)=>{return Mock.mock(str)}
 
 </script>
 <style scoped>
-.content{
-    margin-left: 100px;
-    flex-shrink: 1;
+.upload{
     
-    background-color: aquamarine;
-    width: 100%;
-    height: 500px;
 }
 </style>

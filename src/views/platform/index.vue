@@ -14,8 +14,7 @@
                 </div>
             </div>
         </div>
-        <div class="body" 
-        
+        <div class="body"      
         >
            <platform_navlist></platform_navlist>
            <platform_content></platform_content>
@@ -51,12 +50,15 @@ const mock = (str) => { return Mock.mock(str) }
 #platform {
     flex-grow: 0;
     display: flex;
-    height: 100vh;
+    /* height: 100vh; */
+    max-height: 100vh;
     background-color: orange;
 flex-direction: column;
 }
 
 .header {
+    position: fixed;
+    top: 0;
     flex-shrink: 0;
     background-color: #fff;
     height: 64px;
@@ -84,9 +86,10 @@ flex-direction: column;
 }
 
 .body {
+    margin-top: 64px;
     flex-grow: 0;
     flex-shrink: 1;
-    height: 100%;
+    /* height: 100%; */
     background-color: cornflowerblue;
 width: 100%;
     display: flex;
