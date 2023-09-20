@@ -1,6 +1,6 @@
 <template>
 <div class="homepage_main"
-:style="pageconfigStore.dynamicWH({normal:1305,max:1980,min:1020},{normal:213*2+20,max:297*2+20,min:206*2+20})"
+
 >
 <homepage_carousel></homepage_carousel>
 <homepage_videos></homepage_videos>
@@ -36,6 +36,14 @@ const mock=(str)=>{return Mock.mock(str)}
     display: grid;
     grid-column-gap: 20px;
     grid-template-columns: repeat(5,1fr);
-    
+    /* 
+    :style="pageconfigStore.dynamicWH({normal:1305,max:1980,min:1020},{normal:213*2+20,max:297*2+20,min:206*2+20})"
+    */
+    max-width: 1980px;
+min-width: 1020px;
+width: 91vw;
+min-height: 436px;
+max-height: calc(297px * 2 +  20px);
+height: 60vh;
 }
 </style>

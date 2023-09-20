@@ -49,7 +49,7 @@ const mock=(str)=>{
  */
  max-width: 1436px;
  min-width: 677px;
- width: 58vw;
+ width: 65vw;
  max-height: 78px;
  min-height: 66px;
  height: 15vh;

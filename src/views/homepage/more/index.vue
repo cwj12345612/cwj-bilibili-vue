@@ -1,8 +1,6 @@
 <template>
 <div class="homepage_more"
-:style="pageconfigStore.dynamicWH(
-    {normal:1305,max:1980,min:1020},
-    {normal:213*2+20+50+20,max:297*2+20+50+20,min:206*2+20+50+20})"
+
 
 >
 <homepage_categoryitems></homepage_categoryitems>
@@ -41,5 +39,14 @@ margin-top: 15px;
     grid-template-columns: repeat(5,1fr);
     grid-template-rows: 100%;
     grid-gap: 20px;
+    /* 
+    :style="pageconfigStore.dynamicWH(
+    {normal:1305,max:1980,min:1020},
+    {normal:213*2+20+50+20,max:297*2+20+50+20,min:206*2+20+50+20})"
+    */
+    max-width: 1980px;
+min-width: 1020px;
+width: 91vw;
+
 }
 </style>
