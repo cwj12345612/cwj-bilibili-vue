@@ -8,13 +8,15 @@
             <i class="colourless diandiandianshu setting"></i>
         </div>
         <div class="right" 
-      
-        @click="changedanmulist">
+      :class="isshow?'open':undefined"
+        @click="isshow=!isshow">
             <i class="colourless xialada"></i>
         </div>
     </div>
     
-    <div class="danmulist none"
+    <div 
+    class="danmulist"
+    :class="isshow?'show':'none'"
     ref="playpage_danmulist"
    
     >
@@ -61,20 +63,8 @@ import Mock from 'mockjs'
 const mock=(str)=>{return Mock.mock(str)}
 
 //#endregion
-const changedanmulist=(e)=>{
-const button= e.currentTarget
-const list= playpage_danmulist.value
-// console.log(playpage_danmulist.value.classList)
-if(button.className.indexOf('open')==-1){
-   list.classList.add('show')
-    list.classList.remove('none')
-    button.classList.add('open')
-}else{
-    list.classList.remove('show')
-    list.classList.add('none')
-    button.classList.remove('open')
-}
-}
+const isshow=ref(false)
+
 </script>
 <style scoped>
 .playpage_danmulist{
@@ -84,6 +74,7 @@ if(button.className.indexOf('open')==-1){
     /* background-color: gold; */
     overflow: hidden;
     border-radius: var(--border-radius-min);
+    transition: all 3s;
 }
 .playpage_danmulist .header{
     color: #18191c;
@@ -125,7 +116,7 @@ if(button.className.indexOf('open')==-1){
  display: flex;
  
  flex-direction: column;
-/* transition: all 3s; */
+
 /* 
 :style="pageconfigStore.dynamicWH(undefined,{normal:376,max:962,min:376})"
  */

@@ -1,6 +1,6 @@
 <template>
 <div class="searchpage_filter"
-:style="pageconfigStore.dynamicWH({normal:1297,min:988,max:2028})"
+
 >
 <searchpage_filtertitle></searchpage_filtertitle>
 <searchpage_filterall></searchpage_filterall>
@@ -39,5 +39,11 @@ const mock=(str)=>{return Mock.mock(str)}
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    /* 
+    :style="pageconfigStore.dynamicWH({normal:1297,min:988,max:2028})"
+    */
+    max-width: 2028px;
+    min-width: 988px;
+    width: 90vw;
 }
 </style>

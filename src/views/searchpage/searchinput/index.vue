@@ -1,6 +1,6 @@
 <template>
 <div class="searchpage_searchinput"
-:style="pageconfigStore.dynamicWH(undefined,{normal:48,max:64,min:48})"
+
 id="searchpage_searchinput"
 :class="{'scroll':pageconfigStore.scroll>(64+20)}"
 >
@@ -13,7 +13,7 @@ v-show="pageconfigStore.scroll>(64+20)"
     </a>
 </div>
 <div class="input"
-:style="pageconfigStore.dynamicWH(undefined,{normal:48,max:54,min:44})"
+
 
 >
 <i class="colourless sousuo"></i>
@@ -57,6 +57,7 @@ onMounted(()=>{
 </script>
 <style scoped>
 .searchpage_searchinput{
+    height: 55px;
     margin: 20px 0;
     width: 100%;
     background-color: #ffffff;
@@ -95,8 +96,9 @@ onMounted(()=>{
    margin: 0;
 }
 .searchpage_searchinput .input{
+    height: 50px;
     align-self: center;
-  height: 100%;
+ 
     width: 640px;
     padding: 5px;
     border: 1px solid #f1f2f3;

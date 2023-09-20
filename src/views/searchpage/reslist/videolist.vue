@@ -1,10 +1,10 @@
 <template>
     <ul class="searchpage_videolist"
-    :style="pageconfigStore.dynamicWH({normal:1297,min:988,max:2028})"
+  
     >
     <li 
-    :style="pageconfigStore.dynamicWH(undefined,{normal:213,max:235,min:204})"
-    v-for="index in 13" 
+   
+    v-for="index in 23" 
 
     >
     <searchpage_videocard></searchpage_videocard>
@@ -36,6 +36,7 @@
     </script>
     <style scoped>
     .searchpage_videolist{
+
         margin-top: 10px;
     /* background-color: orange; */
     /* height: 400px; */
@@ -44,6 +45,21 @@
     grid-template-columns: repeat(5,1fr);
     grid-column-gap: 20px;
     grid-template-rows: repeat(auto,minmax(203px,235px));
+    /* 
+      :style="pageconfigStore.dynamicWH({normal:1297,min:988,max:2028})"
+    */
+    max-width: 2028px;
+    min-width: 988px;
+    width: 90vw;
+    margin-bottom: 20px;
+    }
+    .searchpage_videolist li{
+        /* 
+         :style="pageconfigStore.dynamicWH(undefined,{normal:213,max:235,min:204})"
+        */
+        max-height: 305px;
+        min-height: 220px;
+        height: 30vh;
     }
     </style>
     

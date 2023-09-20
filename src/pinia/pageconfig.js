@@ -82,7 +82,7 @@ export const usepageconfigStore = defineStore('pageconfigStore', {
                     style.height = style.height + 'px'
                 }
                 // console.log(JSON.stringify(style))
-                console.log('使用动态：'+width+'#'+JSON.stringify(height))
+                console.log('使用动态：'+JSON.stringify(width)+'#'+JSON.stringify(height))
                 
                 return style
             }
