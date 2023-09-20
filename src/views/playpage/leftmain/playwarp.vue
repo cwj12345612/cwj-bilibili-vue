@@ -1,10 +1,15 @@
 <template>
-    <div class="left_main_playwarp" :style="pageconfigStore.dynamicWH(undefined, { normal: 422, max: 1009, min: 422 })">
+    <div class="left_main_playwarp" 
+    
+    
+    >
         <div id="playpage_bofanqi"></div>
 
 
 
-        <div class="bottom" :style="pageconfigStore.dynamicWH(undefined, { normal: 46, max: 56, min: 46 })">
+        <div class="bottom" 
+        
+     >
             <div class="videoinfo">
                 <div class="line">
                     <span>{{ mock({ 'num|10-456': 456 }).num }}&nbsp;</span>
@@ -129,7 +134,12 @@ const change=()=>{
 
     display: flex;
     flex-direction: column;
-
+/* 
+:style="pageconfigStore.dynamicWH(undefined, { normal: 422, max: 1009, min: 422 })"
+*/
+max-height: 1009px;
+min-height: 422px;
+height: 55vh;
 }
 
 #playpage_bofanqi {
@@ -141,6 +151,7 @@ const change=()=>{
 }
 
 .left_main_playwarp .bottom {
+    height: 50px;
     width: 100%;
     background-color: #ffffff;
     padding-right: 12px;

@@ -51,9 +51,9 @@ const router=useRouter()
 // #endregion
 //是否显示文字
 const isshowspan=computed(()=>{
-   const width= pageconfigStore.dynamicWH({normal:466,max:482,min:326}).width
+ const width=pageconfigStore.width*0.32
     const min=380
-   return width.replace("px","") > min
+   return width > min
 })
 // #region  模拟数据 mockjs
 import  Mock  from 'mockjs';

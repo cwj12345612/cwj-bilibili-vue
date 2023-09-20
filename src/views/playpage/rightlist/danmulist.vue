@@ -16,7 +16,7 @@
     
     <div class="danmulist none"
     ref="playpage_danmulist"
-    :style="pageconfigStore.dynamicWH(undefined,{normal:376,max:962,min:376})"
+   
     >
         <div class="danmulist_header">
             <span class="time">时刻</span>
@@ -26,7 +26,7 @@
         <ul  class="list"
      
         >
-            <li v-for="index in 6">
+            <li v-for="index in 60">
                 <span class="time">00:42</span>
             <span class="content">{{ mock('@cword(5,20)') }}</span>
             <span class="sendtime">10-10 15:32</span>
@@ -125,7 +125,13 @@ if(button.className.indexOf('open')==-1){
  display: flex;
  
  flex-direction: column;
-transition: all 3s;
+/* transition: all 3s; */
+/* 
+:style="pageconfigStore.dynamicWH(undefined,{normal:376,max:962,min:376})"
+ */
+ max-height: 962px;
+ min-height: 376px;
+ height: 30vh;
 }
 .playpage_danmulist .danmulist .list::-webkit-scrollbar{display: none;}
 .playpage_danmulist .danmulist.none{

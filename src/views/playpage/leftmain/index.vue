@@ -26,7 +26,9 @@ const mock = (str) => { return Mock.mock(str) }
 
 </script>
 <template>
-    <div class="playpage_leftmain" :style="pageconfigStore.dynamicWH({ normal: 668, max: 1694, min: 668 })">
+    <div class="playpage_leftmain" 
+    
+    >
         <div class="title">
             <h1>
                 {{ mock('@cword(20,100)') }}
@@ -63,11 +65,18 @@ const mock = (str) => { return Mock.mock(str) }
 .playpage_leftmain {
 
     /* background-color: palevioletred; */
-
+flex-grow: 0;
+flex-shrink: 0;
     display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: flex-start;
+/* 
+:style="pageconfigStore.dynamicWH({ normal: 668, max: 1694, min: 668 })"
+*/
+max-width: 1360px;
+min-width: 668px;
+width: 48vw;
 }
 
 .playpage_leftmain .title {

@@ -1,6 +1,6 @@
 <template>
     <div class="recommend_recommendvideo" 
-    :style="pageconfigStore.dynamicWH(undefined, { normal: 82.5, max: 107, min: 82.5 })"
+    
     >
    <div class="img">
    <a href="#">
@@ -65,7 +65,12 @@ const mock = (str) => { return Mock.mock(str) }
     overflow: hidden;
     display: flex;
     justify-content: space-between;
-
+/* 
+:style="pageconfigStore.dynamicWH(undefined, { normal: 82.5, max: 107, min: 82.5 })"
+*/
+max-height: 107px;
+min-height: 82.5px;
+height: 11vh;
 }
 .recommend_recommendvideo .img{
        border-radius: var(--border-radius-min);

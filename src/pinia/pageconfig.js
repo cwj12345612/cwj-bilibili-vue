@@ -49,9 +49,11 @@ export const usepageconfigStore = defineStore('pageconfigStore', {
          * @returns 高度height 宽度width (非必须)
          */
         dynamicWH() {
+           
             const normalWidth = 1425
             const normalHeight = 1425
             return (width, height) => {
+                
                 // {normal: , max:  ,min: ,}
                 const style = {}
                 if (width) {
@@ -80,6 +82,8 @@ export const usepageconfigStore = defineStore('pageconfigStore', {
                     style.height = style.height + 'px'
                 }
                 // console.log(JSON.stringify(style))
+                console.log('使用动态：'+width+'#'+JSON.stringify(height))
+                
                 return style
             }
         },
