@@ -1,10 +1,10 @@
 <template>
 <div class="homepage_banner"
-:style="pageconfigStore.dynamicWH(undefined,{normal:155,max:240,min:155})"
+
 >
 <img src="@/assets/images/header.png" alt="">
 <a class="logo" href="/"
-:style="pageconfigStore.dynamicWH(undefined,{normal:77.5,max:120,min:77.5})"
+
 >
         <i class="colourless bilibili" ></i>
     </a>
@@ -33,8 +33,15 @@ const router=useRouter()
 .homepage_banner{
     width: 100%;
     position: relative;
+    /* background-color: cadetblue; */
+    max-height: 240px;
+    min-height: 155px;
+    height: 20vh;
 }
 .homepage_banner .logo{
+    max-height: 120px;
+    min-height: 77.5px;
+    height: 10vh;
     display: block;
     position: absolute;
     bottom: 0;

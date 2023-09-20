@@ -1,6 +1,6 @@
 <template>
 <div class="homepage_channel"
-:style="pageconfigStore.dynamicWH({normal:1305,max:1980,min:1020},{normal:110,max:130,min:100})"
+
 >
     <left_icons></left_icons>
     <navlist></navlist>
@@ -34,5 +34,13 @@ const router=useRouter()
 display: flex;
 justify-content: space-between;
 align-items: center;
+/* :style="pageconfigStore.dynamicWH({normal:1305,max:1980,min:1020}
+,{normal:110,max:130,min:100})" */
+max-width: 1980px;
+min-width: 1020px;
+width: 91vw;
+min-height: 100px;
+max-height: 130px;
+height: 13vh;
 }
 </style>

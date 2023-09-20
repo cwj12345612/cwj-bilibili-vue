@@ -1,10 +1,10 @@
 <template>
 <ul class="left_icons"
-:style="pageconfigStore.dynamicWH({normal:210,max:234,min:150},{normal:72,max:72,min:64})"
+
 >
 <li
 v-for="index in 3"
-:style="pageconfigStore.dynamicWH({normal:46,max:46,min:40})"
+
 >
  <a href="#">
     <div class="img">
@@ -40,15 +40,29 @@ const mock=(str)=>{
 </script>
 <style scoped>
 .left_icons{
+
 flex-grow: 0;
     /* background-color: teal; */
   display: grid;
   grid-template-columns: repeat(3,1fr);
-
+  grid-template-rows: 100%;
+  /* 
+  :style="pageconfigStore.dynamicWH({normal:210,max:234,min:150},
+  {normal:72,max:72,min:64})"
+  */
+max-width: 234px;
+min-width: 150px;
+width: 15vw;
+max-height: 72px;
+min-height:64px ;
+height: 15vh;
 }
 .left_icons li{
-  
+  /*:style="pageconfigStore.dynamicWH({normal:46,max:46,min:40})"  */
     height: 100%;
+    max-width: 46px;
+    min-width: 40px;
+ 
 }
 .left_icons a{
     align-items: center;

@@ -1,6 +1,6 @@
 <template>
 <ul class="right_list"
-:style="pageconfigStore.dynamicWH({normal:240,max:258,min:240},{normal:66,max:78,min:66})"
+
 >
 <li v-for="index in 6">
     <a href="#">
@@ -40,6 +40,16 @@ const mock=(str)=>{return Mock.mock(str)}
     grid-template-rows: repeat(2,1fr);
     justify-content: center;
     align-items: center;
+    /* 
+    :style="pageconfigStore.dynamicWH({normal:240,max:258,min:240},
+    {normal:66,max:78,min:66})"
+    */
+max-width: 258px;
+min-width: 240px;
+width: 20vw;
+min-height: 66px;
+max-height: 78px;
+height: 10vh;
 }
 .right_list li {
     width: 100%;

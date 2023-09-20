@@ -21,7 +21,7 @@
           
         </li>
         <li class="constcontribute"
-        :style="pageconfigStore.dynamicWH({ normal: 90, max: 90, min: 34 })"
+        
         >
             <a :href="constcontribute.url">
                 <i v-if="constcontribute.icon" :class="constcontribute.icon"></i>
@@ -71,7 +71,7 @@ const constcontribute = reactive({
     icon: 'colourless tianjia'
 })
 const list = reactive([
-    // { id: 1, title: '大会员', href: '#', icon: "colourless wodedahuiyuan",href:'#' },
+    { id: 1, title: '大会员', href: '#', icon: "colourless wodedahuiyuan",href:'#' },
     { id: 2, title: '消息', href: '#', icon: "colourless sixin" ,href:'#'},
     { id: 3, title: '动态', href: '#', icon: "colourless zhuti",href:'#' },
     { id: 4, title: '收藏', href: '#', icon: "colourless wodeshoucang",href:'/space/favlist' },
@@ -85,7 +85,7 @@ const list = reactive([
 .rightlist{
     max-width: 482px;
     min-width: 326px;
-    width: calc(calc(466 / 1425) * 100%);
+    width: 34vw;
     height: 50px;
     /* background-color: teal; */
     display: flex;
@@ -114,7 +114,9 @@ const list = reactive([
 }
 .constcontribute{
 
-
+max-width: 90px;
+min-width: 34px;
+width: 7vw;
     display: flex;
     justify-content: center;
     align-items: center;

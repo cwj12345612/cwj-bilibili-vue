@@ -50,7 +50,7 @@ const list=reactive([
 .leftlist {
     max-width: 537px;
     min-width: 423px;
-    width: calc(calc(458 / 1425) * 100%);
+    width: 33vw;
     height: 100%;
     /* background-color: plum; */
     display: flex;

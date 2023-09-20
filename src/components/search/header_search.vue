@@ -1,6 +1,6 @@
 <template>
 <div class='header_search'
-:style="!pageconfigStore.globalclass.includes('scroll') ? pageconfigStore.dynamicWH({ normal:  413 , max: 500, min: 253 }) : pageconfigStore.dynamicWH({ normal:  377 , max: 500, min: 253 })"
+
 :class="pageconfigStore.globalclass"
 >
 <input type="search" 
@@ -60,6 +60,7 @@ const mouseleave=(e)=>{
 
 </script>
 <style scoped>
+
 .header_search{
 padding-left: 4px;
 height: 40px;
@@ -70,6 +71,9 @@ background-color: #f1f2f3;
 display:flex;
 align-items: center;
 justify-content: space-between;
+max-width: 500px;
+min-width: 253px;
+width: 27vw;
 }
 .header_search input{
     height: 80%;
@@ -78,6 +82,12 @@ justify-content: space-between;
 /* background-color: palegoldenrod; */
 background: none;
 padding-left: 5px;
+}
+/* :style="!pageconfigStore.globalclass.includes('scroll') 
+? pageconfigStore.dynamicWH({ normal:  413 , max: 500, min: 253 }) 
+: pageconfigStore.dynamicWH({ normal:  377 , max: 500, min: 253 })" */
+.header_search.scroll{
+
 }
 .header_search button{
     width: 10%;

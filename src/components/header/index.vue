@@ -1,6 +1,6 @@
 <template>
     <header 
-    :style="style"
+   
     :class="pageconfigStore.globalclass"
     >
         <cwj_header_leftlist></cwj_header_leftlist>
@@ -20,19 +20,15 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
-const  style=computed(()=>{
-    
-    return {
-        ...pageconfigStore.dynamicWH({normal:1377+24*2,max:2512+24*2,min:1012+24*2}),
-        // top: pageconfigStore.scroll +'px' 
-    }
-})
+
 </script>
 <style scoped>
 header {
 z-index: 10086;
    padding: 0 24px;
- 
+ max-width: 2560px;
+ min-width: 1060px;
+ width: 100vw;
     height: 64px;
 /* 弹性布局flex */
   display: flex;

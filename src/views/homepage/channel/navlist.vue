@@ -1,6 +1,6 @@
 <template>
 <ul class="homepage_navlist"
-:style="pageconfigStore.dynamicWH({normal:847,max:1436,min:677},{normal:66,max:78,min:66})"
+
 >
 <li v-for="index in 21"><a href="/movie">{{ mock('@cword(2,3)') }}</a></li>
 <li class="more"><a href="#">
@@ -43,6 +43,16 @@ const mock=(str)=>{
     grid-gap: 10px;
  align-items: center;
  justify-content: center;
+ /* 
+ :style="pageconfigStore.dynamicWH({normal:847,max:1436,min:677},
+ {normal:66,max:78,min:66})"
+ */
+ max-width: 1436px;
+ min-width: 677px;
+ width: 58vw;
+ max-height: 78px;
+ min-height: 66px;
+ height: 15vh;
 }
 .homepage_navlist li{
     height: 100%;
