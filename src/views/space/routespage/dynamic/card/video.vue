@@ -99,7 +99,7 @@ justify-content: flex-start;
 }
 .content .video .img{
     flex-shrink: 0;
-    width: 170px;
+    width: 180px;
     height: 100%;
     position: relative;
 }

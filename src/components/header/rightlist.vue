@@ -71,7 +71,7 @@ const constcontribute = reactive({
     icon: 'colourless tianjia'
 })
 const list = reactive([
-    { id: 1, title: '大会员', href: '#', icon: "colourless wodedahuiyuan",href:'#' },
+    // { id: 1, title: '大会员', href: '#', icon: "colourless wodedahuiyuan",href:'#' },
     { id: 2, title: '消息', href: '#', icon: "colourless sixin" ,href:'#'},
     { id: 3, title: '动态', href: '#', icon: "colourless zhuti",href:'#' },
     { id: 4, title: '收藏', href: '#', icon: "colourless wodeshoucang",href:'/space/favlist' },

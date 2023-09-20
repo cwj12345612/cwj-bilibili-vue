@@ -1,5 +1,6 @@
 <template>
-<div class="header">
+
+    <div class="header">
 <div class="img">
   <a href="#">
     <img src="@\assets\images\头像.png" alt="">
@@ -10,7 +11,9 @@
 <span class="desc">{{ mock('@datetime(yyyy-MM-dd)') }}更新动态</span>
 </div>
 </div>
+
 <dynamic_video v-if="isvideo"></dynamic_video>
+
 <!-- <dynamic_article v-if="!isvideo"></dynamic_article> -->
 </template>
 <script setup>
@@ -40,6 +43,7 @@ const isvideo=ref(true)
 
 </script>
 <style scoped>
+
 .header{
     height: 50px;
     width: 100%;
