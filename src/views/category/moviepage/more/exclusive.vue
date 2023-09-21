@@ -1,5 +1,7 @@
 <template>
-    <div class="exclusive" :style="pageconfigStore.dynamicWH(undefined, { normal: 345, min: 345, max: 493 })">
+    <div class="exclusive" 
+
+    >
         <div class="top">
             <h3>独家热播</h3>
            
@@ -57,6 +59,9 @@ const mock = (str) => { return Mock.mock(str) }
     justify-content: space-between;
     align-items: center;
     /* background-color: #242628; */
+    min-height: 293px;
+    max-height: 345px;
+    height: 45vh;
 }
 
 .top {

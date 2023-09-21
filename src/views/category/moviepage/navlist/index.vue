@@ -1,6 +1,6 @@
 <template>
 <ul class="moviepage_navlist"
-:style="pageconfigStore.dynamicWH({normal:1244,max:2014,min:1244},{normal:86,max:92,min:86})"
+
 >
 <div class="map hot" >
     <div class="title">
@@ -90,7 +90,15 @@ const mock=(str)=>{return Mock.mock(str)}
     /* background-color: teal; */
   display: flex;
     /* align-items: center; */
-    
+    /* 
+    :style="pageconfigStore.dynamicWH(undefined,{normal:86,max:92,min:86})"
+    */
+    max-width: 2014px;
+   min-width: 1244px;
+   width: 90vw;   
+   min-height: 86px;
+   max-height: 92px;
+   height: 13vh;
 }
 .map{
     margin-right: 30px;

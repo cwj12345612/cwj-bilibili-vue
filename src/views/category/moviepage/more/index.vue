@@ -1,6 +1,6 @@
 <template>
 <div class="moviepage_more"
-:style="pageconfigStore.dynamicWH({normal:1244,max:2014,min:1244})"
+
 >
 <more_hotchart></more_hotchart>
 <more_exclusive></more_exclusive>
@@ -44,6 +44,11 @@ display: flex;
 flex-direction: column;
     /* height: 800px; */
     /* background-color: cornflowerblue; */
-   
+    /* 
+    :style="pageconfigStore.dynamicWH({normal:1244,max:2014,min:1244})"
+    */
+   max-width: 2014px;
+   min-width: 1244px;
+   width: 90vw;
 }
 </style>

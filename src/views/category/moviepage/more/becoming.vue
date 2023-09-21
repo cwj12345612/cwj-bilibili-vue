@@ -1,5 +1,6 @@
 <template>
-    <div class="becoming" :style="pageconfigStore.dynamicWH(undefined, { normal: 345, min: 345, max: 493 })">
+    <div class="becoming" 
+    >
         <div class="top">
             <h3>即将上线</h3>
            
@@ -58,6 +59,13 @@ const mock = (str) => { return Mock.mock(str) }
     justify-content: space-between;
     align-items: center;
     /* background-color: #242628; */
+    /* 
+    :style="pageconfigStore.dynamicWH(undefined,
+     { normal: 345, min: 345, max: 493 })"
+    */
+    min-height: 293px;
+    max-height: 345px;
+    height: 45vh;
 }
 
 .top {

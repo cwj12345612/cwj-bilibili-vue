@@ -1,6 +1,6 @@
 <template>
 <div class="moviepage_main"
-:style="pageconfigStore.dynamicWH({normal:1244,max:2014,min:1244},{normal:300,max:428,min:300})"
+
 >
 <moviepage_main_videowarp></moviepage_main_videowarp>
 <moviepage_main_videos></moviepage_main_videos>
@@ -42,5 +42,14 @@ const mock=(str)=>{return Mock.mock(str)}
     grid-row-gap: 24px;
     grid-template-rows: repeat(2,1fr);
     grid-template-columns: repeat(7,1fr);
+    /* 
+    :style="pageconfigStore.dynamicWH({normal:1244,max:2014,min:1244},{normal:300,max:428,min:300})"
+    */
+    max-width: 2014px;
+    min-width: 1244px;
+    width: 90vw;
+    min-height: 300px;
+    max-height: 428px;
+    height: 45vh;
 }
 </style>

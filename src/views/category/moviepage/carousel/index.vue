@@ -1,10 +1,13 @@
 <template>
-    <div class="carousel" :style="pageconfigStore.dynamicWH(undefined, { normal: 360, max: 494, min: 360 })">
+    <div class="carousel" 
+    >
         <ul class="pics">
             <li v-for="index in 1"> <img :src="list[index - 1].src" alt=""></li>
         </ul>
     
-            <ul class="items" :style="pageconfigStore.dynamicWH({ normal: 196, max: 256, min: 196 })">
+            <ul class="items" 
+            
+            >
 
                 <li v-for="index in 10" 
                 :class="(index === 5) ? 'checked' : undefined">
@@ -54,6 +57,13 @@ const list = [
     width: 100%;
     background-color: antiquewhite;
     position: relative;
+    /* 
+    :style="pageconfigStore.dynamicWH(undefined, 
+    { normal: 360, max: 494, min: 360 })"
+    */
+min-height: 360px;
+max-height: 494px;
+height: 50vh;
 }
 
 .carousel .pics {
@@ -81,6 +91,13 @@ const list = [
     position: absolute;
     top: 64px;
  right: calc(calc((100% - calc(100% * calc(1244 / 1425)) )) / 2);
+
+ /* 
+ :style="pageconfigStore.dynamicWH({ normal: 196, max: 256, min: 196 })"
+ */
+ max-width: 256px;
+ min-width:196px ;
+ width: 17vw;
 }
 
 .items li {

@@ -1,5 +1,7 @@
 <template>
-    <div class="hotchart" :style="pageconfigStore.dynamicWH(undefined, { normal: 345, min: 345, max: 493 })">
+    <div class="hotchart"
+
+    >
         <div class="top">
             <h3>电影热播榜</h3>
             <button class="more">
@@ -61,6 +63,9 @@ const mock = (str) => { return Mock.mock(str) }
     justify-content: space-between;
     align-items: center;
     /* background-color: #242628; */
+    min-height: 293px;
+    max-height: 345px;
+    height: 45vh;
 }
 
 .top {
