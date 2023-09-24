@@ -5,7 +5,7 @@
 </template>
 <script setup>
 // #region  引入组件
-import upload from './upload.vue'
+import upload from './upload/index.vue'
 //  #endregion
 
 // #region 引入vue pinia 路由

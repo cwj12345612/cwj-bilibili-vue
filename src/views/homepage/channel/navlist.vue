@@ -52,7 +52,7 @@ const mock=(str)=>{
  width: 65vw;
  max-height: 78px;
  min-height: 66px;
- height: 15vh;
+ height: 9vh;
 }
 .homepage_navlist li{
     height: 100%;
