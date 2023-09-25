@@ -47,7 +47,7 @@ height: 64px;
 display: flex;
 align-items: center;
 justify-content: flex-start;
-background-color: #fff;
+/* background-color: #fff; */
 border-bottom: 2px solid #e7e7e7;
 }
 .header li{

@@ -28,11 +28,11 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .content{
-    margin-left: 100px;
+  margin: 0 auto;
     flex-shrink: 1;
     
     background-color: aquamarine;
-    width: 100%;
-    height: 500px;
+    width: 1100px;
+    /* height: 500px; */
 }
 </style>

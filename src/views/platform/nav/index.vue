@@ -53,7 +53,7 @@ const isshow = ref(false)
     /* height: 100%; */
     max-height: 100vh;
     background-color: greenyellow;
-    width: 200px;
+    width: 220px;
     overflow: auto;
 
 }

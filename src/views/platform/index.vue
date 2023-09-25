@@ -1,6 +1,9 @@
 <template>
-    <div id="platform" :style="pageconfigStore.dynamicWH({ normal: 1377 + 24 * 2, max: 2512 + 24 * 2, min: 1012 + 24 * 2 })">
-        <div class="header">
+    <div id="platform" 
+    :style="pageconfigStore.dynamicWH({ normal: 1377 + 24 * 2, max: 2512 + 24 * 2, min: 1012 + 24 * 2 })">
+        <div class="header"
+        :style="pageconfigStore.dynamicWH({ normal: 1377 + 24 * 2, max: 2512 + 24 * 2, min: 1012 + 24 * 2 })"
+        >
             <div class="left">
                 <h3>
                     <i class="colourless bilibili"></i>
@@ -13,11 +16,23 @@
                     </a>
                 </div>
             </div>
+            <div class="right">
+                    <div class="img">
+                        <a href="/space" target="_blank">
+                            <img src="@\assets\images\头像.png" alt="">
+                        </a>
+
+                    </div>
+                    <span>成为up主的1024天</span>
+
+            </div>
         </div>
         <div class="body"      
         >
            <platform_navlist></platform_navlist>
-           <platform_content></platform_content>
+          <div>
+            <platform_content></platform_content>
+          </div>
         </div>
     </div>
 </template>
@@ -84,7 +99,28 @@ flex-direction: column;
     margin-left: 20px;
     color: #99a299;
 }
+.header .right{
+    margin-right: 100px;
+    display: flex;
+    align-items: center;
+    /* background-color: burlywood; */
+    /* height: 100%; */
 
+}
+.header .right .img{
+    margin-right: 10px;
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    /* background-color: cadetblue; */
+}
+.header .right .img img{
+    border-radius: 50%;
+}
+.header .right span{
+    color: #fa8e57;
+    font-size: 16px;
+}
 .body {
     margin-top: 64px;
     flex-grow: 0;
@@ -94,5 +130,13 @@ flex-direction: column;
 width: 100%;
     display: flex;
     padding-right: 100px;
+}
+.body>div{
+    flex-shrink: 0;
+   flex-grow: 1;
+    /* background-color: chocolate; */
+ 
+    display: flex;
+    justify-content: center;
 }
 </style>
