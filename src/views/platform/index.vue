@@ -21,9 +21,8 @@
                         <a href="/space" target="_blank">
                             <img src="@\assets\images\头像.png" alt="">
                         </a>
-
                     </div>
-                    <span>成为up主的1024天</span>
+                    <span>成为up主的{{mock('@integer(10,1000)')}}天</span>
 
             </div>
         </div>

@@ -1,5 +1,6 @@
 <template>
-<ul class="header">
+<ul class="header"
+ v-if="!uploadStore.ing">
 <li
 v-for="(li,index) in list"
 :class="index===0 ? 'checked' :undefined"
@@ -10,7 +11,7 @@ v-for="(li,index) in list"
     {{li.title}}</a>
 </li>
 </ul>
-<video_upload></video_upload>
+<video_upload ></video_upload>
 </template>
 <script setup>
 // #region  引入组件
@@ -20,8 +21,10 @@ import video_upload from './video_upload.vue'
 // #region 引入vue pinia 路由
 import {computed,ref,reactive,watch,toRef,toRefs,onMounted,onBeforeUnmount,} from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
+import {useuploadStore} from '@/pinia/uploadstore.js'
 import {useRoute,useRouter} from 'vue-router'
 const pageconfigStore = usepageconfigStore()
+const uploadStore =useuploadStore();
 const route=useRoute()
 const router=useRouter()
 // #endregion
@@ -39,6 +42,7 @@ const list=[
     {title:'贴纸投稿',href:'#'},
 ]
 //#endregion
+
 
 </script>
 <style scoped>
