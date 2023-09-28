@@ -61,7 +61,7 @@ const mock=(str)=>{return Mock.mock(str)}
     width: 100%;
     height: 192px;
     border: 1px solid #e6e7e8;
-    background: url('../../../assets/images/spacepage/header_bigpic.webp') no-repeat;
+    background: url('@/assets/images/spacepage/header_bigpic.webp') no-repeat;
     background-size: cover;
     position: relative;
     padding-left: 20px;

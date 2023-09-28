@@ -1,17 +1,11 @@
 <template>
- <index 
- 
- v-if="!notindexlist.includes(route.name)"
- ></index>
-
-
- <router-view v-if="notindexlist.includes(route.name)"></router-view>
-
+<router-view></router-view>
 
 </template>
 <script setup>
 // #region 引入组件
-import index from './views/index.vue'
+import index from '@/views/index'
+import platform from '@/views/platform'
 //#endregion
 
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
@@ -20,6 +14,10 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
+onMounted(()=>{
+ 
+
+})
 const notindexlist=reactive(
   [
   'admindev','platform'

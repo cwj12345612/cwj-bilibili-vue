@@ -1,8 +1,7 @@
 <template>
     <div id="platform" 
-    :style="pageconfigStore.dynamicWH({ normal: 1377 + 24 * 2, max: 2512 + 24 * 2, min: 1012 + 24 * 2 })">
+  >
         <div class="header"
-        :style="pageconfigStore.dynamicWH({ normal: 1377 + 24 * 2, max: 2512 + 24 * 2, min: 1012 + 24 * 2 })"
         >
             <div class="left">
                 <h3>
@@ -29,8 +28,8 @@
         <div class="body"      
         >
            <platform_navlist></platform_navlist>
-          <div>
-            <platform_content></platform_content>
+          <div class="content">
+            <router-view></router-view>
           </div>
         </div>
     </div>
@@ -38,7 +37,7 @@
 <script setup>
 // #region  引入组件
 import platform_navlist from './nav'
-import platform_content from './content'
+
 
 //  #endregion
 
@@ -68,6 +67,12 @@ const mock = (str) => { return Mock.mock(str) }
     max-height: 100vh;
     background-color: orange;
 flex-direction: column;
+/*  :style="pageconfigStore.dynamicWH(
+    { normal: 1377 + 24 * 2, max: 2512 + 24 * 2, min: 1012 + 24 * 2 })"> */
+    max-width: 2560px;
+    min-width: 1060px;
+    width: 100vw;
+
 }
 
 .header {
@@ -82,7 +87,9 @@ flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+   max-width: 2560px;
+    min-width: 1060px;
+    width: 100vw;
 }
 
 .header .left {
@@ -130,12 +137,14 @@ width: 100%;
     display: flex;
     padding-right: 100px;
 }
-.body>div{
-    flex-shrink: 0;
-   flex-grow: 1;
-    /* background-color: chocolate; */
- 
-    display: flex;
-    justify-content: center;
+
+.content{
+   
+  margin: 0 auto;
+    flex-shrink: 1;
+   
+    background-color: aquamarine;
+    width: 1100px;
+    /* height: 400px; */
 }
 </style>
