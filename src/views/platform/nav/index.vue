@@ -6,9 +6,9 @@
                 <span>投稿</span>
             </router-link>
         </li>
-        <li :class="li.show ?
-
-            'show' : undefined" class="item " v-for="li in list">
+        <li :class="li.show ?         'show' : undefined" class="item "
+      
+        v-for="li in list">
      
       
                 <router-link :to="li.href"  @click.prevent="show(li.id)" >

@@ -73,17 +73,17 @@
             </ul>
             <ul class="text">
                 <li>
-                    <div class="title" >标题</div>
-                    <div class="content c1" >
+                    <div class="title">标题</div>
+                    <div class="content c1">
                         <input type="text" placeholder="请输入标题">
                         <span>8/100</span>
                     </div>
                 </li>
                 <li>
                     <div class="title">类型</div>
-                    <div class="content c2" >
+                    <div class="content c2">
                         <div>
-                            <input  type="radio" name="type"><span>自制</span>
+                            <input type="radio" name="type"><span>自制</span>
                         </div>
                         <div class="zz">
                             <input type="radio" name="type"><span style="margin-right: 10px;">转载</span>
@@ -93,55 +93,49 @@
                     </div>
                 </li>
                 <li>
-                    <div class="title" >分区</div>
-                    <div class="content c3" >
-                       <select>
-                        <option selected>{{ mock('@cword(5,10)') }}</option>
-                        <option 
-                        v-for="index in 7"
-                        >{{ mock('@cword(5,20)') }}</option>
-                      
-                       </select>
+                    <div class="title">分区</div>
+                    <div class="content c3">
+                        <select>
+                            <option selected>{{ mock('@cword(5,10)') }}</option>
+                            <option v-for="index in 7">{{ mock('@cword(5,20)') }}</option>
+
+                        </select>
                     </div>
                 </li>
                 <li>
-                    <div class="title" style="align-self: flex-start;" >标签</div>
-                    <div class="content c4" >
-                     <div class="input">
+                    <div class="title" style="align-self: flex-start;">标签</div>
+                    <div class="content c4">
+                        <div class="input">
                             <input type="text" placeholder="按下回车键Enter添加标签">
                             <span>还可以添加{{ mock('@integer(3,10)') }}个标签</span>
-                     </div>
-                     <div class="tag">
-                        <div class="t">
-                            <h4 >推荐标签</h4>
-                            <ul class="list">
-                                    <li
-                                    v-for="index in 10"
-                                    >
-                                    
-                                    {{ mock('@cword(2,5)') }}</li>
-                            </ul>
                         </div>
-                        <div class="hua">
-                            <h4>推荐话题</h4>
-                            <ul class="hualist">
-                                    <li
-                                    v-for="index in 10"
-                                    >{{ mock('@cword(2,5)') }}</li>
-                            </ul>
+                        <div class="tag">
+                            <div class="t">
+                                <h4>推荐标签</h4>
+                                <ul class="list">
+                                    <li v-for="index in 10">
+
+                                        {{ mock('@cword(2,5)') }}</li>
+                                </ul>
+                            </div>
+                            <div class="hua">
+                                <h4>推荐话题</h4>
+                                <ul class="hualist">
+                                    <li v-for="index in 10">{{ mock('@cword(2,5)') }}</li>
+                                </ul>
+                            </div>
                         </div>
-                     </div>
                     </div>
                 </li>
-                <li >
+                <li>
                     <div class="title" style="align-self: flex-start;">简介</div>
-                    <div class="content c5" >
-                       <textarea  cols="30" rows="10" placeholder="输入视频简介"></textarea>
+                    <div class="content c5">
+                        <textarea cols="30" rows="10" placeholder="输入视频简介"></textarea>
                     </div>
                 </li>
                 <div class="submit">
                     <button>立即投稿</button>
-                 
+
                 </div>
             </ul>
         </div>
@@ -282,8 +276,8 @@ form .header h3 {
 form .header .add {
     color: #fff;
     cursor: pointer;
-    /* background-color: #0aaee0; */
-    padding: 3px 5px;
+    background-color: #0aaee0;
+    padding: 5px 10px;
     border-radius: 6px;
 }
 
@@ -346,6 +340,8 @@ form .header .add {
     font-size: 20px;
     background-color: #e6e7e8;
     cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
 }
 
 .jindu {
@@ -393,101 +389,113 @@ form .header .add {
     width: 90%;
     /* background: none; */
 }
-.c2{
+
+.c2 {
     display: flex;
     align-items: center;
 }
+
 .c2>div {
-   
+
     margin-right: 20px;
     font-size: 20px;
-color: #61666d;
+    color: #61666d;
 }
 
-.c2 .zz{
+.c2 .zz {
     display: flex;
-   
+
 }
-.c2 .zz input[type='text']{
+
+.c2 .zz input[type='text'] {
     border: 1px solid #e6e7e8;
     padding-left: 5px;
 }
-.c3 select{
+
+.c3 select {
     padding: 5px 10px;
     border-radius: 6px;
     border: 2px solid #e6e7e8;
 }
-.c4 .input{
+
+.c4 .input {
     height: 30px;
     width: 100%;
-    border: 2px  solid #e6e7e8;
+    border: 2px solid #e6e7e8;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.c4 .input input{
+
+.c4 .input input {
     width: 80%;
     height: 90%;
 }
-.c4 .input span{
+
+.c4 .input span {
     color: #e6e7e8;
 }
-.c4 .tag{
+
+.c4 .tag {
     /* background-color: aqua; */
     margin-top: 20px;
 }
-.c4 .tag .t,
-.c4 .tag .hua
 
-{
+.c4 .tag .t,
+.c4 .tag .hua {
 
     margin-bottom: 10px;
     display: grid;
-    grid-template-columns: 100px  auto;
+    grid-template-columns: 100px auto;
 }
-.c4 .tag .t .list{
+
+.c4 .tag .t .list {
     display: flex;
     justify-content: flex-start;
     /* background-color: blueviolet; */
     flex-wrap: wrap;
 }
-.c4 .tag li{
+
+.c4 .tag li {
     background-color: #e6e7e8;
 }
-.c4 .tag .t .list li{
-   
- cursor: pointer;
- width: auto;
- display: inline-block;
- margin-right: 10px;
- padding: 3px 5px;
- border-radius: 4px;
+
+.c4 .tag .t .list li {
+
+    cursor: pointer;
+    width: auto;
+    display: inline-block;
+    margin-right: 10px;
+    padding: 3px 5px;
+    border-radius: 4px;
 }
 
-.c4 .tag .hua .hualist{
+.c4 .tag .hua .hualist {
     display: flex;
     justify-content: flex-start;
     /* background-color: greenyellow; */
     flex-wrap: wrap;
 }
-.c4 .tag .hua .hualist li{
+
+.c4 .tag .hua .hualist li {
     cursor: pointer;
     /* background-color: burlywood; */
- 
- width: auto;
- display: inline-block;
- margin-right: 10px;
- padding: 3px 5px;
- border-radius: 4px;
+
+    width: auto;
+    display: inline-block;
+    margin-right: 10px;
+    padding: 3px 5px;
+    border-radius: 4px;
 }
-.c5 textarea{
+
+.c5 textarea {
     width: 80%;
 }
-.submit button{
+
+.submit button {
     padding: 10px;
     background-color: #0aaee0;
     color: #fff;
     border: none;
     border-radius: 6px;
-}
-</style>
+}</style>
