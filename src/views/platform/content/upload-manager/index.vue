@@ -1,5 +1,4 @@
 <template>
-    内容管理
 <router-view></router-view>
 </template>
 <script setup>
