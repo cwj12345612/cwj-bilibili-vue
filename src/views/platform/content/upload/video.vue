@@ -91,6 +91,14 @@
                 <input type="radio" name="type"><span>转载</span>
                 <input type="text" placeholder="装载请注明出处">
              </div>
+             
+                </div>
+             </li>
+             <li>
+                <div class="title" style="background-color: chocolate;">标题</div>
+                <div class="content c1" style="background-color: cornflowerblue;">
+                <input type="text" placeholder="请输入标题">
+                <span >8/100</span>
                 </div>
              </li>
             </ul>
@@ -335,6 +343,7 @@ font-size: 20px;
 
 }
 .c2>div input[type='text']{
+ 
     margin-left: 10px;
     height: 100%;
 }
