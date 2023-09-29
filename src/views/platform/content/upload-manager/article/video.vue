@@ -32,7 +32,7 @@
                 <img src="@\assets\images\视频图片.png" alt="">
             </div>
             <div class="desc">
-                <h3>{{ mock('@cword(10,20)') }}</h3>
+                <h3>{{ mock('@cword(5,100)') }}</h3>
                 <div class="sys">
                     <div class="d">
                         <div class="time">{{ mock('@datetime(yyyy-MM-dd HH:mm:ss)') }}</div>
@@ -116,7 +116,7 @@ const mock = (str) => { return Mock.mock(str) }
     padding-left: 40px;
     padding-right: 20px;
     margin-top: 20px;
-    height: 50px;
+    height: 60px;
     width: 100%;
     /* background-color: thistle; */
     display: flex;
@@ -152,6 +152,7 @@ const mock = (str) => { return Mock.mock(str) }
 }
 
 .video_header .all .items li {
+    cursor: pointer;
     margin-right: 20px;
     color: rgba(80,80,80,.7);
     font-size: 14px;
@@ -164,7 +165,7 @@ const mock = (str) => { return Mock.mock(str) }
 }
 
 .video_header .filter select {
-    padding: 5px 10px;
+    padding: 10px 20px;
     margin-left: 20px;
     border-radius: 4px;
     border: 1px solid #e6e7e8;
@@ -190,6 +191,7 @@ const mock = (str) => { return Mock.mock(str) }
     position: relative;
     height: 85%;
     width: 20%;
+    max-width: 180px;
     border-radius: 8px;
     overflow: hidden;
     margin-right: 20px;
@@ -208,7 +210,7 @@ const mock = (str) => { return Mock.mock(str) }
 
 .videos li .desc h3 {
     font-weight: normal;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .videos li .desc .sys {

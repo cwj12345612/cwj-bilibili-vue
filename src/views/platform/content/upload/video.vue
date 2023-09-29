@@ -50,15 +50,15 @@
 
         </div>
         <div class="form">
-            <ul class="videos">
-                <li v-for="index in 10">
+            <ul  class="videos">
+                <li v-for="index in 100">
                     <div class="icon">
                         <i class="colourless bofangshu"></i>
                     </div>
                     <div class="desc">
                         <div class="title">
                             <h4>
-                                {{ mock('@word(10,30)') }}
+                                {{ mock('@cword(10,30)') }}
                             </h4>
                             <div class="setting">
                                 <span style="margin-right: 20px;">0%</span>
@@ -75,7 +75,7 @@
                 <li>
                     <div class="title">标题</div>
                     <div class="content c1">
-                        <input type="text" placeholder="请输入标题">
+                        <input type="text" :value="mock('@cword(100)')" placeholder="请输入标题">
                         <span>8/100</span>
                     </div>
                 </li>
@@ -83,7 +83,7 @@
                     <div class="title">类型</div>
                     <div class="content c2">
                         <div>
-                            <input type="radio" name="type"><span>自制</span>
+                            <input type="radio" checked name="type"><span>自制</span>
                         </div>
                         <div class="zz">
                             <input type="radio" name="type"><span style="margin-right: 10px;">转载</span>
@@ -376,7 +376,8 @@ form .header .add {
 .text li .c1 {
     border: 2px solid #e6e7e8;
     border-radius: 6px;
-    height: 40px;
+   min-height: 40px;
+   
     width: 100%;
     display: flex;
     align-items: center;
