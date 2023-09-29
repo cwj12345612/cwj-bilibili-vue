@@ -65,7 +65,7 @@ const mock = (str) => { return Mock.mock(str) }
     display: flex;
     /* height: 100vh; */
     max-height: 100vh;
-    background-color: orange;
+    /* background-color: orange; */
 flex-direction: column;
 /*  :style="pageconfigStore.dynamicWH(
     { normal: 1377 + 24 * 2, max: 2512 + 24 * 2, min: 1012 + 24 * 2 })"> */
@@ -79,7 +79,7 @@ flex-direction: column;
     position: fixed;
     top: 0;
     flex-shrink: 0;
-    background-color: #fff;
+    /* background-color: #fff; */
     height: 64px;
     width: 100%;
     /* background-color: cadetblue; */
@@ -132,19 +132,20 @@ flex-direction: column;
     flex-grow: 0;
     flex-shrink: 1;
     /* height: 100%; */
-    background-color: cornflowerblue;
+    /* background-color: cornflowerblue; */
 width: 100%;
     display: flex;
     padding-right: 100px;
 }
-
+.body::-webkit-scrollbar{display: none;}
 .content{
    
   margin: 0 auto;
     flex-shrink: 1;
    
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     width: 1100px;
-    /* height: 400px; */
+    min-height: 500px;
+ overflow: auto;
 }
 </style>

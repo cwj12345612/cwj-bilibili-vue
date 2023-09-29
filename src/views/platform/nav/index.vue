@@ -6,14 +6,13 @@
                 <span>投稿</span>
             </router-link>
         </li>
-        <li @click.prevent="show(li.id)" :class="li.show ?
+        <li :class="li.show ?
 
             'show' : undefined" class="item " v-for="li in list">
-         <template
-         v-if="!li.chidren"
-         >
-            <router-link :to="li.href">
-                <div class="li">
+     
+      
+                <router-link :to="li.href"  @click.prevent="show(li.id)" >
+                <div  class="li">
                     <div>
                         <i class="icon" :class="li.icon"></i>
                         <span>{{ li.title }}</span>
@@ -21,16 +20,6 @@
                     <i v-if="li.chidren" class="colourless xialada"></i>
                 </div>
             </router-link>
-         </template>
-
-            <template v-if="li.chidren">
-                <div class="li">
-                    <div>
-                        <i class="icon" :class="li.icon"></i>
-                        <span>{{ li.title }}</span>
-                    </div>
-                    <i v-if="li.chidren" class="colourless xialada"></i>
-                </div>
                 <ul class="chidren">
                     <li v-for="cd in  li.chidren">
                         <router-link :to="cd.href">
@@ -38,15 +27,9 @@
                         </router-link>
                     </li>
                 </ul>
-            </template>
+         
 
         </li>
-
-
-
-
-
-
     </ul>
 </template>
 <script setup>
@@ -65,7 +48,7 @@ const router = useRouter()
 
 // #region  模拟数据 mockjs
 import Mock from 'mockjs'
-import { jsx } from 'vue/jsx-runtime';
+
 const mock = (str) => { return Mock.mock(str) }
 const isshow = ref(false)
 const list = reactive([
@@ -73,27 +56,36 @@ const list = reactive([
         id: 1, title: '首页', icon: 'colourless shouyeweixuanzhong', href: '/platform/home'
     },
     {
-        id: 2, title: '内容管理', icon: 'colourless guanlishipin', href: mock('@url()'), show: false,
+        id: 2, title: '内容管理', icon: 'colourless guanlishipin', href: mock('/platform/upload-manager'), show: false,
         chidren: [
-            { id: mock('@id()'), title: '稿件管理', href: mock('@url()') },
-            { id: mock('@id()'), title: '申诉管理', href: mock('@url()') },
-            { id: mock('@id()'), title: '字幕管理', href: mock('@url()') },
+            { id: mock('@id()'), title: '稿件管理', href: mock('/platform/upload-manager/article') },
+            { id: mock('@id()'), title: '申诉管理', href: mock('/platform/upload-manager/appeal') },
+            { id: mock('@id()'), title: '字幕管理', href: mock('/platform/upload-manager/audience-zimu') },
         ],
 
     },
     {
-        id: 3, title: '数据中心', icon: 'colourless _ico_backtokb', href: mock('@url()'),
+        id: 3, title: '数据中心', icon: 'colourless _ico_backtokb', href:( '/platform/data-up'),
     },
     {
-        id: 4, title: '粉丝管理', icon: 'colourless wodeweixuanzhong', href: mock('@url()'),
+        id: 4, title: '粉丝管理', icon: 'colourless wodeweixuanzhong', href: mock('/platform/fans'),
     },
     {
-        id: 5, title: '互动管理', icon: 'colourless _ico_reply', href: mock('@url()'),
+        id: 5, title: '互动管理', icon: 'colourless _ico_reply', href: mock('/platform/interact-manager'),
         chidren: [
-            { id: mock('@id()'), title: '评论管理', href: mock('@url()') },
-            { id: mock('@id()'), title: '弹幕管理', href: mock('@url()') },
+            { id: mock('@id()'), title: '评论管理', href: '/platform/interact-manager/comment' },
+            { id: mock('@id()'), title: '弹幕管理', href: '/platform/interact-manager/danmu' },
         ],
         show: false
+    },
+    {
+        id:6,title:'收益管理',icon: 'colourless Bbi',href:'/platform/allowance',
+        chidren:[
+            {      id:mock('@id()'),title:'收益中心',href:'/platform/allowance/center',       },
+            {      id:mock('@id()'),title:'创作激励',href:'/platform/allowance/excitation',       },
+            {      id:mock('@id()'),title:'充电计划',href:'/platform/allowance/upower-manager',       },
+        ],
+        show:false
     }
 ])
 //#endregion
@@ -113,17 +105,17 @@ const show = (id) => {
     flex-grow: 0;
     /* height: 100%; */
     max-height: calc(100vh - 64px);
-    background-color: goldenrod;
+    /* background-color: goldenrod; */
+    /* background-color: #e6e7e8; */
+    border-right: 2px solid #e6e7e8;
     width: 210px;
-
     overflow: auto;
-
 }
 
 .navlist .up {
     padding-left: 32px;
     padding-right: 40px;
-    background-color: rebeccapurple;
+    /* background-color: rebeccapurple; */
     height: 46px;
     display: flex;
     align-items: center;
@@ -163,7 +155,7 @@ const show = (id) => {
 }
 
 .item .li {
-    background-color: #fff;
+   
     height: 46px;
     width: 100%;
     color: #000;
@@ -180,9 +172,7 @@ const show = (id) => {
     margin-right: 20px;
 }
 
-.chidren {
-    background-color: cornflowerblue;
-}
+
 
 .chidren li {
     height: 46px;
@@ -194,5 +184,8 @@ const show = (id) => {
 .chidren li a {
     color: #000;
     font-size: 14px;
+}
+.chidren li a.router-link-active{
+    color: #0aaee0;
 }
 </style>

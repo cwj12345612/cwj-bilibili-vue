@@ -67,56 +67,56 @@ const space = {
         {
             path: 'compilations',
             component: () => import('@/views/index/space/routespage/compilations'),
-            redirect:{name:'compilations_series'},
-            children:[
+            redirect: { name: 'compilations_series' },
+            children: [
                 {
-                    path:'series',
-                    name:'compilations_series',
-                    component:()=>import('@/views/index/space/routespage/compilations/series.vue')
-              
+                    path: 'series',
+                    name: 'compilations_series',
+                    component: () => import('@/views/index/space/routespage/compilations/series.vue')
+
                 },
                 {
-                    path:':id',
-                    component:()=>import('@/views/index/space/routespage/compilations/list.vue')
+                    path: ':id',
+                    component: () => import('@/views/index/space/routespage/compilations/list.vue')
                 }
-              
+
             ]
         },
         {
             path: 'favlist',
             component: () => import('@/views/index/space/routespage/favlist'),
-            redirect:{name:'favlist_default'},
-            children:[
+            redirect: { name: 'favlist_default' },
+            children: [
                 {
-                    path:'default',
-                    name:'favlist_default',
-                    component:()=>import('@/views/index/space/routespage/favlist/createcard.vue')
+                    path: 'default',
+                    name: 'favlist_default',
+                    component: () => import('@/views/index/space/routespage/favlist/createcard.vue')
                 },
-               {
-                path:':id',
-                component:()=>import('@/views/index/space/routespage/favlist/createcard.vue')
-            
-               }
+                {
+                    path: ':id',
+                    component: () => import('@/views/index/space/routespage/favlist/createcard.vue')
+
+                }
             ],
         },
         {
             path: 'subscription',
             component: () => import('@/views/index/space/routespage/subscription'),
-            redirect:{name:'subscription_bangumi'},
-            children:[
+            redirect: { name: 'subscription_bangumi' },
+            children: [
                 {
-                    path:'bangumi',
-                    name:'subscription_bangumi',
-                    component:()=>import('@/views/index/space/routespage/subscription/bangumi')
+                    path: 'bangumi',
+                    name: 'subscription_bangumi',
+                    component: () => import('@/views/index/space/routespage/subscription/bangumi')
                 },
                 {
-                    path:'cinema',
-                   
-                    component:()=>import('@/views/index/space/routespage/subscription/cinema')
+                    path: 'cinema',
+
+                    component: () => import('@/views/index/space/routespage/subscription/cinema')
                 },
                 {
-                    path:'label',
-                    component:()=>import('@/views/index/space/routespage/subscription/label')
+                    path: 'label',
+                    component: () => import('@/views/index/space/routespage/subscription/label')
                 }
             ]
         },
@@ -130,55 +130,135 @@ const space = {
 const main = [
     {
         path: '/',
-        redirect:{name:'homepage'},
-        component:()=>import('@/views/index'),
-       children:[
-        {
-            path:'',
-            name:'homepage',
-            component:()=>import('@/views/index/homepage')
-        },
-        {
-            path: 'search',
-            name: 'searchpage',
-            component: () => import('@/views/index/searchpage')
-        },
-        {
-            path: 'play',
-            name: 'playpage',
-            component: () => import('@/views/index/playpage')
-        },
-        ...category,
-        space
-       ]
+        redirect: { name: 'homepage' },
+        component: () => import('@/views/index'),
+        children: [
+            {
+                path: '',
+                name: 'homepage',
+                component: () => import('@/views/index/homepage')
+            },
+            {
+                path: 'search',
+                name: 'searchpage',
+                component: () => import('@/views/index/searchpage')
+            },
+            {
+                path: 'play',
+                name: 'playpage',
+                component: () => import('@/views/index/playpage')
+            },
+            ...category,
+            space
+        ]
     },
 ]
 //#endregion
 
 //#region 创作中心路由 以后需要动态从后台获取
-const platform={
-    path:'/platform',
-    name:'platform',
-   redirect:{name:'platform_home'},
-    component:()=>import('@/views/platform/index.vue'),
-    children:[
+/**
+ * 上传路由
+ */
+const upload = {
+    path: 'upload',
+    component: () => import('@/views/platform/content/upload'),
+    redirect: { name: 'upload_video' },
+    children: [
         {
-            path:'home',
-            name:'platform_home',
-            component:()=>import('@/views/platform/content/home')
+            path: 'video',
+            name: 'upload_video',
+            component: () => import('@/views/platform/content/upload/video')
         },
         {
-            path:'upload',
-           component:()=>import('@/views/platform/content/upload')
+            path: 'text',
+            component: () => import('@/views/platform/content/upload/text')
         },
+        {
+            path: 'audio',
+            component: () => import('@/views/platform/content/upload/audio')
+        }
+    ]
+}
+const platform = {
+    path: '/platform',
+    name: 'platform',
+    redirect: { name: 'platform_home' },
+    component: () => import('@/views/platform/index.vue'),
+    children: [
+        {
+            path: 'home',
+            name: 'platform_home',
+            component: () => import('@/views/platform/content/home')
+        },
+        upload,
+        {
+            path: 'upload-manager',
+            component: () => import('@/views/platform/content/upload-manager'),
+            redirect: { name: 'upload-manager_article' },
+            children: [
+                {
+                    path: 'article',
+                    name: 'upload-manager_article',
+                    component: () => import('@/views/platform/content/upload-manager/article')
+                },
+                {
+                    path: 'appeal',
+                    component: () => import('@/views/platform/content/upload-manager/appeal')
+                },
+                {
+                    path: 'audience-zimu',
+                    component: () => import('@/views/platform/content/upload-manager/zimu')
+                }
+            ]
+        },
+        {
+            path: 'data-up',
+            component: () => import('@/views/platform/content/data-up'),
+        },
+        {
+            path: 'fans',
+            component: () => import('@/views/platform/content/fans'),
+        },
+        {
+            path: 'interact-manager',
+            component: () => import('@/views/platform/content/interact'),
+            children: [
+                {
+                    path: 'danmu',
+                    component: () => import('@/views/platform/content/interact/danmu')
+                },
+                {
 
+                    path: 'comment',
+                    component: () => import('@/views/platform/content/interact/comment')
+                }
+            ]
+        },
+        {
+            path: 'allowance',
+            component: () => import('@/views/platform/content/allowance'),
+            children: [
+                {
+                    path:'excitation',
+                    component: () => import('@/views/platform/content/allowance/excitation'),
+                },
+                {
+                    path:'center',
+                    component: () => import('@/views/platform/content/allowance/center'),
+                },
+                {
+                    path:'upower-manager',
+                    component: () => import('@/views/platform/content/allowance/upower-manager'),
+                },
+            ]
+        }
     ]
 }
 
 //#endgion
 const routes = [
     ...main,
-  
+
     platform,
     ...dev
 ]

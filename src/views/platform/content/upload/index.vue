@@ -1,16 +1,18 @@
 <template>
     <ul class="header" v-if="!uploadStore.ing">
-        <li v-for="(li, index) in list" :class="index === 0 ? 'checked' : undefined">
-            <a :href="li.href">
-                {{ li.title }}</a>
+        <li v-for="(li, index) in list" 
+        >
+            <router-link :to="li.href">
+                {{ li.title }}</router-link>
         </li>
     </ul>
-    <video_upload ></video_upload>
+    <!-- <video_upload ></video_upload> -->
     <!-- <text_upload></text_upload> -->
+    <router-view></router-view>
 </template>
 <script setup>
 // #region  引入组件
-import video_upload from './video_upload.vue'
+import video_upload from './video.vue'
 import text_upload from './text.vue'
 //  #endregion
 
@@ -34,11 +36,11 @@ import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
 const list = [
-    { title: '视频投稿', href: '#' },
-    { title: '专栏投稿', href: '#' },
-    { title: '音频投稿', href: '#' },
-    { title: '视频素材投稿', href: '#' },
-    { title: '贴纸投稿', href: '#' },
+    { title: '视频投稿', href: '/platform/upload/video' },
+    { title: '专栏投稿', href: '/platform/upload/text' },
+    { title: '音频投稿', href: '/platform/upload/audio' },
+    // { title: '视频素材投稿', href: '#' },
+    // { title: '贴纸投稿', href: '#' },
 ]
 
 //#endregion
@@ -65,7 +67,7 @@ const list = [
 
 }
 
-.header li.checked {
+.header li:has(a.router-link-active) {
     border-bottom: 4px solid #0aaee0;
 }
 
