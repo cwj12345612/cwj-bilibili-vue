@@ -139,7 +139,9 @@ width: 100%;
     padding-right: 100px;
     overflow: auto;
 }
-.body::-webkit-scrollbar{display: none;}
+.body::-webkit-scrollbar
+,.content::-webkit-scrollbar
+{display: none;}
 .content{
    
   margin: 0 auto;

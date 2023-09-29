@@ -111,7 +111,9 @@ const show = (id) => {
     width: 210px;
     overflow: auto;
 }
-
+.navlist::-webkit-scrollbar{
+    display: none;
+}
 .navlist .up {
     padding-left: 32px;
     padding-right: 40px;
