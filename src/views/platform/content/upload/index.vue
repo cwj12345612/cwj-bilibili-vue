@@ -1,5 +1,7 @@
 <template>
-    <ul class="header" v-if="!uploadStore.ing">
+    <ul class="header" 
+    
+    v-if="!uploadStore.ing" >
         <li v-for="(li, index) in list" 
         >
             <router-link :to="li.href">

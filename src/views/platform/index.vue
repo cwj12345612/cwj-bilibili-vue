@@ -76,6 +76,7 @@ flex-direction: column;
 }
 
 .header {
+    background-color: #fff;
     position: fixed;
     top: 0;
     flex-shrink: 0;
@@ -136,6 +137,7 @@ flex-direction: column;
 width: 100%;
     display: flex;
     padding-right: 100px;
+    overflow: auto;
 }
 .body::-webkit-scrollbar{display: none;}
 .content{

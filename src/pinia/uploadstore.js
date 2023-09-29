@@ -7,16 +7,22 @@ export const useuploadStore=defineStore('uploadStore',{
         /**
          * 是否正在上传
          */
-        ing:false,
-    
+        ing:true,
+        /**
+         * 上传文件类型 
+         *      video text audio
+         */
+    type:null,
     }),
     actions:{
-        uploading(){
-            console.log('上传up')
+        uploading(type){
+            console.log('上传'+type)
             this.ing=true
+            this.type=type
         },
         uploadend(){
             this.ing=false
+            this.type=null
         }
     },
     getters:{

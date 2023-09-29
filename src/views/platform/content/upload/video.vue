@@ -5,13 +5,9 @@
             <i class="colourless tianjia"></i>
             <span>拖拽到此处也可以上传</span>
         </label>
-        <label class="upload" 
-     
-        for="upload">
-            <span >上传视频</span>
-            <input type="file"
-            
-            id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="change">
+        <label class="upload" for="upload">
+            <span>上传视频</span>
+            <input type="file" id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="change">
         </label>
         <ul class="desc">
             <a href="https://www.bilibili.com/blackboard/blackroom.html" target="_blank">
@@ -45,12 +41,61 @@
             </li>
         </ul>
     </div>
-<form v-if="uploadStore.ing">
-    <label>用户名</label><input type="text"><br>
-    <label>密码</label><input type="password"><br>
-  <input type="submit" value="提交" @click.prevent="submit"> 
-    
-</form>
+    <form v-if="uploadStore.ing">
+
+        <div class="header">
+            <h3>3个视频 共4GB</h3>
+            <label class="add" for="add">添加视频</label>
+            <input id="add" type="file" style="display: none;">
+
+        </div>
+        <div class="form">
+            <ul class="videos">
+                <li
+                v-for="index in 10"
+                >
+                   <div class="icon">
+                    <i class="colourless bofangshu"></i>
+                   </div>
+                   <div class="desc">
+                    <div class="title">
+                        <h4 >
+                            {{ mock('@word(10,30)') }}
+                        </h4>
+                        <div class="setting">
+                            <span style="margin-right: 20px;">0%</span>
+                            <i class="colourless bofangqi-zanting" title="暂停上传"></i>
+                            <i class="colourless shuayishua" title="重新上传"></i>
+                            <i class="colourless guanbi" title="取消上传"></i>
+                        </div>
+                    </div>
+                 <div class="jindu"></div>
+                   </div>
+                </li>
+            </ul>
+            <ul class="text">
+             <li>
+                <div class="title" style="background-color: chocolate;">标题</div>
+                <div class="content c1" style="background-color: cornflowerblue;">
+                <input type="text" placeholder="请输入标题">
+                <span >8/100</span>
+                </div>
+             </li>
+             <li>
+                <div class="title" style="background-color: chocolate;">类型</div>
+                <div class="content c2" style="background-color: cornflowerblue;">
+             <div>
+                <input type="radio" name="type"><span>自制</span>
+             </div>
+             <div >
+                <input type="radio" name="type"><span>转载</span>
+                <input type="text" placeholder="装载请注明出处">
+             </div>
+                </div>
+             </li>
+            </ul>
+        </div>
+    </form>
 </template>
 <script setup>
 // #region  引入组件
@@ -58,12 +103,12 @@
 //  #endregion
 
 // #region 引入vue pinia 路由
-import { computed, ref,defineEmits, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
+import { computed, ref, defineEmits, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
-import {useuploadStore} from '@/pinia/uploadstore.js'
+import { useuploadStore } from '@/pinia/uploadstore.js'
 import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
-const uploadStore=useuploadStore()
+const uploadStore = useuploadStore()
 const route = useRoute()
 const router = useRouter()
 // #endregion
@@ -74,10 +119,11 @@ import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
 const change = () => {
-   uploadStore.uploading();
+    uploadStore.uploading('video');
 }
-const submit=()=>{
-uploadStore.uploadend();
+const submit = () => {
+
+    uploadStore.uploadend();
 }
 const show1 = ref(false)
 const show2 = ref(false)
@@ -162,5 +208,134 @@ const show3 = ref(false)
     right: -50%;
     color: #000;
     background-color: #fcfae0;
+}
+
+form {
+    background-color: bisque;
+    /* height: 100%; */
+    width: 100%;
+}
+
+form .header {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #e6e7e8;
+}
+
+form .header h3 {
+    font-weight: normal;
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+form .header .add {
+    color: #fff;
+    cursor: pointer;
+    background-color: #0aaee0;
+    padding: 3px 5px;
+    border-radius: 6px;
+}
+
+.form {
+    height: 100%;
+    width: 100%;
+    padding-left: 50px;
+    background-color: cadetblue;
+}
+.form .videos{
+    max-height: calc(60px * 3);
+    overflow: auto;
+}
+.form .videos li{
+display: flex;
+width: 100%;
+background-color: darkgoldenrod;
+height: 60px;
+align-items: center;
+justify-content: flex-start;
+}
+.videos li .icon{
+    margin-right: 20px;
+}
+.videos li .icon i{
+    color: #0aaee0;
+    font-size: 50px;
+}
+.videos li .desc{
+padding-top: 5px;
+padding-bottom: 10px;
+padding-right: 20px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+   
+}
+.videos li .desc .title{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+.videos li .desc .title h4{
+    font-weight: normal;
+    font-size: 20px;
+}
+.setting i{
+    margin-left: 10px;
+    font-size: 20px;
+    background-color: #e6e7e8;
+    cursor: pointer;
+}
+.jindu{
+   width: 100%;
+   border: 2px solid #e6e7e8;
+ 
+}
+.text{
+    margin-top: 20px;
+    width: 100%;
+    /* height: 6000px; */
+    height: 600px;
+    background-color: blueviolet;
+}
+.text li{
+    margin-bottom: 10px;
+    display: grid;
+    width: 100%;
+    grid-template-columns: 200px  1fr;
+    justify-content: flex-start;
+align-items: center;
+}
+.text li .title{
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.text li .c1{
+height: 40px;
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 10px;
+}
+.c1 input{
+height: 80%;
+width: 90%;
+/* background: none; */
+}
+
+.c2>div{
+    display: inline-block;
+margin-right: 20px;
+font-size: 20px;
+
+}
+.c2>div input[type='text']{
+    margin-left: 10px;
+    height: 100%;
 }
 </style>
