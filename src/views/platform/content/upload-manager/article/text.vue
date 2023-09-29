@@ -1,7 +1,5 @@
 <template>
-<div class="contribute_audio">
-    投稿音频
-</div>
+专栏管理
 </template>
 <script setup>
 // #region  引入组件
@@ -27,8 +25,5 @@ const mock=(str)=>{return Mock.mock(str)}
 
 </script>
 <style scoped>
-.contribute_audio{
-    /* background-color: blueviolet; */
-    width: 100%;
-}
+
 </style>

@@ -179,6 +179,42 @@ const upload = {
         }
     ]
 }
+const upload_manager=  {
+    path: 'upload-manager',
+    component: () => import('@/views/platform/content/upload-manager'),
+    redirect: { name: 'upload-manager_article' },
+    children: [
+        {
+            path: 'article',
+            name: 'upload-manager_article',
+            component: () => import('@/views/platform/content/upload-manager/article'),
+           redirect:{name:'upload-manager_article_video'},
+            children:[
+                {
+                    path:'video',
+                    name:'upload-manager_article_video',
+                    component:()=>import('@/views/platform/content/upload-manager/article/video'),
+                },
+                {
+                    path:'audios',
+                    component:()=>import('@/views/platform/content/upload-manager/article/audios'),
+                },
+                {
+                    path:'text',
+                    component:()=>import('@/views/platform/content/upload-manager/article/text'),
+                }
+            ]
+        },
+        {
+            path: 'appeal',
+            component: () => import('@/views/platform/content/upload-manager/appeal')
+        },
+        {
+            path: 'audience-zimu',
+            component: () => import('@/views/platform/content/upload-manager/zimu')
+        }
+    ]
+}
 const platform = {
     path: '/platform',
     name: 'platform',
@@ -191,26 +227,7 @@ const platform = {
             component: () => import('@/views/platform/content/home')
         },
         upload,
-        {
-            path: 'upload-manager',
-            component: () => import('@/views/platform/content/upload-manager'),
-            redirect: { name: 'upload-manager_article' },
-            children: [
-                {
-                    path: 'article',
-                    name: 'upload-manager_article',
-                    component: () => import('@/views/platform/content/upload-manager/article')
-                },
-                {
-                    path: 'appeal',
-                    component: () => import('@/views/platform/content/upload-manager/appeal')
-                },
-                {
-                    path: 'audience-zimu',
-                    component: () => import('@/views/platform/content/upload-manager/zimu')
-                }
-            ]
-        },
+      upload_manager,
         {
             path: 'data-up',
             component: () => import('@/views/platform/content/data-up'),

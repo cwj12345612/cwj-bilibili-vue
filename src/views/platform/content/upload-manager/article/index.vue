@@ -2,12 +2,15 @@
     <div class="article">
         <div class="header">
             <ul class="list">
-                <li class="active">{{ mock('@cword(4,7)') }}</li>
-                <li v-for="index  in 6">{{ mock('@cword(4,7)') }}</li>
+                <li v-for="(li,index) in list">
+                    <router-link 
+                    :to="li.href"
+                    >{{ li.title }}</router-link></li>
+              
             </ul>
 
         </div>
-        
+        <router-view></router-view>
     </div>
 </template>
 <script setup>
@@ -29,18 +32,25 @@ const router = useRouter()
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
-
+const list=[
+    {id:mock('@id()'),title:'视频管理',href:'/platform/upload-manager/article/video'},
+    {id:mock('@id()'),title:'专栏管理',href:'/platform/upload-manager/article/text'},
+    {id:mock('@id()'),title:'音频管理',href:'/platform/upload-manager/article/audios'},
+]
 //#endregion
 
 </script>
 <style scoped>
 .article {
+  
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     background-color: cadetblue;
 }
 
 .article .header {
+    padding-left: 40px;
+    padding-right: 20px;
     height: 50px;
     width: 100%;
     display: flex;
@@ -65,8 +75,8 @@ const mock = (str) => { return Mock.mock(str) }
     cursor: pointer;
 }
 
-.article .header .list li.active {
-    border-bottom: 2px #0aaee0 solid;
+.article .header .list li:has(a.router-link-active) {
+    border-bottom: 3px #0aaee0 solid;
     color: #0aaee0;
 }
 </style>
