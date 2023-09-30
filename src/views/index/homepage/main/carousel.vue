@@ -1,8 +1,9 @@
 <template>
-<div class="carousel">
+<div class="carousel" >
 
-    <ul class="imgs" ref="carousel_imgs" id="carousel_imgs">
-           <li v-for="(li,index) in list" :index="index"> <img  :src="li.src" alt=""></li>
+    <ul class="imgs"   ref="carousel_imgs">
+           <li     v-for="(li) in list"   :key="li.id"> 
+            <img  :src="li.src" alt=""></li>
     </ul>
     <div class="bottom">
         <div class="top">
@@ -21,7 +22,8 @@
             </div>
         </div>
         <ol class="indicator">
-            <li :class="`${index === 3 ?'checked':undefined}`" v-for="index in 8"></li>
+            <li :class="`${index === carousel.index ?'checked':undefined}`"
+             v-for="index in carousel.total"></li>
         </ol>
     </div>
    </div>
@@ -38,12 +40,31 @@ import {useRoute,useRouter} from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route=useRoute()
 const router=useRouter()
+
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
 
 const mock=(str)=>{return Mock.mock(str)}
-const list=[
+
+//#endregion
+const carousel_imgs =ref(null)
+const list=reactive([])
+const carousel=reactive(
+    {
+    
+    index:1, //当前图片的索引
+    total:0, //图片个数
+    left:0,
+
+})
+carousel.total=computed(()=>{
+    return list.length
+})
+
+//获取轮播图
+onMounted(()=>{
+    const ls=[
     {id:mock('@id()'),src:require('@/assets/images/1.webp')},
     {id:mock('@id()'),src:require('@/assets/images/2.webp')},
     {id:mock('@id()'),src:require('@/assets/images/3.webp')},
@@ -54,34 +75,22 @@ const list=[
     {id:mock('@id()'),src:require('@/assets/images/8.webp')},
     {id:mock('@id()'),src:require('@/assets/images/9.webp')},
 ]
-//#endregion
 
-const carousel=reactive(
-    {
-    
-    index:1, //当前图片的索引
-    total:0, //图片个数
-    setup:0,//步长
-    left:0 //当前移动距离
+   ls.forEach(li=>{
+    list.push(li)
+   })
 })
-carousel.total=computed(()=>{
-    return list.length
-})
-//设置步长 为li的10分之1
-carousel.setup=computed(()=>{
- 
-    // if(!carousel_imgs.value) return 0
-   return carousel_imgs.value.querySelector('li').getBoundingClientRect().width / 10  
-})
-const ainame=()=>{
-     Interval=setInterval(()=>{
 
-    },100)
+onMounted(()=>{
+
+})
+//轮播图函数
+const  ca= (params)=> {
+let temp=null;
+setInterval(() => {
+//    console.log(ul)
+}, 300);
 }
-//定时器
-let Interval=null;
-// 整个轮播图的ul
-const carousel_imgs=ref()
 
 // #endregion
 
@@ -100,7 +109,8 @@ const carousel_imgs=ref()
    overflow: hidden;
 }
 .carousel .imgs{
-    width: 1000%;
+    /* width: 1000%; */
+    /* width: auto; */
     height: 80%;
     position: absolute;
     left: 0;
@@ -108,11 +118,11 @@ display: flex;
 
 }
 .carousel .imgs li{
-
+flex-grow: 1;
     flex-shrink: 0;
-  
+  width: 100%;
     height: 100%;
-    width: 10%;
+  
 }
 .bottom{
     position: absolute;
