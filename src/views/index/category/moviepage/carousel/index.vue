@@ -1,27 +1,25 @@
 <template>
-    <div class="carousel" 
-    >
+    <div class="carousel">
         <ul class="pics">
-            <li v-for="index in 1"> <img :src="list[index - 1].src" alt=""></li>
+            <li v-show="index === carousel.index - 1" v-for="(li, index) in list">
+                <img :src="li.src" alt="">
+            </li>
         </ul>
-    
-            <ul class="items" 
-            
-            >
 
-                <li v-for="index in 10" 
-                :class="(index === 5) ? 'checked' : undefined">
-                    <a href="#">
-                        <div class="title">
-                            {{ mock('@cword(3,8)') }}
-                        </div>
-                        <div class="desc">
-                            {{ mock('@cword(100)') }}
-                        </div>
-                    </a>
-                </li>
-            </ul>
-      
+        <ul class="items">
+            <li v-for="(li, index) in list">
+                <a :href="li.href" :class="index === carousel.index - 1 ? 'active' : undefined">
+                    <div class="title">
+                        {{ li.title }}
+                    </div>
+                    <div class="desc" v-show="index === carousel.index - 1">
+                        {{ li.desc }}
+                    </div>
+                </a>
+            </li>
+
+        </ul>
+
     </div>
 </template>
 <script setup>
@@ -43,27 +41,59 @@ const router = useRouter()
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
-const list = [
-    { id: mock('@id()'), src: require("@/assets/images/movie1.webp") },
-    { id: mock('@id()'), src: require("@/assets/images/movie2.webp") },
-    { id: mock('@id()'), src: require("@/assets/images/movie3.webp") },
-    { id: mock('@id()'), src: require("@/assets/images/movie4.webp") },
-]
+const list = reactive([])
 //#endregion
+const carousel = reactive({
+    index: 1,
+    total: 0
+})
+carousel.total = computed(() => {
+    return list.length
+})
+onMounted(() => {
+    const temp = [
+        { id: mock('@id()'), src: require("@/assets/images/movie1.webp"), title: mock('@cword(3,10)'), desc: mock('@cword(10,100)'), href: '/play' },
+        { id: mock('@id()'), src: require("@/assets/images/movie2.webp"), title: mock('@cword(3,10)'), desc: mock('@cword(10,100)'), href: '/play' },
+        { id: mock('@id()'), src: require("@/assets/images/movie3.webp"), title: mock('@cword(3,10)'), desc: mock('@cword(10,100)'), href: '/play' },
+        { id: mock('@id()'), src: require("@/assets/images/movie4.webp"), title: mock('@cword(3,10)'), desc: mock('@cword(10,100)'), href: '/play' },
+        { id: mock('@id()'), src: require("@/assets/images/movie5.webp"), title: mock('@cword(3,10)'), desc: mock('@cword(10,100)'), href: '/play' },
+        { id: mock('@id()'), src: require("@/assets/images/movie6.webp"), title: mock('@cword(3,10)'), desc: mock('@cword(10,100)'), href: '/play' },
+        { id: mock('@id()'), src: require("@/assets/images/movie7.webp"), title: mock('@cword(3,10)'), desc: mock('@cword(10,100)'), href: '/play' },
+        { id: mock('@id()'), src: require("@/assets/images/movie8.webp"), title: mock('@cword(3,10)'), desc: mock('@cword(10,100)'), href: '/play' },
+    ]
+    temp.forEach(li => {
+        list.push(li)
+    })
+
+})
+onMounted(() => {
+    ca()
+})
+//轮播
+let Interval = null
+const ca = () => {
+    Interval = setInterval(() => {
+        carousel.index += 1
+        if (carousel.index > carousel.total) {
+            carousel.index = 1
+        }
+    }, 3000)
+}
+
 
 </script>
 <style scoped>
 .carousel {
     width: 100%;
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
     position: relative;
     /* 
     :style="pageconfigStore.dynamicWH(undefined, 
     { normal: 360, max: 494, min: 360 })"
     */
-min-height: 360px;
-max-height: 494px;
-height: 50vh;
+    min-height: 360px;
+    max-height: 494px;
+    height: 50vh;
 }
 
 .carousel .pics {
@@ -71,63 +101,69 @@ height: 50vh;
     height: 100%;
     display: flex;
     flex-direction: column;
-
+    overflow: hidden;
 }
 
 .carousel .pics li {
     width: 100%;
     height: 100%;
     flex-shrink: 0;
-
+    flex-grow: 1;
 }
 
 
 
 .items {
     background: var(--transparency);
-    height: calc(100% - 64px);
-    display: grid;
-    grid-template-rows: repeat(6, auto);
+    max-height: calc(100% - 64px);
+
     position: absolute;
     top: 64px;
- right: calc(calc((100% - calc(100% * calc(1244 / 1425)) )) / 2);
+    right: calc(calc((100% - calc(100% * calc(1244 / 1425)))) / 2);
 
- /* 
+    /* 
  :style="pageconfigStore.dynamicWH({ normal: 196, max: 256, min: 196 })"
  */
- max-width: 256px;
- min-width:196px ;
- width: 17vw;
+    max-width: 256px;
+    min-width: 196px;
+    width: 17vw;
+
+
+
+    display: grid;
+    grid-template-columns: 100%;
+    gap: 10px;
+
 }
 
 .items li {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    color: #ffffff;
-    font-size: 14px;
-    padding: 0 12px;
-    overflow: hidden;
+    padding-left: 20px;
 }
 
-.items li a {
-    color: #ffffff;
+.items a {
+    color: #e6e7e8;
+}
+
+.items .title {
+
+    font-size: 14px;
+
 }
 
 .items .desc {
-    font-size: 12px;
+
+    font-size: 14px;
     text-overflow: ellipsis;
-    white-space: nowrap;
     overflow: hidden;
-    display: none;
+    word-break: break-all;
+    white-space: nowrap;
 }
 
-.items li.checked a .title {
+.items a.active .title {
     font-size: 18px;
 }
 
-.items li.checked a .desc {
-    
-    display: block;
+.items a.active {
+    color: #fff;
 }
 </style>
