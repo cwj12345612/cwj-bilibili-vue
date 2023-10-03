@@ -76,6 +76,7 @@ const mock=(str)=>{return Mock.mock(str)}
    align-items: center;
 }
 .top h3{
+    font-weight: normal;
     font-size: 20px;
 }
 .coin .top>a{
@@ -84,6 +85,10 @@ const mock=(str)=>{return Mock.mock(str)}
    border: 1px solid #b8c0cc;
    padding: 2px 5px;
    border-radius: 6px;
+}
+.coin .top>a:hover{
+    color: #0aaeec;
+    border-color: #0aaeec;  
 }
 .list{
     display: grid;

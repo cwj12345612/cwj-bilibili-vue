@@ -6,10 +6,10 @@
                 <span style="color: #99a299;">></span>
                 <h3>{{ mock('@cword(10)') }}</h3>
             </div>
-            <button class="right">
+            <a class="right" href="/play">
                 <i class="colourless bofangqi-bofang"></i>
                 <span> 播放全部</span>
-            </button>
+            </a>
         </div>
         <div class="meta">
             <span>合集</span>
@@ -118,7 +118,10 @@ const mock = (str) => { return Mock.mock(str) }
     color: #99a299;
     border: 1px solid #99a299;
 }
-
+.header .title .right:hover{
+    color: #0aaee0;
+    border-color: #0aaee0;
+}
 .header .meta span {
     margin-right: 20px;
     font-size: 12px;

@@ -80,7 +80,8 @@ width: 48vw;
 }
 
 .playpage_leftmain .title {
-    height: 86px;
+    min-height: 86px;
+    flex-grow: 1;
     /* background-color: paleturquoise; */
     width: 100%;
     display: flex;
@@ -91,13 +92,14 @@ width: 48vw;
 }
 
 .playpage_leftmain .title h1 {
+    font-size: 14px;
+    font-weight: normal;
     width: 100%;
     color: #18191c;
     font-size: 20px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: break-all;
-    white-space: nowrap;
+   display: flex;
+   flex-wrap: wrap;
+   margin-bottom: 5px;
 }
 
 .playpage_leftmain .title .detail {

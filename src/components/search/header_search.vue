@@ -1,6 +1,10 @@
 <template>
     <div class='header_search' :class="pageconfigStore.globalclass">
-        <input type="search" :placeholder="placeholder" @mouseenter="mouseenter" @mouseleave="mouseleave"
+        <input type="search"
+         :placeholder="placeholder" 
+         @mouseenter="mouseenter" 
+         @mouseleave="mouseleave"
+         v-model="searchtext"
             @keyup.enter="submit">
         <button @click.prevent="submit">
             <i class="colourless sousuo"></i>
@@ -19,8 +23,6 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
-
-
 // #endregion
 
 // #region  模拟数据 mockjs
@@ -37,14 +39,14 @@ const searchtext = ref('')
 
 const submit = () => {
     // console.log('搜索')
-    if (searchtext.value === '') {
-        searchtext.value = placeholder.value
+    let str=searchtext.value.trim()
+    if (str === '') {
+       str = placeholder.value
     }
-    router.push({ name: 'searchpage', query: { text: searchtext.value } })
+    router.push({ name: 'searchpage', query: { text: str } })
 }
 const mouseenter = (e) => {
     e.currentTarget.style.backgroundColor = '#e3e5e7'
-
 }
 const mouseleave = (e) => {
     e.currentTarget.style.backgroundColor = ''

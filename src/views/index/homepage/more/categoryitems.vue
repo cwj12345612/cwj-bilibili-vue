@@ -10,10 +10,10 @@
             <i class="colourless shuayishua"></i>
             <span>换一换</span>
         </button>
-        <button class="more">
+        <a class="more" href="/movie">
             <span>查看更多</span>
             <i class="colourless gengduo"></i>
-        </button>
+    </a>
     </div>
 </div>
 <ul class="items">
@@ -80,7 +80,14 @@ align-items: center;
 justify-content: space-between;
 }
 .homepage_categoryitems .title .buttons button{
-
+background-color: #fff;
+    padding: 8px 10px;
+    margin-right: 5px;
+    border: 1px  solid #e3e5e7;
+    color: #2f3032;
+    border-radius: var(--border-radius-max);
+}
+.homepage_categoryitems .title .buttons a{
     padding: 8px 10px;
     margin-right: 5px;
     border: 1px  solid #e3e5e7;

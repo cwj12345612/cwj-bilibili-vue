@@ -24,7 +24,7 @@
                     <i class="colourless tianjia"></i>
                     <i v-if="false" class="colourless guanlishipin"></i>
                     <span>关注</span>
-                    <span>{{ mock({'num|10-33':33}).num+'万' }}</span>
+                    <span>{{ mock({ 'num|10-33': 33 }).num + '万' }}</span>
                 </button>
             </div>
         </div>
@@ -123,38 +123,47 @@ const mock = (str) => { return Mock.mock(str) }
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.upZhu .rightdetail .bottom{
-height: 30px;
-width: 100%;
-/* background-color: turquoise; */
-display: flex;
-align-items: center;
-justify-content: space-between;
+
+.upZhu .rightdetail .bottom {
+    height: 30px;
+    width: 100%;
+    /* background-color: turquoise; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-.upZhu .rightdetail .bottom button{
+
+.upZhu .rightdetail .bottom button {
     height: 100%;
     border-radius: var(--border-radius-min);
     display: flex;
-   align-items: center;
-   justify-content: center;
+    align-items: center;
+    justify-content: center;
 }
-.upZhu .rightdetail .bottom .cd{
- background-color: #ffffff;
-   width: 40%;
-   color: #fb7299;
+
+.upZhu .rightdetail .bottom .cd {
+    background-color: #ffffff;
+    width: 40%;
+    color: #fb7299;
     border: 1px solid #fb7299;
 }
-.upZhu .rightdetail .bottom .gz{
-  border: none;
+
+.upZhu .rightdetail .bottom .cd:hover {
+    background-color: rgb(255, 236, 241);
+}
+
+.upZhu .rightdetail .bottom .gz {
+    border: none;
     width: 50%;
 
 }
-.upZhu .rightdetail .bottom .gz.no{
+
+.upZhu .rightdetail .bottom .gz.no {
     color: #ffffff;
     background-color: rgb(0, 174, 236);
 }
-.upZhu .rightdetail .bottom .gz.yes{
+
+.upZhu .rightdetail .bottom .gz.yes {
     background-color: rgb(227, 229, 231);
     color: rgb(148, 153, 160);
-}
-</style>
+}</style>

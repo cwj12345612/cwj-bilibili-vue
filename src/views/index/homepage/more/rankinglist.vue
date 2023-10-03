@@ -60,6 +60,7 @@ const mock = (str) => { return Mock.mock(str) }
 }
 
 .rankinglist .more {
+    background-color: #fff;
     padding: 8px;
     border-radius: var(--border-radius-max);
     border: 1px solid #e3e5e7;

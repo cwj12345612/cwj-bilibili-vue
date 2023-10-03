@@ -63,6 +63,7 @@ const mock=(str)=>{return Mock.mock(str)}
    align-items: center;
 }
 .top h3{
+   font-weight: normal;
     font-size: 20px;
 }
 .fav .top>a{

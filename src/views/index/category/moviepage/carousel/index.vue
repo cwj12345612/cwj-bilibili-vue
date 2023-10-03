@@ -72,6 +72,7 @@ onMounted(() => {
 //轮播
 let Interval = null
 const ca = () => {
+    clearInterval(Interval)
     Interval = setInterval(() => {
         carousel.index += 1
         if (carousel.index > carousel.total) {

@@ -2,10 +2,10 @@
     <div class="carousel">
 
         <ul class="imgs" ref="carousel_imgs">
-            <li v-for="(li, index) in list" 
-            :key="li.id"
-             v-show="index == carousel.index - 1">
+            <li v-for="(li, index) in list" :key="li.id" v-show="index == carousel.index - 1">
+               <a href="#">
                 <img :src="li.src" alt="">
+               </a>
             </li>
         </ul>
         <div class="bottom">
@@ -16,18 +16,17 @@
                     </a>
                 </h3>
                 <div class="button">
-                    <button @click.prevent="skip(carousel.index==1 ? carousel.total:carousel.index-1)">
+                    <button @click.prevent="skip(carousel.index == 1 ? carousel.total : carousel.index - 1)">
                         <i class="colourless fanhui"></i>
                     </button>
-                    <button @click="skip(carousel.index==carousel.total ? 1 : carousel.index+1  )">
+                    <button @click="skip(carousel.index == carousel.total ? 1 : carousel.index + 1)">
                         <i class="colourless gengduo"></i>
                     </button>
                 </div>
             </div>
             <ol class="indicator">
-                <li 
-                @click="skip(index)"
-                :class="`${index === carousel.index ? 'checked' : undefined}`" v-for="index in carousel.total"></li>
+                <li @click="skip(index)" :class="`${index === carousel.index ? 'checked' : undefined}`"
+                    v-for="index in carousel.total"></li>
             </ol>
         </div>
     </div>
@@ -93,23 +92,24 @@ onMounted(() => {
 })
 //轮播图函数
 const ca = () => {
+    clearInterval(Interval)
     Interval = setInterval(() => {
         carousel.index += 1
         if (carousel.index > carousel.total) {
             carousel.index = 1
         }
-       
+
     }, 3000);
 }
 
-const skip=(index)=>{
+const skip = (index) => {
     // console.log(index)
-    clearInterval(Interval) 
-    carousel.index=index
- setTimeout(() => {
-    ca()
- }, 1000);
-   
+    clearInterval(Interval)
+    carousel.index = index
+    setTimeout(() => {
+        ca()
+    }, 1000);
+
 }
 // #endregion
 
@@ -153,7 +153,8 @@ const skip=(index)=>{
     bottom: 0;
     height: 20%;
     width: 100%;
-    background: var(--transparency);
+    /* background: var(--transparency); */
+background: rgba(0, 0, 0, 0.2);
     padding: 5px 10px 15px;
     display: flex;
     flex-direction: column;
@@ -198,4 +199,5 @@ const skip=(index)=>{
 .indicator li.checked {
     transform: scale(1.5);
     background-color: #fff;
-}</style>
+}
+</style>
