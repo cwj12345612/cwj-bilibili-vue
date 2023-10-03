@@ -39,4 +39,5 @@ const mock=(str)=>{return Mock.mock(str)}
     grid-template-columns: repeat(3,1fr);
     grid-template-rows: repeat(2,1fr);
 }
+
 </style>

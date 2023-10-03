@@ -185,6 +185,7 @@ justify-content: flex-start;
 flex-wrap: wrap;
 }
  .navlist li{
+    /* background-color: #0aaee0; */
     padding: 5px 0;
     cursor: pointer;
     margin-right: 20px;
@@ -210,7 +211,8 @@ flex-wrap: wrap;
 display: grid;
 }
 .items li{
-    height: 184px;
+    /* height: 184px; */
+    aspect-ratio: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

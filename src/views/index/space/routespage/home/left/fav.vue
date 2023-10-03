@@ -53,7 +53,7 @@ const mock=(str)=>{return Mock.mock(str)}
     padding-bottom: 20px;
    border-bottom: 1px solid #b8c0cc;
    width: 100%;
-   /* background-color: chocolate; */
+   background-color: chocolate;
 }
 .fav .top{
    margin-bottom: 10px;
@@ -77,11 +77,11 @@ const mock=(str)=>{return Mock.mock(str)}
    display: grid;
    grid-template-columns: repeat(5,1fr);
    gap: 20px;
-   
 }
 .list li{
    width: 100%;
-   height: 189px;
+   /* height: 189px; */
+   aspect-ratio: 1;
    display: flex;
    flex-direction: column;
    justify-content: space-between;

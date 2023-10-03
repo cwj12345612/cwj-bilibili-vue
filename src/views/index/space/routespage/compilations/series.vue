@@ -130,8 +130,8 @@ const mock = (str) => { return Mock.mock(str) }
 }
 
 .items li {
- 
-    height: 180px;
+ width: 100%;
+    aspect-ratio: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

@@ -124,6 +124,7 @@ const skip=(index)=>{
     /* overflow: hidden; */
     height: calc(calc(calc(100% - 20px) / 2) * 1.6 + 20px);
     /* background: var(--transparency); */
+    /* height: calc(60%); */
     position: relative;
     overflow: hidden;
 }

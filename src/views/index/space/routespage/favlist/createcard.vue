@@ -127,7 +127,7 @@ width: 100%;
     border-radius: 8px;
     overflow: hidden;
     height: 100%;
-    width: 18%;
+   aspect-ratio: 16/9;
 }
 
 .createcard .header .sys {
@@ -247,7 +247,7 @@ width: 100%;
     grid-template-columns: repeat(5,1fr);
 }
 .content .items li{
-    height: 180px;
+   aspect-ratio: 1;
 display: flex;
 flex-direction: column;
 align-items: flex-start;
