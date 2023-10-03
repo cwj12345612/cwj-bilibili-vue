@@ -2,10 +2,10 @@
 <div class="subbangumi">
     <div class="header">
         <h3>订阅番剧</h3>
-        <button>
+        <a class="button" href="/space/subscription">
             <span>更多</span>
             <i class="colourless gengduo"></i>
-        </button>
+        </a>
     </div>
     <ul class="items">
         <li v-for="inde in 4">
@@ -72,14 +72,14 @@ const mock=(str)=>{return Mock.mock(str)}
     font-size: 20px;
     font-weight: normal;
 }
-.header button {
+.header .button {
     padding: 2px 5px;
     border-radius: 6px;
     border: 1px  solid #6d757a;
     color: #6d757a;
     background: none;
 }
-.header button:hover{
+.header .button:hover{
     color: #0aaee0;
 
     border-color: #0aaee0;

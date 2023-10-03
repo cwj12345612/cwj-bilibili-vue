@@ -91,7 +91,8 @@ const mock=(str)=>{return Mock.mock(str)}
     grid-template-columns: repeat(5,1fr);
 }
 .list li{
-   aspect-ratio: 1;
+    width: 100%;
+ 
     display: flex;
     flex-direction: column;
     justify-content: space-between;

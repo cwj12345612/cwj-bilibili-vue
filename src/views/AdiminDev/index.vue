@@ -1,6 +1,9 @@
 <template>
 <div class="admindev">
     开发文档
+    <div class="c">
+        你好
+    </div>
 </div>
 </template>
 <script setup>
@@ -26,6 +29,6 @@ const mock=(str)=>{return Mock.mock(str)}
 //#endregion
 
 </script>
-<style scoped>
+<style scoped lang="less">
 
 </style>

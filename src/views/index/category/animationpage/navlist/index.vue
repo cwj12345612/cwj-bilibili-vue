@@ -40,7 +40,5 @@ const mock=(str)=>{return Mock.mock(str)}
     grid-column-gap: 20px;
     grid-template-rows: 100%;
 }
-.animepage_navlist li {
-    padding: 16px 20px;
-}
+
 </style>

@@ -2,7 +2,7 @@
  <div class="fav">
         <div class="top">
             <h3>我的收藏夹</h3>
-            <a href="#">
+            <a href="/space/favlist">
                 <span>全部</span>
                 <i class="colourless gengduo"></i>
             </a>
@@ -53,7 +53,7 @@ const mock=(str)=>{return Mock.mock(str)}
     padding-bottom: 20px;
    border-bottom: 1px solid #b8c0cc;
    width: 100%;
-   background-color: chocolate;
+   /* background-color: chocolate; */
 }
 .fav .top{
    margin-bottom: 10px;
@@ -71,6 +71,10 @@ const mock=(str)=>{return Mock.mock(str)}
    border: 1px solid #b8c0cc;
    padding: 2px 5px;
    border-radius: 6px;
+}
+.fav .top>a:hover{
+   color: #0aaeec;
+   border-color: #0aaeec;
 }
 .fav .list{
    width: 100%;
