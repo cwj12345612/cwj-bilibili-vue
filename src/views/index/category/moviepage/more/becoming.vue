@@ -58,7 +58,7 @@ const mock = (str) => { return Mock.mock(str) }
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    /* background-color: #242628; */
+    /* background-color: orangered; */
     /* 
     :style="pageconfigStore.dynamicWH(undefined,
      { normal: 345, min: 345, max: 493 })"

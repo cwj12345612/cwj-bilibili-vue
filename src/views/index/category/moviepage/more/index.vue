@@ -47,8 +47,6 @@ flex-direction: column;
     /* 
     :style="pageconfigStore.dynamicWH({normal:1244,max:2014,min:1244})"
     */
-   max-width: 2014px;
-   min-width: 1244px;
-   width: 90vw;
+
 }
 </style>

@@ -35,7 +35,8 @@ const mock=(str)=>{return Mock.mock(str)}
 .moviepage_main{
    margin-top: 20px;
     width: 100%;
-    height: 300px;
+
+  
     /* background-color: chocolate; */
     display: grid;
     grid-column-gap: 16px;
@@ -45,9 +46,7 @@ const mock=(str)=>{return Mock.mock(str)}
     /* 
     :style="pageconfigStore.dynamicWH({normal:1244,max:2014,min:1244},{normal:300,max:428,min:300})"
     */
-    max-width: 2014px;
-    min-width: 1244px;
-    width: 90vw;
+ 
     min-height: 300px;
     max-height: 428px;
     height: 45vh;

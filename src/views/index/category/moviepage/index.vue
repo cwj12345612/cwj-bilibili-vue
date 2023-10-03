@@ -38,8 +38,6 @@ const mock=(str)=>{return Mock.mock(str)}
     flex-shrink: 0;
     flex-grow: 1;
     /* background-color: gold; */
-
-  
     display: flex;
     flex-direction: column;
     align-items: center;
