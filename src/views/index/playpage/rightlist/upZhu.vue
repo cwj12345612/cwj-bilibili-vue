@@ -10,7 +10,6 @@
                     <i class="colourless sixin"></i>
                     <span>发信息</span>
                 </a>
-
             </div>
             <div class="signature">
                 {{ mock('@cword(50)') }}
