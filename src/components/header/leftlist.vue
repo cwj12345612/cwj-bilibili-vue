@@ -1,20 +1,13 @@
 <template>
-    <ul class="leftlist" 
-   
-    :class="pageconfigStore.globalclass"
-    >
-    <li class="item" v-for="li in list" :key="li.id"
-    :class="pageconfigStore.globalclass"
-    >
-        <a  :href="li.href"
-
-        :class="pageconfigStore.globalclass"
-        >
+    <ul class="leftlist" :class="pageconfigStore.globalclass">
+        <li class="item" 
+        v-for="li in list" :key="li.id" :class="pageconfigStore.globalclass">
+            <a :href="li.href" :class="pageconfigStore.globalclass">
                 <i v-if="li.icon" :class="li.icon"></i>
-                <span>{{ li.title }}</span>
+                <span v-if="isshowspan||!li.icon">{{ li.title }}</span>
             </a>
 
-    </li>
+        </li>
     </ul>
 </template>
 <script setup>
@@ -29,9 +22,9 @@ const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
 // #endregion
- // #region  模拟数据 mockjs
-const list=reactive([
-{ id: 1, icon: 'colourless bilibili', title: '首页', href: '/' },
+// #region  模拟数据 mockjs
+const list = reactive([
+    { id: 1, icon: 'colourless bilibili', title: '首页', href: '/' },
     { id: 2, title: '番剧', href: '/anime' },
     { id: 3, title: '电影', href: '/movie' },
     { id: 4, title: '游戏中心', href: '#' },
@@ -41,7 +34,11 @@ const list=reactive([
     { id: 9, title: 'LPL', href: '#' },
     { id: 10, icon: 'colourless xiazai', title: '下载客户端', href: '#' },
 ])
-
+const isshowspan = computed(() => {
+    const width = pageconfigStore.width * 0.32
+    const min = 380
+    return (width > min)
+})
 
 // #endregion
 </script>
@@ -59,7 +56,7 @@ const list=reactive([
 }
 
 /* 默认情况 */
- .item{
+.item {
     height: 100%;
     display: flex;
     align-items: center;
@@ -68,38 +65,43 @@ const list=reactive([
     color: #ffffff;
     transition: all 0.3s;
 }
-.item a{
+
+.item a {
     color: #ffffff;
 }
-.item:has(>a:hover){
+
+.item:has(>a:hover) {
     transform: translateY(-10%);
 }
-.item a.scroll{
-    color: #18191c;
-}
-.item a.searchpage,
-.item a.playpage,
-.item a.spacepage
-{
+
+.item a.scroll {
     color: #18191c;
 }
 
-.item a.moviepage{
+.item a.searchpage,
+.item a.playpage,
+.item a.spacepage {
+    color: #18191c;
+}
+
+.item a.moviepage {
     color: #ffffff;
 }
-.item a.moviepage.scroll{
+
+.item a.moviepage.scroll {
     color: #ffffff;
 }
 
 
 
 li:first-child.searchpage i,
-li:first-child.playpage i
- {
+li:first-child.playpage i {
     color: #00aeec;
 }
+
 li:first-child.scroll i {
     color: #00aeec;
 }
+
 /* #endregion */
 </style>
