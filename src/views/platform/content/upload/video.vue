@@ -34,7 +34,11 @@
             <li @mouseover="show3 = true" @mouseout="show3 = false">
                 <span>其他注意事项</span>
                 <div class="title-block" v-show="show3">
-                    <span>请事先检查视频是否可以正常播放，请不要上传已损坏的视频或者冒充视频格式的其他类型文件 (如图片格式修改为MP4格式)</span>
+                    <span>请事先检查视频是否可以正常播放，请不要上传已损坏的视频</span>
+
+                    <br>
+                    <span>请不要上传冒充视频格式的其他类型文件 (如图片格式修改为MP4格式)</span>
+                    
                     <br>
                     <span>一经发现则封号处理</span>
                 </div>
@@ -50,7 +54,7 @@
 
         </div>
         <div class="form">
-            <ul  class="videos">
+            <ul class="videos">
                 <li v-for="index in 100">
                     <div class="icon">
                         <i class="colourless bofangshu"></i>
@@ -251,7 +255,7 @@ const show3 = ref(false)
     bottom: 20px;
     right: -50%;
     color: #000;
-    /* background-color: #fcfae0; */
+    background-color: #fcfae0;
 }
 
 form {
@@ -376,8 +380,8 @@ form .header .add {
 .text li .c1 {
     border: 2px solid #e6e7e8;
     border-radius: 6px;
-   min-height: 40px;
-   
+    min-height: 40px;
+
     width: 100%;
     display: flex;
     align-items: center;
@@ -499,4 +503,5 @@ form .header .add {
     color: #fff;
     border: none;
     border-radius: 6px;
-}</style>
+}
+</style>

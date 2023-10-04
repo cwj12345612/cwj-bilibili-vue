@@ -55,7 +55,7 @@ const headavatar = reactive({
     href: '/space'
 })
 const constcontribute = reactive({
-    url: '/platform',
+    url: '/platform/upload',
     span: '投稿',
     icon: 'colourless tianjia'
 })

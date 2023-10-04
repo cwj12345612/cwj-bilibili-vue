@@ -7,7 +7,7 @@ export const useuploadStore=defineStore('uploadStore',{
         /**
          * 是否正在上传
          */
-        ing:true,
+        ing:false,
         /**
          * 上传文件类型 
          *      video text audio
