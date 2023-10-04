@@ -27,12 +27,12 @@ const list = reactive([
     { id: 1, icon: 'colourless bilibili', title: '首页', href: '/' },
     { id: 2, title: '番剧', href: '/anime' },
     { id: 3, title: '电影', href: '/movie' },
-    { id: 4, title: '游戏中心', href: '#' },
+    { id: 4, title: '游戏中心', href: '/admindev' },
 
-    { id: 7, title: '赛事', href: '#' },
-    { id: 8, title: '纪录片', href: '#' },
-    { id: 9, title: 'LPL', href: '#' },
-    { id: 10, icon: 'colourless xiazai', title: '下载客户端', href: '#' },
+    { id: 7, title: '赛事', href: '/admindev' },
+    { id: 8, title: '纪录片', href: '/admindev' },
+    { id: 9, title: 'LPL', href: '/admindev' },
+    { id: 10, icon: 'colourless xiazai', title: '下载客户端', href: '/admindev' },
 ])
 const isshowspan = computed(() => {
     const width = pageconfigStore.width * 0.32

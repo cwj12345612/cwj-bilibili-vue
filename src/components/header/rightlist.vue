@@ -60,12 +60,12 @@ const constcontribute = reactive({
     icon: 'colourless tianjia'
 })
 const list = reactive([
-    { id: 1, title: '大会员', href: '#', icon: "colourless wodedahuiyuan", href: '#' },
-    { id: 2, title: '消息', href: '#', icon: "colourless sixin", href: '#' },
-    { id: 3, title: '动态', href: '#', icon: "colourless zhuti", href: '/space/dynamic' },
-    { id: 4, title: '收藏', href: '#', icon: "colourless wodeshoucang", href: '/space/favlist' },
-    { id: 5, title: '历史', href: '#', icon: "colourless lishijilu1", href: '#' },
-    { id: 6, title: '创作中心', href: '#', icon: "colourless chuangzuozhongxin", href: '/platform' },
+    { id: 1, title: '大会员',  icon: "colourless wodedahuiyuan", href: '/admindev' },
+    { id: 2, title: '消息', icon: "colourless sixin", href: '/admindev' },
+    { id: 3, title: '动态', icon: "colourless zhuti", href: '/space/dynamic' },
+    { id: 4, title: '收藏', icon: "colourless wodeshoucang", href: '/space/favlist' },
+    { id: 5, title: '历史', icon: "colourless lishijilu1", href: '/admindev' },
+    { id: 6, title: '创作中心', icon: "colourless chuangzuozhongxin", href: '/platform' },
 ])
 //#endregion
 
