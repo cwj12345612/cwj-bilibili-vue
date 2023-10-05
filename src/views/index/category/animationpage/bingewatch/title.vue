@@ -36,7 +36,7 @@ const mock=(str)=>{return Mock.mock(str)}
 <style scoped>
 .bingewatch_title{
     grid-column: span 7;
- background-color: #ffffff;
+ /* background-color: #ffffff; */
     display: flex;
     justify-content: space-between;
     align-items: center;

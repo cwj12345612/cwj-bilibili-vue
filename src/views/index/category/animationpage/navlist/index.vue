@@ -1,6 +1,6 @@
 <template>
 <ul class="animepage_navlist"
-:style="pageconfigStore.dynamicWH({normal:1297,max:1780,min:1020})"
+
 >
 <li v-for="index in 4">
 <navlist_map></navlist_map>
@@ -32,6 +32,9 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .animepage_navlist{
+    min-width: 1020px;
+max-width: 1780px;
+width: 90vw;
     margin-top: 20px;
  height: 118px;
     background-color: #fff;

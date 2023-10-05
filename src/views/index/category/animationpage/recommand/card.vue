@@ -1,6 +1,6 @@
 <template>
 <div class="card"
-:style="pageconfigStore.dynamicWH(undefined,{normal:275,max:367,min:255})"
+
 >
 
 <div class="img">
@@ -43,6 +43,10 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .card{
+    /* 
+    :style="pageconfigStore.dynamicWH(undefined,
+    {normal:275,max:367,min:255})"
+    */
     /* background-color: chocolate; */
     display: flex;
     flex-direction: column;
@@ -59,6 +63,7 @@ const mock=(str)=>{return Mock.mock(str)}
     overflow: hidden;
 }
 .card .title{
+    margin: 5px 0;
     font-size: 15px;
 width: 100%;
     text-overflow: ellipsis;

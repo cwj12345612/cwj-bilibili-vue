@@ -1,6 +1,6 @@
 <template>
 <div class="recommand"
-:style="pageconfigStore.dynamicWH({normal:1297,max:1780,min:1020})"
+
 >
 <h1 class="title">
     猜你喜欢
@@ -37,6 +37,9 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .recommand{
+    min-width: 1020px;
+max-width: 1780px;
+width: 90vw;
     margin-top: 50px;
 /* background-color: orange; */
 

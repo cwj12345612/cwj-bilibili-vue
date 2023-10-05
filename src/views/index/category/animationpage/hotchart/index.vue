@@ -1,6 +1,6 @@
 <template>
 <div class="hotchart"
-:style="pageconfigStore.dynamicWH({normal:1297,max:1780,min:1020},{normal:367,max:460,min:367})"
+
 >
 <hotchart_top></hotchart_top>
 <hotchart_list></hotchart_list>
@@ -32,6 +32,16 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .hotchart{
+    /* 
+    :style="pageconfigStore
+    .dynamicWH({normal:1297,max:1780,min:1020},
+    {normal:367,max:460,min:367})"
+    */
+    min-width: 1020px;
+max-width: 1780px;
+width: 90vw;
+min-height: 367px;
+max-height: 460px;
     margin-top: 50px;
     /* background-color: orange; */
     display: grid;

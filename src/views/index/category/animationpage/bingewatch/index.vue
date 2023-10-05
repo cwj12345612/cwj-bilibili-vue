@@ -1,6 +1,6 @@
 <template>
 <div class="bingewatch"
-:style="pageconfigStore.dynamicWH({normal:1297,max:1780,min:1020},{normal:210,max:256,min:210})"
+
 >
 <bingewatch_title></bingewatch_title>
 <bingewatch_list></bingewatch_list>
@@ -32,8 +32,18 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .bingewatch{
+    min-width: 1020px;
+max-width: 1780px;
+width: 90vw;
+/* 
+:style="pageconfigStore.
+dynamicWH(undefined,{normal:210,max:256,min:210})"
+*/
+min-height: 210px;
+max-height: 256px;
+
     margin-top: 50px;
-   background-color: #fff;
+ 
     /* background-color: aqua; */
     display: grid;
     grid-column-gap: 16px;

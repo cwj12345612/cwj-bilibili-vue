@@ -1,6 +1,6 @@
 <template>
 <div class="timeline"
-:style="pageconfigStore.dynamicWH({normal:1297,max:1780,min:1020},{normal:367,max:460,min:367})"
+
 >
 <timeline_top></timeline_top>
 <timeline_list></timeline_list>
@@ -32,6 +32,14 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .timeline{
+    min-width: 1020px;
+max-width: 1780px;
+width: 90vw;
+/* 
+:style="pageconfigStore.dynamicWH(undefined,
+{normal:367,max:460,min:367})"
+*/
+
     margin-top: 50px;
     /* background-color: blanchedalmond; */
     display: grid;
