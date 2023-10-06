@@ -100,7 +100,7 @@ const list = reactive([
 .navlist {
     /* background-color: palevioletred; */
     width: 90vw;
-background-color: #ffffff;
+background-color: #fff;
     min-width: 1070px;
     max-width: 1280px;
     height: 80px;
