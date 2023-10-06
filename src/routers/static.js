@@ -10,7 +10,7 @@ const dev = [
 
 //#region   静态路由 不用从后台获取
 
-
+//分区
 const category = [
     {
         path: 'movie',
@@ -23,6 +23,7 @@ const category = [
         component: () => import('@/views/index/category/animationpage')
     }
 ]
+//个人空间
 const space = {
     path: 'space',
     name: 'spacepage',
@@ -127,6 +128,25 @@ const space = {
 
     ]
 }
+//流行排行
+const popular = {
+    path: 'popular',
+    name: 'popularpage',
+    component: () => import('@/views/index/popularpage'),
+    children: [
+        { path: 'all', component: () => import('@/views/index/popularpage/all.vue') },
+        { path: 'history', component: () => import('@/views/index/popularpage/history.vue') },
+        { path: 'music', component: () => import('@/views/index/popularpage/music.vue') },
+        {
+            path: 'rank', 
+            redirect:'/popular/rank/all',
+             children:[
+            {path:':ca', component: () => import('@/views/index/popularpage/rank.vue')}
+         ]
+        },
+        { path: 'weekly', component: () => import('@/views/index/popularpage/weekly.vue') },
+    ]
+}
 const main = [
     {
         path: '/',
@@ -148,11 +168,7 @@ const main = [
                 name: 'playpage',
                 component: () => import('@/views/index/playpage')
             },
-            {
-                path:'popular',
-                name:'popularpage',
-                component:()=>import('@/views/index/popularpage')
-            },
+            popular,
             ...category,
             space
         ]
@@ -184,7 +200,7 @@ const upload = {
         }
     ]
 }
-const upload_manager=  {
+const upload_manager = {
     path: 'upload-manager',
     component: () => import('@/views/platform/content/upload-manager'),
     redirect: { name: 'upload-manager_article' },
@@ -193,20 +209,20 @@ const upload_manager=  {
             path: 'article',
             name: 'upload-manager_article',
             component: () => import('@/views/platform/content/upload-manager/article'),
-           redirect:{name:'upload-manager_article_video'},
-            children:[
+            redirect: { name: 'upload-manager_article_video' },
+            children: [
                 {
-                    path:'video',
-                    name:'upload-manager_article_video',
-                    component:()=>import('@/views/platform/content/upload-manager/article/video'),
+                    path: 'video',
+                    name: 'upload-manager_article_video',
+                    component: () => import('@/views/platform/content/upload-manager/article/video'),
                 },
                 {
-                    path:'audios',
-                    component:()=>import('@/views/platform/content/upload-manager/article/audios'),
+                    path: 'audios',
+                    component: () => import('@/views/platform/content/upload-manager/article/audios'),
                 },
                 {
-                    path:'text',
-                    component:()=>import('@/views/platform/content/upload-manager/article/text'),
+                    path: 'text',
+                    component: () => import('@/views/platform/content/upload-manager/article/text'),
                 }
             ]
         },
@@ -232,7 +248,7 @@ const platform = {
             component: () => import('@/views/platform/content/home')
         },
         upload,
-      upload_manager,
+        upload_manager,
         {
             path: 'data-up',
             component: () => import('@/views/platform/content/data-up'),
@@ -261,15 +277,15 @@ const platform = {
             component: () => import('@/views/platform/content/allowance'),
             children: [
                 {
-                    path:'excitation',
+                    path: 'excitation',
                     component: () => import('@/views/platform/content/allowance/excitation'),
                 },
                 {
-                    path:'center',
+                    path: 'center',
                     component: () => import('@/views/platform/content/allowance/center'),
                 },
                 {
-                    path:'upower-manager',
+                    path: 'upower-manager',
                     component: () => import('@/views/platform/content/allowance/upower-manager'),
                 },
             ]

@@ -4,7 +4,7 @@
     >
         <div class="top">
             <h3>电影热播榜</h3>
-            <a class="more" href="/popular" >
+            <a class="more" href="/popular/rank/movie" >
                 <span>TOP</span>
                 <i class="colourless gengduo"></i>
             </a>
