@@ -145,7 +145,7 @@ const ca = () => {
 }
 
 .card.checked {
-    transform: scale(1.1);
+    transform: scaleX(1.1) scaleY(1.2);
     border: 2px solid #0aaee0;
 }
 

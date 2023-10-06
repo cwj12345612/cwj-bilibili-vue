@@ -6,7 +6,7 @@
             <i class="colourless gengduo"></i>
         </a>
         <ul class="items">
-            <li v-for="index in mock('@integer(2,8)')"><a href="#">{{ mock('@cword(2,4)') }}</a></li>
+            <li v-for="index in mock('@integer(2,6)')"><a href="#">{{ mock('@cword(2,4)') }}</a></li>
         </ul>
     </div>
 </template>
@@ -50,12 +50,13 @@ const mock = (str) => { return Mock.mock(str) }
     color: #18191c;
     display: flex;
     align-items: center;
+    margin-bottom: 5px;
 }
 
 .navlist_map .title h3 {
     font-size: 20px;
 
-
+font-weight: normal;
 }
 
 .navlist_map .title:hover {

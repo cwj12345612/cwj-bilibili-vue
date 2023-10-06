@@ -39,7 +39,9 @@ width: 90vw;
 :style="pageconfigStore.dynamicWH(undefined,
 {normal:367,max:460,min:367})"
 */
-
+max-height: 460px;
+min-height: 367px;
+height: 30vh;
     margin-top: 50px;
     /* background-color: blanchedalmond; */
     display: grid;
