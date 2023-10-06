@@ -1,6 +1,6 @@
 <template>
 <div class="popular">
-    <div class="img">
+    <div ref="popular_img" class="img">
         <img src="@/assets/images/header.png" alt="">
         <a class="logo" href="/"
 
@@ -8,7 +8,9 @@
         <i class="colourless bilibili" ></i>
     </a>
     </div>
-    <ul class="navlist">
+    <ul 
+    :class="ca"
+    class="navlist">
         <li
        
         v-for="(li,index) in list">
@@ -17,17 +19,19 @@
           :href="li.href">
             <i :class="li.icon" 
             style="font-size: 20px;"
-            :style="`color: ${mock('@color()')};`"></i>
+         ></i>
            <h4> {{li.title}}</h4>
           </a>
         </li>
 
     </ul>
+
+<popular_all></popular_all>
 </div>
 </template>
 <script setup>
 // #region  引入组件
-
+import popular_all from './all.vue'
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -37,8 +41,17 @@ import {useRoute,useRouter} from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route=useRoute()
 const router=useRouter()
-// #endregion
+const popular_img=ref()
 
+// #endregion
+const ca=computed(()=>{
+    const banner= popular_img.value
+   const height=banner? banner.offsetHeight:0
+    
+    return {
+        scroll:pageconfigStore.scroll>height
+    }
+})
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
@@ -60,9 +73,9 @@ const list=reactive([
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    height: 1000px;
+    /* height: 1000px; */
     width: 100%;
-    background-color: orange;
+    /* background-color: orange; */
 }
 .popular>.img{
     width: 100%;
@@ -127,5 +140,9 @@ const list=reactive([
 }
 .navlist li a.active>*{
     color: #0aaee0;
+}
+.navlist.scroll{
+    position: fixed;
+
 }
 </style>

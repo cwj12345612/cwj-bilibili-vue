@@ -4,10 +4,10 @@
     >
         <div class="top">
             <h3>电影热播榜</h3>
-            <button class="more">
+            <a class="more" href="/popular" >
                 <span>TOP</span>
                 <i class="colourless gengduo"></i>
-            </button>
+            </a>
         </div>
 
         <ul class="items">
@@ -83,6 +83,7 @@ const mock = (str) => { return Mock.mock(str) }
 }
 
 .top .more {
+   
     padding: 10px 20px;
     align-items: center;
     display: flex;
