@@ -42,6 +42,7 @@ const mock=(str)=>{return Mock.mock(str)}
     flex-grow: 1;
 display: flex;
 flex-direction: column;
+width: 95%;
     /* height: 800px; */
     /* background-color: cornflowerblue; */
     /* 

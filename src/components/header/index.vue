@@ -38,10 +38,13 @@ header {
 }
 
 header.homepage,
-header.animepage {
+header.animepage
+ {
     position: fixed;
 }
-
+header.popularpage{
+    position: absolute;
+}
 header.homepage.scroll,
 header.animepage.scroll,
 header.playpage.scroll {

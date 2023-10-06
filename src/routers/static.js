@@ -148,6 +148,11 @@ const main = [
                 name: 'playpage',
                 component: () => import('@/views/index/playpage')
             },
+            {
+                path:'popular',
+                name:'popularpage',
+                component:()=>import('@/views/index/popularpage')
+            },
             ...category,
             space
         ]

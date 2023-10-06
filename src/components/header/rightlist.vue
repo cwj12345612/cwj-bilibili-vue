@@ -167,7 +167,8 @@ flex-shrink: 0;
     color: #ffffff;
 }
 
-.item a.moviepage.scroll {
+.item a.moviepage.scroll,
+.item a.popularpage.scroll {
     color: #ffffff;
 }
 </style>

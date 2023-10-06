@@ -65,7 +65,7 @@ const mock = (str) => { return Mock.mock(str) }
     */
     min-height: 293px;
     max-height: 345px;
-    height: 45vh;
+  height: 345px;
 }
 
 .top {

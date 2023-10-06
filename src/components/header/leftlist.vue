@@ -88,7 +88,9 @@ const isshowspan = computed(() => {
     color: #ffffff;
 }
 
-.item a.moviepage.scroll {
+.item a.moviepage.scroll,
+.item a.popularpage.scroll
+ {
     color: #ffffff;
 }
 

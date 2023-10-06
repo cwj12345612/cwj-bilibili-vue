@@ -56,7 +56,7 @@ const mock = (str) => { return Mock.mock(str) }
 <style scoped>
 .hotchart {
     margin-top: 30px;
-    
+   
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -65,7 +65,7 @@ const mock = (str) => { return Mock.mock(str) }
     /* background-color: #242628; */
     min-height: 293px;
     max-height: 345px;
-    height: 45vh;
+    height: 345px;
 }
 
 .top {

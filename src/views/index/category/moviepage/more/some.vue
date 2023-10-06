@@ -52,6 +52,7 @@ const mock = (str) => { return Mock.mock(str) }
 <style scoped>
 .some {
     margin-top: 30px;
+   
     flex-shrink: 0;
     flex-grow: 1;
  
