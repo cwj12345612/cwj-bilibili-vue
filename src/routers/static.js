@@ -23,6 +23,33 @@ const category = [
         component: () => import('@/views/index/category/animationpage')
     }
 ]
+//专栏页
+const readpage = {
+    name: 'readpage',
+    path: 'read',
+    component: () => import('@/views/index/readpage'),
+    redirect: '/read/home',
+    children: [
+        {
+            path: 'home',
+            redirect: '/read/home/recommend',
+            children: [
+                {
+                    path: ':ca',
+                    component: () => import('@/views/index/readpage/home')
+                }
+            ]
+        },
+        {
+            path: 'readlist',
+            component: () => import('@/views/index/readpage/readlist.vue')
+        },
+        {
+            path: ':cid',
+            component: () => import('@/views/index/readpage/reading.vue')
+        }
+    ]
+}
 //个人空间
 const space = {
     path: 'space',
@@ -138,11 +165,11 @@ const popular = {
         { path: 'history', component: () => import('@/views/index/popularpage/history.vue') },
         { path: 'music', component: () => import('@/views/index/popularpage/music.vue') },
         {
-            path: 'rank', 
-            redirect:'/popular/rank/all',
-             children:[
-            {path:':ca', component: () => import('@/views/index/popularpage/rank.vue')}
-         ]
+            path: 'rank',
+            redirect: '/popular/rank/all',
+            children: [
+                { path: ':ca', component: () => import('@/views/index/popularpage/rank.vue') }
+            ]
         },
         { path: 'weekly', component: () => import('@/views/index/popularpage/weekly.vue') },
     ]
@@ -170,7 +197,8 @@ const main = [
             },
             popular,
             ...category,
-            space
+            space,
+            readpage,
         ]
     },
 ]

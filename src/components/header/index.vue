@@ -38,13 +38,20 @@ header {
 }
 
 header.homepage,
-header.animepage
- {
+header.animepage {
     position: fixed;
 }
-header.popularpage{
+
+header.readpage {
+    position: relative;
+    background-color: #ffffff;
+    border-bottom: 2px solid #99a299;
+}
+
+header.popularpage {
     position: absolute;
 }
+
 header.homepage.scroll,
 header.animepage.scroll,
 header.playpage.scroll {

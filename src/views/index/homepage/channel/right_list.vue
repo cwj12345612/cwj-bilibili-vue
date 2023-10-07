@@ -26,13 +26,13 @@ const router = useRouter()
 import Mock from 'mockjs'
 const mock = (str) => { return Mock.mock(str) }
 const list = [
+    { id: mock('@id()'), title: '专栏', href: "/read", icon: 'colourless shipindaxiao' },
     { id: mock('@id()'), title: '综合热门', href: "/popular/all", icon: 'colourless shoucang' },
     { id: mock('@id()'), title: '每周必看', href: "/popular/weekly", icon: 'colour shijianbiao' },
     { id: mock('@id()'), title: '入站必刷', href: "/popular/history", icon: 'colourless yizhuifan' },
     { id: mock('@id()'), title: '排行榜', href: "/popular/rank", icon: 'colourless paihangbang' },
     { id: mock('@id()'), title: '音乐', href: "/popular/music", icon: 'colourless yinle' },
-
-    { id: mock('@id()'), title: '直播', href: '/popular/other' },
+   
 ]
 //#endregion
 
@@ -65,7 +65,7 @@ const list = [
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     /* background-color: crimson; */
 }
 

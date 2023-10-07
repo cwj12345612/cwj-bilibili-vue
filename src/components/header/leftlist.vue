@@ -80,7 +80,8 @@ const isshowspan = computed(() => {
 
 .item a.searchpage,
 .item a.playpage,
-.item a.spacepage {
+.item a.spacepage,
+.item a.readpage {
     color: #18191c;
 }
 

@@ -1,36 +1,47 @@
 <template>
-        <div class="header">
-            <button class="visualangle">
+    <div class="header">
+        <select class="visualangle">
+            <option value="" selected>
                 <span>视角: </span>
                 <span>我自己</span>
                 <i class="colourless xialada"></i>
-            </button>
-            <div class="userinfo">
-                <div class="img">
-                   <a href="#">
+            </option>
+            <option value="">
+                <span>视角: </span>
+                <span>粉丝</span>
+
+            </option>
+            <option value="">
+                <span>视角: </span>
+                <span>陌生人</span>
+
+            </option>
+        </select>
+        <div class="userinfo">
+            <div class="img">
+                <a href="#">
                     <img src="@/assets/images/头像.png" alt="">
-                   </a>
+                </a>
+            </div>
+            <div class="desc">
+                <div class="title">
+                    <h3>
+                        {{ mock('@cword(5)') }}
+                    </h3>
+                    <span class="class">
+                        <i class="colour ic_userlevel_6"></i>
+                    </span>
+                    <span class="huiyuan">
+                        <i class="colourless wodedahuiyuan"></i>
+                    </span>
                 </div>
-                <div class="desc">
-                    <div class="title">
-                        <h3>
-                            {{ mock('@cword(5)') }}
-                        </h3>
-                        <span class="class">
-                            <i class="colour ic_userlevel_6"></i>
-                        </span>
-                        <span class="huiyuan">
-                            <i class="colourless wodedahuiyuan"></i>
-                        </span>
-                    </div>
-                    <div class="input">
-                       
-                        <input type="text" placeholder="编辑个性签名">
-                    </div>
+                <div class="input">
+
+                    <input type="text" placeholder="编辑个性签名">
                 </div>
             </div>
         </div>
-
+    </div>
 </template>
 <script setup>
 // #region  引入组件
@@ -38,25 +49,24 @@
 //  #endregion
 
 // #region 引入vue pinia 路由
-import {computed,ref,reactive,watch,toRef,toRefs,onMounted,onBeforeUnmount,} from 'vue'
+import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
-import {useRoute,useRouter} from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
-const route=useRoute()
-const router=useRouter()
+const route = useRoute()
+const router = useRouter()
 // #endregion
 
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
 
-const mock=(str)=>{return Mock.mock(str)}
+const mock = (str) => { return Mock.mock(str) }
 
 //#endregion
 
 </script>
 <style scoped>
-
 .header {
     width: 100%;
     height: 192px;
@@ -79,13 +89,10 @@ const mock=(str)=>{return Mock.mock(str)}
     align-items: center;
     justify-content: space-around;
     border: none;
-    border-radius: 4px;
+    /* border-radius: 4px; */
 
 }
 
-.visualangle:hover {
-    background: rgba(0, 0, 0, 0.6);
-}
 
 .visualangle span {
     margin-right: 5px;
@@ -102,62 +109,73 @@ const mock=(str)=>{return Mock.mock(str)}
     align-items: flex-start;
     justify-content: flex-start;
 }
-.userinfo .img{
+
+.userinfo .img {
     height: 64px;
     width: 64px;
     border-radius: 50%;
     background-color: burlywood;
-    
+
 }
-img{
+
+img {
     border-radius: 50%;
 }
-.userinfo .desc{
-   
+
+.userinfo .desc {
+
     /* background-color: cadetblue; */
-   
+
     height: 64px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
 }
-.userinfo .desc .title{
+
+.userinfo .desc .title {
     display: flex;
 
 }
-.desc .title h3{
-color: #fff;
-font-size: 18px;
+
+.desc .title h3 {
+    color: #fff;
+    font-size: 18px;
 }
-.desc .title>*{
+
+.desc .title>* {
     margin-right: 10px;
 }
-.desc .title i{
+
+.desc .title i {
     font-size: 30px;
 }
-.huiyuan i{
+
+.huiyuan i {
     color: rgb(255, 86, 141);
 }
-.desc .input{
+
+.desc .input {
     /* background-color: chocolate; */
     width: 740px;
     height: 26px;
-    padding:  0 5px;
+    padding: 0 5px;
     border-radius: 6px;
     overflow: hidden;
 }
-.desc .input:hover{
+
+.desc .input:hover {
     border: 2px solid #fff;
     background: var(--transparency);
 }
-.desc .input input{
+
+.desc .input input {
     height: 100%;
     width: 100%;
     background: none;
     border: none;
 }
-.desc .input input::placeholder{
+
+.desc .input input::placeholder {
     color: #e6e7e8;
-}
-</style>
+}</style>
