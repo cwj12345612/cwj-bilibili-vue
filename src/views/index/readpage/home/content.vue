@@ -31,5 +31,6 @@ const mock = (str) => { return Mock.mock(str) }
     height: 100%;
     background-color: palevioletred;
     width: 50%;
+    
 }
 </style>

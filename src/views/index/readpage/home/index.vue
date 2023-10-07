@@ -2,12 +2,14 @@
     <div class="home">
        <readpage_home_navlist></readpage_home_navlist>
         <readpage_home_content></readpage_home_content>
+        <readpage_home_rank></readpage_home_rank>
     </div>
 </template>
 <script setup>
 // #region  引入组件
 import readpage_home_navlist from './navlist.vue'
 import readpage_home_content from './content.vue'
+import readpage_home_rank from './rank.vue'
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -39,10 +41,12 @@ const submit=(ca)=>{
     min-width: 1020px;
     width: 91vw;
     display: flex;
+    justify-content: space-between;
 }
 
 .content{
     height: 600px;
+    overflow: auto;
     background-color: palevioletred;
     width: 60%;
 }
