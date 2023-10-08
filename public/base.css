@@ -1,0 +1,67 @@
+
+:root {
+    /* 默认大圆角 */
+    --border-radius-max: 8px;
+    /* 默认小圆角 */
+    --border-radius-min: 6px;
+
+    /* 默认透明度 */
+    --transparency: rgba(0, 0, 0, 0.3);
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    cursor: pointer;
+}
+
+input {
+    outline: none;
+    border: none;
+}
+
+li {
+    display: block;
+
+    list-style: none;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #61666d;
+
+}
+
+img {
+
+    width: 100%;
+    height: 100%;
+}
+
+#app {
+    position: relative;
+    /* 高宽临界值 */
+    max-width: 2560px;
+    min-width: 1060px;
+    /* 垂直居中 */
+    margin: 0 auto;
+    width: 100vw;
+    /* 临时属性 */
+    /* height: 1000px; */
+
+    /* background-color: orange; */
+
+    /* 弹性布局 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 1;
+    flex-grow: 1;
+
+}

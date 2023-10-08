@@ -19,7 +19,7 @@ const route = useRoute()
 const router = useRouter()
 
 </script>
-<style scoped>
+<style scoped lang="less">
 header {
     z-index: 10086;
     padding: 0 24px;
@@ -31,48 +31,43 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /*  */
-    /* 临时属性 开发用 */
-    /* background-color: coral; */
 
+
+    &:where(.homepage, .animepage) {
+        position: fixed;
+    }
+
+    &.readpage {
+        position: relative;
+        background-color: #ffffff;
+        border-bottom: 2px solid #99a299;
+    }
+
+    &.popularpage {
+        position: absolute;
+    }
+
+    &:where(.homepage, .animepage, .playpage) {
+        &.scroll {
+            position: fixed;
+            background-color: #fff;
+        }
+    }
+
+    &:where(.searchpage, .playpage, .spacepage) {
+        background-color: #ffffff;
+        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+    }
+
+    &.moviepage {
+        position: fixed;
+        &.scroll {
+            background-color: #242628;
+        }
+    }
 }
 
-header.homepage,
-header.animepage {
-    position: fixed;
-}
 
-header.readpage {
-    position: relative;
-    background-color: #ffffff;
-    border-bottom: 2px solid #99a299;
-}
 
-header.popularpage {
-    position: absolute;
-}
-
-header.homepage.scroll,
-header.animepage.scroll,
-header.playpage.scroll {
-    position: fixed;
-    background-color: #ffffff;
-}
-
-header.searchpage,
-header.playpage,
-header.spacepage {
-    /* position: 'none'; */
-    background-color: #ffffff;
-    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
-
-}
-
-header.moviepage {
-    position: fixed;
-}
-
-header.moviepage.scroll {
-    background-color: #242628;
-}
 </style>

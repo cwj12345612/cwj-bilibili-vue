@@ -30,5 +30,13 @@ const mock=(str)=>{return Mock.mock(str)}
 
 </script>
 <style scoped lang="less">
-
+.admindev{
+    background-color: palegreen;
+    height: 500px;
+    width: 50%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 </style>
