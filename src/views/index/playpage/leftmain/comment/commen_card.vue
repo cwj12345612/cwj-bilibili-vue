@@ -19,7 +19,9 @@
                     <span class="time">
                         {{ mock('@datetime()') }}
                     </span>
-
+                    <div
+                        v-if="userStore.isLogin"
+                           >
                     <span>
                         <i class="colourless zan"></i>
                         {{ mock({'num|100-3224':3224}).num }}
@@ -27,10 +29,10 @@
                     <span>
                         <i class="colourless cai"></i>
                     </span>
-                    <span>回复
-
+                    <span>
+                        回复
                     </span>
-
+</div>
                 </div>
             </div>
             <ul class="chidren">
@@ -59,6 +61,9 @@
                                 {{ mock('@datetime()') }}
                             </span>
 
+                           <div
+                        v-if="userStore.isLogin"
+                           >
                             <span>
                                 <i class="colourless zan"></i>
                                 {{mock({'num|100-2453':2453}).num}}
@@ -67,6 +72,7 @@
                                 <i class="colourless cai"></i>
                             </span>
                             <span>回复</span>
+                           </div>
                         </div>
                     </div>
                 </li>
@@ -83,8 +89,10 @@
 // #region 引入vue pinia 路由
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
+import {useUserStore} from '@/pinia/userStore.js'
 import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
+const userStore=useUserStore()
 const route = useRoute()
 const router = useRouter()
 // #endregion

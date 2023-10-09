@@ -26,38 +26,35 @@ const mock = (str) => { return Mock.mock(str) }
 
 </script>
 <template>
-    <div class="playpage_leftmain" 
-    
-    >
+    <div class="playpage_leftmain">
         <div class="title">
             <h1>
                 {{ mock('@cword(20,100)') }}
             </h1>
             <div class="detail">
-                <div>
+                <span>
                     <i class="colourless bofangshu"></i>
-                    <span>{{ mock({ 'num|4-100': 100 }).num + '万' }}</span>
-                </div>
-                <div>
+                    {{ mock({ 'num|4-100': 100 }).num + '万' }}
+                </span>
+                <span>
                     <i class="colourless danmushu"></i>
-                    <span>{{ mock({ 'num|4-100': 100 }).num + '万' }}</span>
-                </div>
-                <div>
+                    {{ mock({ 'num|4-100': 100 }).num + '万' }}
+                </span>
 
-                    <span>{{ mock('@datetime("yyyy-MM-dd HH:mm:ss")') }}</span>
-                </div>
-                <div>
+                <span>{{ mock('@datetime("yyyy-MM-dd HH:mm:ss")') }}</span>
+
+                <span>
                     <i class="colourless guanbi" style="color: rgb(253, 103, 111);"></i>
-                    <span>未经作者授权，禁止转载</span>
-                </div>
+                    未经作者授权，禁止转载
+                </span>
             </div>
         </div>
 
-<left_main_playwarp></left_main_playwarp>
-<left_main_toolbar></left_main_toolbar>
-<leftmain_videodesc></leftmain_videodesc>
-<leftmain_tags></leftmain_tags>
-<leftmain_comment></leftmain_comment>
+        <left_main_playwarp></left_main_playwarp>
+        <left_main_toolbar></left_main_toolbar>
+        <leftmain_videodesc></leftmain_videodesc>
+        <leftmain_tags></leftmain_tags>
+        <leftmain_comment></leftmain_comment>
     </div>
 </template>
 
@@ -65,18 +62,18 @@ const mock = (str) => { return Mock.mock(str) }
 .playpage_leftmain {
 
     /* background-color: palevioletred; */
-flex-grow: 0;
-flex-shrink: 0;
+    flex-grow: 0;
+    flex-shrink: 0;
     display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: flex-start;
-/* 
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    /* 
 :style="pageconfigStore.dynamicWH({ normal: 668, max: 1694, min: 668 })"
 */
-max-width: 1360px;
-min-width: 668px;
-width: 48vw;
+    max-width: 1360px;
+    min-width: 668px;
+    width: 48vw;
 }
 
 .playpage_leftmain .title {
@@ -97,9 +94,9 @@ width: 48vw;
     width: 100%;
     color: #18191c;
     font-size: 20px;
-   display: flex;
-   flex-wrap: wrap;
-   margin-bottom: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
 }
 
 .playpage_leftmain .title .detail {
@@ -113,7 +110,7 @@ width: 48vw;
 
 }
 
-.playpage_leftmain .title .detail>div {
-    margin-right: 12px;
+.playpage_leftmain .title .detail>span {
+    margin-right: 15px;
 }
 </style>

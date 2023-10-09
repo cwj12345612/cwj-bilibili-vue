@@ -2,7 +2,7 @@
 <div class="page"
 
 >
-<button class="skip previous disabled" >上一页</button>
+<button class="skip previous" disabled >上一页</button>
 <button 
 v-for="index in 7" class="index" 
 
@@ -74,10 +74,10 @@ const mock=(str)=>{return Mock.mock(str)}
 .page button:hover{
     background-color: rgb(227, 229, 231);
 }
-.page button.skip.disabled{
-    
+.page button.skip[disabled]{
+    cursor: not-allowed;
     background-color: #e3e5e7;
     opacity:0.5;
-pointer-events:none;
+
 }
 </style>
