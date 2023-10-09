@@ -9,7 +9,66 @@
     <title>
         <%= htmlWebpackPlugin.options.title %>
     </title>
- <link rel="stylesheet" href="./base.css">
+ <style>
+    :root {
+    /* 默认大圆角 */
+    --border-radius-max: 8px;
+    /* 默认小圆角 */
+    --border-radius-min: 6px;
+
+    /* 默认透明度 */
+    --transparency: rgba(0, 0, 0, 0.3);
+}
+button{
+    cursor: pointer;
+}
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+input {
+    outline: none;
+    border: none;
+}
+
+li {
+    display: block;
+
+    list-style: none;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #61666d;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+#app {
+    position: relative;
+   
+    max-width: 2560px;
+    min-width: 1060px;
+    /* 垂直居中 */
+    margin: 0 auto;
+    width: 100vw;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+ 
+
+}
+ </style>
 
 </head>
 

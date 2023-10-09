@@ -6,7 +6,9 @@
                 <i class="colourless bilibili"></i>
             </a>
         </div>
-        <ul :class="ca" class="navlist">
+        <ul 
+        :class="ca"
+         class="navlist">
             <li v-for="(li, index) in list">
                 <router-link :to="li.href">
                     <i :class="li.icon" style="font-size: 20px;"></i>

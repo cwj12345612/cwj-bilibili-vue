@@ -1,11 +1,28 @@
 <template>
     <div class="all">
         <div class="header">
-            <p>
-
-              每周必看
-
-            </p>
+            <div class="weekly">
+                <div class="t"
+                 @click.prevent="shownav = !shownav">
+                    <h5>{{ '第' + 10086 + '期' }}</h5>
+                    <i class="colourless xialaxiao"></i>
+                </div>
+                <ul class="items" v-if="shownav">
+                    <li v-for="index in 30">
+                        <h3><router-link :to="{
+                            path: '/popular/history',
+                            query: { num: 10086 }
+                        }">
+                                {{ mock('@cword(5,20)') }}
+                            </router-link></h3>
+                        <div class="date">
+                            <span>2021第10期 </span>
+                            <span> 10.10~10.17</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <span style="margin-left: 30px;">每周五晚12点刷新</span>
         </div>
         <ul class="content">
             <li v-for="index in mock('@integer(50,100)')">
@@ -62,9 +79,17 @@ const router = useRouter()
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
-
+const shownav = ref(false)
 //#endregion
+watch(()=>route.query,(nv)=>{
+    shownav.value=false
+if(!nv.num){
 
+}else{
+   const num= nv.num
+
+}
+},{immediate:true})
 </script>
 <style scoped>
 .all {
@@ -80,7 +105,65 @@ const mock = (str) => { return Mock.mock(str) }
     /* background-color: antiquewhite; */
     margin-top: 10px;
     margin-bottom: 15px;
+    display: flex;
+}
 
+.weekly {
+    position: relative;
+
+}
+
+.weekly .t {
+    font-weight: normal;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.weekly .items {
+
+    position: absolute;
+    left: 0;
+    top: 25px;
+    max-height: 300px;
+    overflow: auto;
+    /* width: 200px; */
+    width: 200px;
+    background-color: #fff;
+    /* background-color: palevioletred; */
+}
+
+.weekly .items li {
+
+    padding: 6px 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.weekly .items li h3 a {
+    color: #212121;
+    display: block;
+    font-weight: normal;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+    white-space: nowrap;
+}
+
+.weekly .items li h3 a:hover {
+    color: #0aaee0;
+}
+
+.weekly .items li .date {
+    display: flex;
+    font-size: 13px;
+    color: #99a299;
+}
+
+.all .header>span {
+    font-size: 14px;
+    color: #99a299;
 }
 
 .all .content {
