@@ -42,18 +42,13 @@ img {
 
 #app {
     position: relative;
-    /* 高宽临界值 */
+   
     max-width: 2560px;
     min-width: 1060px;
     /* 垂直居中 */
     margin: 0 auto;
     width: 100vw;
-    /* 临时属性 */
-    /* height: 1000px; */
-
-    /* background-color: orange; */
-
-    /* 弹性布局 */
+  
     display: flex;
     flex-direction: column;
     align-items: center;
