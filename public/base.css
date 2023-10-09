@@ -7,7 +7,9 @@
     /* 默认透明度 */
     --transparency: rgba(0, 0, 0, 0.3);
 }
-
+button{
+    cursor: pointer;
+}
 * {
     box-sizing: border-box;
     padding: 0;
