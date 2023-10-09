@@ -1,24 +1,24 @@
 <template>
     <div class="videocard">
-        
-            <a class="img" href="#">
-                <img :src="require(`@/assets/images/视${mock({'num|1-10':10}).num}.webp`)" alt="">
+
+        <a class="img" href="#">
+            <img :src="require(`@/assets/images/视${mock({ 'num|1-10': 10 }).num}.webp`)" alt="">
             <div class="videodeatail">
-               <div>
-                <i class="colourless bofangshu"></i>
-                <span>{{ mock({'num|100-5552':5552}).num }}</span>
-               </div>
-               <div>
-                <i class="colourless danmushu"></i>
-                <span>{{ mock({'num|100-5552':5552}).num }}</span>
-               </div>
-               <div>
-               
-                <span>13:11</span>
-               </div>
+                <div>
+                    <i class="colourless bofangshu"></i>
+                    <span>{{ mock({ 'num|100-5552': 5552 }).num }}</span>
+                </div>
+                <div>
+                    <i class="colourless danmushu"></i>
+                    <span>{{ mock({ 'num|100-5552': 5552 }).num }}</span>
+                </div>
+                <div>
+
+                    <span>13:11</span>
+                </div>
             </div>
-            </a>
-        
+        </a>
+
         <a class="title" href="/play">
             {{ mock('@cword(4,60)') }}
         </a>
@@ -53,7 +53,8 @@ const mock = (str) => { return Mock.mock(str) }
 //#endregion
 
 </script>
-<style scoped>
+<style scoped lang="less">
+@import url('@/assets/css/common.less');
 .videocard {
     width: 100%;
     height: 100%;
@@ -68,23 +69,25 @@ const mock = (str) => { return Mock.mock(str) }
     display: block;
     width: 100%;
     height: 60%;
-    border-radius: var(--border-radius-max);
+    border-radius:@maxborderraduis;
     overflow: hidden;
     position: relative;
 
 }
-.videocard .img .videodeatail{
+
+.videocard .img .videodeatail {
     color: #ffffff;
     width: 100%;
-  background: var(--transparency);
+    background: @transparency;
     position: absolute;
     bottom: 0;
     display: flex;
     align-items: center;
-justify-content: space-between;
+    justify-content: space-between;
 }
+
 .videocard .title {
-   
+
     font-size: 15px;
     /* background-color: aqua; */
     width: 100%;
@@ -98,15 +101,15 @@ justify-content: space-between;
 }
 
 .videocard .title:hover {
-    color: #00aeec;
+    color: @colour;
 }
 
 .videocard .info {
     width: 100%;
     display: flex;
-  
+
     align-items: center;
-   
+
     font-size: 13px;
     color: #9499a0;
     justify-content: flex-start;
@@ -117,5 +120,5 @@ justify-content: space-between;
 }
 
 .videocard .info:hover {
-    color: #00aeec;
+    color: @colour;
 }</style>

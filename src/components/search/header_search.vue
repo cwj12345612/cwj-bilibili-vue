@@ -1,11 +1,6 @@
 <template>
     <div class='header_search' :class="pageconfigStore.globalclass">
-        <input type="search"
-         :placeholder="placeholder" 
-         @mouseenter="mouseenter" 
-         @mouseleave="mouseleave"
-         v-model="searchtext"
-            @keyup.enter="submit">
+        <input type="search" :placeholder="placeholder" v-model="searchtext" @keyup.enter="submit">
         <button @click.prevent="submit">
             <i class="colourless sousuo"></i>
         </button>
@@ -39,27 +34,23 @@ const searchtext = ref('')
 
 const submit = () => {
     // console.log('搜索')
-    let str=searchtext.value.trim()
+    let str = searchtext.value.trim()
     if (str === '') {
-       str = placeholder.value
+        str = placeholder.value
     }
     router.push({ name: 'searchpage', query: { text: str } })
 }
-const mouseenter = (e) => {
-    e.currentTarget.style.backgroundColor = '#e3e5e7'
-}
-const mouseleave = (e) => {
-    e.currentTarget.style.backgroundColor = ''
 
-}
 
 </script>
-<style scoped>
+<style scoped lang="less">
+@import url('@/assets/css/common.less');
+
 .header_search {
     padding-left: 4px;
     height: 40px;
     border: 1px solid #ffffff;
-    border-radius: var(--border-radius-max);
+    border-radius: @maxborderraduis;
     overflow: hidden;
     background-color: #f1f2f3;
     display: flex;
@@ -68,50 +59,48 @@ const mouseleave = (e) => {
     max-width: 500px;
     min-width: 253px;
     width: 27vw;
-}
 
-.header_search input {
-    height: 80%;
-    width: 90%;
-    border-radius: var(--border-radius-max);
-    /* background-color: palegoldenrod; */
-    background: none;
-    padding-left: 5px;
-}
+    input {
+        height: 80%;
+        width: 90%;
+        border-radius: @maxborderraduis;
+        /* background-color: palegoldenrod; */
+        background: none;
+        padding-left: 5px;
 
-/* :style="!pageconfigStore.globalclass.includes('scroll') 
-? pageconfigStore.dynamicWH({ normal:  413 , max: 500, min: 253 }) 
-: pageconfigStore.dynamicWH({ normal:  377 , max: 500, min: 253 })" */
-.header_search.scroll {}
+        &:focus {
+            background-color: #e6e7e8;
+        }
+    }
 
-.header_search button {
-    width: 10%;
-    height: 80%;
-    flex-shrink: 1;
-    background: none;
-    border-radius: var(--border-radius-max);
-    border: none;
-    color: #18272a;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.5s;
-}
+    button {
+        width: 10%;
+        height: 80%;
+        flex-shrink: 1;
+        background: none;
+        border-radius: @maxborderraduis;
+        border: none;
+        color: #18272a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.5s;
 
-.header_search.moviepage button {
-    color: #f1f2f3;
-}
+        &:hover {
+            background: @transparency;
+        }
+    }
 
-.header_search button:hover {
-    background: var(--transparency);
-}
+    &.moviepage {
 
-.header_search.searchpage {
-    display: none;
-}
+        background-color: #242628;
 
-.header_search.moviepage {
+        button {
+            color: #f1f2f3;
+        }
+    }
 
-    background-color: #242628;
-}
-</style>
+    &.searchpage {
+        display: none;
+    }
+}</style>

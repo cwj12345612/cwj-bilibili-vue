@@ -29,6 +29,6 @@ onMounted(() => {
   pageconfigStore.initproperty()
 })
 </script>
-<style >
+<style lang="less">
 
 </style>

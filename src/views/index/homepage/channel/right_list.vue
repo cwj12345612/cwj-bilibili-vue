@@ -32,12 +32,13 @@ const list = [
     { id: mock('@id()'), title: '入站必刷', href: "/popular/history", icon: 'colourless yizhuifan' },
     { id: mock('@id()'), title: '排行榜', href: "/popular/rank", icon: 'colourless paihangbang' },
     { id: mock('@id()'), title: '音乐', href: "/popular/music", icon: 'colourless yinle' },
-   
+
 ]
 //#endregion
 
 </script>
-<style scoped>
+<style scoped lang="less">
+@import url('@/assets/css/common.less');
 .right_list {
     flex-grow: 0;
     /* background-color: cornflowerblue; */
@@ -46,12 +47,8 @@ const list = [
     grid-column-gap: 10px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-  justify-content: center;
+    justify-content: center;
     align-items: center;
-    /* 
-    :style="pageconfigStore.dynamicWH({normal:240,max:258,min:240},
-    {normal:66,max:78,min:66})"
-    */
     max-width: 258px;
     min-width: 240px;
     width: 20vw;
@@ -75,6 +72,6 @@ const list = [
 }
 
 .right_list li:hover a {
-    color: #00aeec;
+    color: @colour;
 }
 </style>
