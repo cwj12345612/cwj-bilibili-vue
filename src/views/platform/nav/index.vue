@@ -6,13 +6,11 @@
                 <span>投稿</span>
             </router-link>
         </li>
-        <li :class="li.show ?         'show' : undefined" class="item "
-      
-        v-for="li in list">
-     
-      
-                <router-link :to="li.href"  @click.prevent="show(li.id)" >
-                <div  class="li">
+        <li :class="li.show ? 'show' : undefined" class="item " v-for="li in list">
+
+
+            <router-link :to="li.href" @click.prevent="show(li.id)">
+                <div class="li">
                     <div>
                         <i class="icon" :class="li.icon"></i>
                         <span>{{ li.title }}</span>
@@ -20,14 +18,14 @@
                     <i v-if="li.chidren" class="colourless xialada"></i>
                 </div>
             </router-link>
-                <ul class="chidren">
-                    <li v-for="cd in  li.chidren">
-                        <router-link :to="cd.href">
-                            {{ cd.title }}
-                        </router-link>
-                    </li>
-                </ul>
-         
+            <ul class="chidren">
+                <li v-for="cd in  li.chidren">
+                    <router-link :to="cd.href">
+                        {{ cd.title }}
+                    </router-link>
+                </li>
+            </ul>
+
 
         </li>
     </ul>
@@ -65,7 +63,7 @@ const list = reactive([
 
     },
     {
-        id: 3, title: '数据中心', icon: 'colourless _ico_backtokb', href:( '/platform/data-up'),
+        id: 3, title: '数据中心', icon: 'colourless _ico_backtokb', href: ('/platform/data-up'),
     },
     {
         id: 4, title: '粉丝管理', icon: 'colourless wodeweixuanzhong', href: mock('/platform/fans'),
@@ -79,13 +77,13 @@ const list = reactive([
         show: false
     },
     {
-        id:6,title:'收益管理',icon: 'colourless Bbi',href:'/platform/allowance',
-        chidren:[
-            {      id:mock('@id()'),title:'收益中心',href:'/platform/allowance/center',       },
-            {      id:mock('@id()'),title:'创作激励',href:'/platform/allowance/excitation',       },
-            {      id:mock('@id()'),title:'充电计划',href:'/platform/allowance/upower-manager',       },
+        id: 6, title: '收益管理', icon: 'colourless Bbi', href: '/platform/allowance',
+        chidren: [
+            { id: mock('@id()'), title: '收益中心', href: '/platform/allowance/center', },
+            { id: mock('@id()'), title: '创作激励', href: '/platform/allowance/excitation', },
+            { id: mock('@id()'), title: '充电计划', href: '/platform/allowance/upower-manager', },
         ],
-        show:false
+        show: false
     }
 ])
 //#endregion
@@ -111,9 +109,11 @@ const show = (id) => {
     width: 210px;
     overflow: auto;
 }
-.navlist::-webkit-scrollbar{
+
+.navlist::-webkit-scrollbar {
     display: none;
 }
+
 .navlist .up {
     padding-left: 32px;
     padding-right: 40px;
@@ -157,7 +157,7 @@ const show = (id) => {
 }
 
 .item .li {
-   
+
     height: 46px;
     width: 100%;
     color: #000;
@@ -187,7 +187,8 @@ const show = (id) => {
     color: #000;
     font-size: 14px;
 }
-.chidren li a.router-link-active{
+
+.chidren li a.router-link-active {
     color: #0aaee0;
 }
 </style>

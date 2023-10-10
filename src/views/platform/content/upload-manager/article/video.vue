@@ -29,10 +29,14 @@
     <ul class="videos">
         <li v-for="index in 8">
             <div class="img">
+               <a href="/play" target="_blank">
                 <img src="@\assets\images\视频图片.png" alt="">
+               </a>
             </div>
             <div class="desc">
-                <h3>{{ mock('@cword(5,100)') }}</h3>
+                <h3><a href="/play" target="_blank">
+                    {{ mock('@cword(5,100)') }}
+                </a></h3>
                 <div class="sys">
                     <div class="d">
                         <div class="time">{{ mock('@datetime(yyyy-MM-dd HH:mm:ss)') }}</div>
@@ -208,12 +212,17 @@ const mock = (str) => { return Mock.mock(str) }
     align-items: flex-start;
 }
 
-.videos li .desc h3 {
+.videos li .desc h3 a{
+    display: block;
+    color: #212121;
     font-weight: normal;
-    font-size: 16px;
+    font-size: 15px;
 }
-
+.videos li .desc h3 a:hover{
+    color: #0aaee0;
+}
 .videos li .desc .sys {
+   
     font-size: 16px;
     color: #505050;
     display: flex;
@@ -224,6 +233,7 @@ const mock = (str) => { return Mock.mock(str) }
 }
 
 .videos li .desc .sys .d {
+    color: #99a299;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
