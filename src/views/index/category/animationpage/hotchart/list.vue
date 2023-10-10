@@ -7,18 +7,23 @@
                     <img src="@/assets/images/anime_hotchart1.webp" alt="">
                 </a>
             </div>
-            <div class="desc" :style="`background-color:${mock('@color()')}`">
-                <div class="num" :style="`color:${mock('@color()')}`">
+            <div class="desc"
+            :style="`background-color:${mock('@color()')}`" 
+            >
+                <div class="num"
+               
+                :style="`color:${mock('@color()')}`"
+                >
                     {{ index }}
                 </div>
                 <div class="content">
-                    <div class="title">
+                    <h3 class="title">
                         <a href="/play">
-                            {{ mock('@cword(100)') }}
+                            {{ mock('@cword(5,100)') }}
                         </a>
-                    </div>
+                    </h3>
                     <div class="sys">
-                        {{ mock('@cword(5,10)') }}
+                        {{ mock('@cword(5,100)') }}
                     </div>
                 </div>
             </div>
@@ -81,18 +86,26 @@ li {
     height: 20%;
     display: flex;
     overflow: hidden;
+    /* background-color: aquamarine; */
 }
 
 .num {
-    width: 44px;
-    margin-right: 5px;
+    /* background-color: blanchedalmond; */
+   /* padding-left: 5px;
+   padding-right: 5px; */
+   padding: 0 5px;
     font-size: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-style: oblique;
 }
-
+.content{
+     
+    flex-grow: 0;
+    overflow: hidden;
+    /* background-color: orangered; */
+}
 .title {
     padding-top: 10px;
     font-size: 15px;
@@ -101,14 +114,9 @@ li {
     word-break: break-all;
     white-space: nowrap;
 }
-
-.title a {
-    display: block;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    word-break: break-all;
-    white-space: nowrap;
-    color: #18191c;
+.title a{
+    color: #212121;
+    font-weight: normal;
 }
 
 .title a:hover {
