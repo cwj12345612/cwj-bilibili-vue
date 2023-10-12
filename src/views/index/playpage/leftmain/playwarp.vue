@@ -7,12 +7,12 @@
         <div class="bottom">
             <div class="videoinfo">
                 <div class="line">
-                    <span style="color: #0aaee0;">{{ mock({ 'num|10-456': 456 }).num }}&nbsp;</span>
+                    <span style="color: #0aaee0;">{{ mock({ 'num|100000-450006': 456 }).num }}&nbsp;</span>
                     <span>用户正在观看</span>
                 </div>
                 <span>&nbsp;,&nbsp;</span>
                 <div class="danmucount">
-                    <span>已装填<span style="color: #0aaee0;">{{ mock({ 'num|100-34552': 34552 }).num }}</span>条弹幕</span>
+                    <span>已装填<span style="color: #0aaee0;">{{ mock({ 'num|10000-134552': 34552 }).num }}</span>条弹幕</span>
                 </div>
             </div>
 
@@ -61,23 +61,14 @@ const router = useRouter()
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
-const videolist = reactive(
 
-    [
-        'http://s2.pstatp.com/cdn/expire-1-M/byted-player-videos/1.0.0/xgplayer-demo.mp4',
-        'http://192.168.88.4:8080/videos/%E3%80%90%E8%93%9D%E5%85%89%E3%80%91%E9%AB%98%E6%A1%A5%E4%BC%98%E3%80%8A%E3%83%A4%E3%82%AD%E3%83%A2%E3%83%81%E3%80%8B%E7%A5%9E%E6%9B%B2MV%E5%AE%8C%E6%95%B4%E7%89%88(%E3%80%8A%E8%B5%B7%E9%A3%8E%E4%BA%86%E3%80%8B%E6%97%A5%E8%AF%AD%E5%8E%9F%E7%89%88).%E9%AB%98%E6%A1%A5%E4%BC%98_-_%E3%83%A4%E3%82%AD%E3%83%A2%E3%83%81(%E8%B5%B7%E9%A3%8E%E4%BA%86%E5%8E%9F%E7%89%88)%E8%B0%83%E6%95%B4.142658529.mp4',
-        'http://192.168.88.4:8080/videos/%E3%80%904K60FPS%E3%80%91%E5%9D%82%E4%BA%95%E6%B3%89%E6%B0%B4%E3%80%8A%E6%B8%90%E6%B8%90%E8%A2%AB%E4%BD%A0%E5%90%B8%E5%BC%95%E3%80%8BHires%E7%89%88%E6%9C%AC!%E3%80%8A%E9%BE%99%E7%8F%A0GT%E3%80%8B%E4%B8%BB%E9%A2%98%E6%9B%B2!.%E5%9D%82%E4%BA%95%E6%B3%89%E6%B0%B4_-_%E6%B8%90%E6%B8%90%E8%A2%AB%E4%BD%A0%E5%90%B8%E5%BC%95_%E5%AE%8C%E6%95%B44K%E7%89%88.293621212.mp4',
-        'http://192.168.88.4:8080/videos/4K%E6%94%B6%E8%97%8F%E7%BA%A7!%E3%80%8A%E6%9C%AA%E9%97%BB%E8%8A%B1%E5%90%8D%E3%80%8Bsecret_base_~%E5%90%9B%E3%81%8C%E3%81%8F%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE~_-_Silent_Siren(cove).secret_base_~%E5%90%9B%E3%81%8C%E3%81%8F%E3%82%8C%E3%81%9F%E3%82%82%E3%81%AE~_(10_years_after_Ver.).391932885.mp4',
-        'http://192.168.88.4:8080/videos/%E8%B6%85%E5%A5%BD%E5%90%AC%E7%9A%84%E6%97%A5%E8%AF%AD%E6%AD%8C%E3%80%8A%E3%81%82%E3%81%A8%E3%81%B2%E3%81%A8%E3%81%A4%E3%80%8B%E8%87%B4%E9%80%90%E6%A2%A6%E8%B7%AF%E4%B8%8A%E7%9A%84%E6%88%91%E4%BB%AC~.%E6%9C%AA%E5%91%BD%E5%90%8D.347281018.mp4'
-    ]
-)
 const mock = (str) => { return Mock.mock(str) }
 //#endregion
 let player = null
 onMounted(() => {
     //#region 
     let comments = []
-    for (let i = 0; i < 300; i++) {
+    for (let i = 0; i < 30000; i++) {
         comments.push(
             {
                 duration: parseInt(mock({ 'num|5000-30000': 30000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
@@ -96,7 +87,7 @@ onMounted(() => {
             }
         )
     }
-    console.log(comments.length)
+    // console.log(comments.length)
     // comments.forEach(c=>{
     //     console.log(c)
     // })
@@ -106,7 +97,7 @@ onMounted(() => {
         height: '100%',
         width: '100%',
         plugins: [Danmu],
-        url: videolist[0],
+        url: 'http://s2.pstatp.com/cdn/expire-1-M/byted-player-videos/1.0.0/xgplayer-demo.mp4',
 
         danmu: {
 
@@ -119,10 +110,12 @@ onMounted(() => {
 
 })
 const change = () => {
-    console.log('发送弹幕')
+    // console.log('发送弹幕')
+    console.log(player)
+    player.config.url=''
     let index = parseInt((Math.random() * 10))
     index = index < 4 ? index : 3;
-    console.log(player.plugins.danmu)
+ 
     player.plugins.danmu.sendComment(
         {
             duration: parseInt(mock({ 'num|5000-30000': 30000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
