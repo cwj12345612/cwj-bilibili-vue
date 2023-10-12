@@ -73,7 +73,7 @@ const mock = (str) => { return Mock.mock(str) }
 */
     max-width: 1360px;
     min-width: 668px;
-    width: 48vw;
+    width: 55vw;
 }
 
 .playpage_leftmain .title {
