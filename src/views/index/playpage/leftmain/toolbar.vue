@@ -9,7 +9,7 @@
                 <i class="colourless Bbi"></i>
                 <span>{{ mock({ 'num|10-33': 33 }).num + '万' }}</span>
             </li>
-            <li >
+            <li>
                 <i class="colourless shoucang"></i>
                 <span>{{ mock({ 'num|10-33': 33 }).num + '万' }}</span>
             </li>
@@ -20,21 +20,21 @@
 
         </ul>
         <ul class="other">
-           <li>
-           
+            <li>
+
                 <i class="colourless tousu"></i>
                 <span>稿件投诉</span>
-            
-           </li>
-           <li>
-            <i class="colourless _ico_reply"></i>
-            <span>记笔记</span>
-           </li>
-          <li>
-          
+
+            </li>
+            <li>
+                <i class="colourless _ico_reply"></i>
+                <span>记笔记</span>
+            </li>
+            <li>
+
                 <i class="colourless diandiandianshu"></i>
-            
-          </li>
+
+            </li>
         </ul>
     </div>
 </template>
@@ -61,7 +61,7 @@ const mock = (str) => { return Mock.mock(str) }
 //#endregion
 
 </script>
-<style scoped>
+<style scoped lang="less">
 .toolbar {
     padding: 16px 0 15px 0;
     width: 100%;
@@ -70,44 +70,53 @@ const mock = (str) => { return Mock.mock(str) }
     display: flex;
     justify-content: space-between;
     border-bottom: 2px solid #e6e7e8;
-}
 
-.sanlian {
-    display: flex;
-    align-items: center;
-    /* background-color: blueviolet; */
-}
+    .sanlian {
+        display: flex;
+        align-items: center;
 
-.sanlian li{
-    cursor: pointer;
-    font-size: 20px;
-    margin-right: 20px;
-}
-.sanlian li:hover{
-color: rgb(0, 174, 236);
-}
-.sanlian li i{
-    font-size: 20px;
-}
-.toolbar .other{
-    display: flex;
-    align-items: center;
-    /* background-color: teal; */
+        /* background-color: blueviolet; */
+        li {
+            cursor: pointer;
+            font-size: 18px;
+            margin-right: 20px;
 
-}
-.toolbar .other li{
-    font-size: 20px;
-    cursor: pointer;
-    margin-left: 20px;
+            &.yes {
+                color: #0aaee0;
+            }
 
-}
-.toolbar .other li:hover{
-    color: rgb(0, 174, 236);
-}
-.toolbar .other li i{
-    font-size: 20px;
-}
-.sanlian li.yes{
-    color: rgb(0, 174, 236);
+            &:hover {
+                color: #0aaee0;
+            }
+
+            i {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .other {
+        display: flex;
+        align-items: center;
+
+        /* background-color: teal; */
+        li {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 20px;
+
+            &:hover {
+                color: #0aaee0;
+            }
+
+
+
+            i {
+                font-size: 20px;
+            }
+        }
+    }
 }
 </style>

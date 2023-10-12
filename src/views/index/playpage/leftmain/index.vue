@@ -29,7 +29,7 @@ const mock = (str) => { return Mock.mock(str) }
     <div class="playpage_leftmain">
         <div class="title">
             <h1>
-                {{ mock('@cword(20,100)') }}
+                {{ mock('@cword(5,100)') }}
             </h1>
             <div class="detail">
                 <span>
@@ -89,22 +89,23 @@ const mock = (str) => { return Mock.mock(str) }
 }
 
 .playpage_leftmain .title h1 {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: normal;
-    width: 100%;
+  
     color: #18191c;
     font-size: 20px;
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    /* background-color: blueviolet; */
 }
 
 .playpage_leftmain .title .detail {
     font-size: 13px;
     color: #9499a0;
 
-    width: 100%;
-    justify-content: flex-start;
+   /* background-color: aqua; */
+  
     display: flex;
     align-items: center;
 
@@ -112,5 +113,8 @@ const mock = (str) => { return Mock.mock(str) }
 
 .playpage_leftmain .title .detail>span {
     margin-right: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 </style>
