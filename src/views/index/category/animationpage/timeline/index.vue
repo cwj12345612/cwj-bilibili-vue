@@ -40,10 +40,11 @@ width: 90vw;
 {normal:367,max:460,min:367})"
 */
 max-height: 460px;
-min-height: 367px;
-height: 30vh;
+min-height: 385px;
+height: 40vh;
+/* aspect-ratio: 10/4; */
     margin-top: 50px;
-    /* background-color: blanchedalmond; */
+    background-color: blanchedalmond;
     display: grid;
     grid-template-rows: 50px 1fr;
     grid-row-gap: 20px;

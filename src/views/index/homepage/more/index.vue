@@ -34,7 +34,7 @@ const mock=(str)=>{return Mock.mock(str)}
 <style scoped>
 .homepage_more{
     /* background-color: burlywood; */
-margin-top: 15px;
+margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(5,1fr);
     grid-template-rows: 100%;

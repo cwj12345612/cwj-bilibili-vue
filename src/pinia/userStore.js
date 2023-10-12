@@ -12,10 +12,10 @@ export const useUserStore = defineStore('useUserStore', {
     getters: {
         /**
          * 
-         * @returns 是否已经1登录
+         * @returns 是否已经登录
          */
         isLogin(){
-            return true;
+            return false;
         }
     }
 })

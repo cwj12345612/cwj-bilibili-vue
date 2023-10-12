@@ -42,8 +42,8 @@ const mock=(str)=>{return Mock.mock(str)}
     max-width: 1980px;
 min-width: 1020px;
 width: 91vw;
-min-height: 436px;
+/* min-height: 436px;
 max-height: calc(297px * 2 +  20px);
-height: 60vh;
+height: 60vh; */
 }
 </style>
