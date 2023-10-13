@@ -7,7 +7,7 @@
         </label>
         <label class="upload" for="upload">
             <span>上传视频</span>
-            <input type="file" id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="change">
+            <input type="file" multiple id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="change">
         </label>
         <ul class="desc">
             <a href="https://www.bilibili.com/blackboard/blackroom.html" target="_blank">
@@ -38,7 +38,7 @@
 
                     <br>
                     <span>请不要上传冒充视频格式的其他类型文件 (如图片格式修改为MP4格式)</span>
-                    
+
                     <br>
                     <span>一经发现则封号处理</span>
                 </div>
@@ -48,7 +48,7 @@
     <form v-if="uploadStore.ing">
 
         <div class="header">
-            <h3>3个视频 共4GB</h3>
+            <h3>3个视频 共4GB<span style="color: #99a299;font-size: 13px;margin-left: 20px;">剩余{{ 200-3 }}集且容量{{ 20-4 }}GB</span></h3>
             <label class="add" for="add">添加视频</label>
             <input id="add" type="file" style="display: none;">
 
@@ -182,10 +182,8 @@ const show3 = ref(false)
 </script>
 <style scoped>
 .video_upload {
-
     /* background-color: #fff; */
     width: 826px;
-
     height: 266px;
     max-height: 500px;
     margin: 0 auto;
