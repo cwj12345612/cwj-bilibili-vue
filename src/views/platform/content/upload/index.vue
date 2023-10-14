@@ -14,8 +14,8 @@
 </template>
 <script setup>
 // #region  引入组件
-import video_upload from './video.vue'
-import text_upload from './text.vue'
+import video_upload from './video'
+import text_upload from './text'
 //  #endregion
 
 // #region 引入vue pinia 路由
