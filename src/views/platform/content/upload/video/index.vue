@@ -98,24 +98,29 @@
                 </li>
                 <li>
 
-                    <div class="title">标题</div>
+                    <label class="title" 
+                    for="title"
+                    :title="form.title">标题</label>
                     <div class="content c1">
-                        <input type="text" maxlength="100" v-model="form.title" placeholder="请输入标题">
-                        <span>{{form.title.length}} / {{ config.title_count }}</span>
+                        <input
+                        id="title"
+                        :title="form.title"
+                        type="text" maxlength="100" v-model="form.title" placeholder="请输入标题">
+                        <span>{{ form.title.length }} / {{ config.title_count }}</span>
                     </div>
                 </li>
                 <li>
                     <div class="title">类型</div>
                     <div class="content c2">
                         <div>
-                            <input type="radio"  v-model="form.type" value="zizhi" :value="zhizhi" name="type"><span>自制</span>
+                            <input type="radio" v-model="form.type" value="zizhi" :value="zhizhi"
+                                name="type"><span>自制</span>
                         </div>
                         <div class="zz">
-                            <input type="radio" v-model="form.type" value="zhuanzai" name="type"><span style="margin-right: 10px;">转载</span>
-                            <input type="text"
-                            :disabled="form.type==='zizhi'" 
-                            v-model="form.zhuanzai"
-                             placeholder="转载请注明出处">
+                            <input type="radio" v-model="form.type" value="zhuanzai" name="type"><span
+                                style="margin-right: 10px;">转载</span>
+                            <input type="text" :disabled="form.type === 'zizhi'" v-model="form.zhuanzai"
+                                placeholder="转载请注明出处">
                         </div>
 
                     </div>
@@ -123,60 +128,60 @@
                 <li>
                     <div class="title">分区</div>
                     <div class="content c3">
-                        <select >
-                       <option selected >请选择分区</option>
-                            <option v-for="index in 7"   :value="mock('@cword(3,10)')">{{ mock('@cword(5,20)') }}</option>
+                        <select>
+                            <option selected>请选择分区</option>
+                            <option v-for="index in 7" :value="mock('@cword(3,10)')">{{ mock('@cword(5,20)') }}</option>
 
                         </select>
                     </div>
                 </li>
                 <li>
-                    <div class="title" style="align-self: flex-start;">标签</div>
+                    <label class="title" 
+                   for="tags"
+                    style="align-self: flex-start;">标签</label>
                     <div class="content c4">
                         <div class="input">
-                           <ul style="flex-shrink: 0;">
-                            <span 
-                            @click.prevent="deltag(tag)"
-                            v-for="tag in form.tags"
-                            class="tag">{{ tag }}</span>
-                           </ul>
-
-
-                            <input type="text"
-                            ref="videoupload_tags"
-                            v-if="config.tags_count>form.tags.length"
-                            @keyup.ctrl.enter="addtag($event.target.value)"
-                            placeholder="按下ctrl键加enter键添加,点击标签删除">
-                            <span class="sys">还可以添加{{ config.tags_count-form.tags.length }}个标签</span>
+                            <ul class="tags">
+                                <span
+                                title="点击删除"
+                                @click.prevent="deltag(tag)" v-for="tag in form.tags" class="tag">{{ tag }}</span>
+                            </ul>
+                            <input type="text" 
+                            id="tags"
+                            ref="videoupload_tags" v-if="config.tags_count > form.tags.length"
+                                @keyup.enter="addtag($event.target.value)" placeholder="按下enter键添加,点击标签删除">
+                            <span class="sys">还可以添加{{ config.tags_count - form.tags.length }}个标签</span>
                         </div>
                         <div class="tag">
-                            <div class="t">
+                            <div class="t" v-if="tags.length>0&&(config.tags_count>form.tags.length)">
                                 <h4>推荐标签</h4>
                                 <ul class="list">
-                                    <li v-for="index in 10">
-
-                                        {{ mock('@cword(2,5)') }}</li>
+                                    <li v-for="tag in tags" @click.prevent="addtag(tag)">
+                                        {{ tag }}</li>
                                 </ul>
                             </div>
-                            <div class="hua">
+                            <div class="hua" v-if="huas.length>0&&(config.tags_count>form.tags.length)">
                                 <h4>推荐话题</h4>
                                 <ul class="hualist">
-                                    <li v-for="index in 10">{{ mock('@cword(2,5)') }}</li>
+                                    <li @click.prevent="addtag(hua)" v-for="hua in huas">{{ hua }}</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </li>
                 <li>
-                    <div class="title" style="align-self: flex-start;">简介</div>
+                    <label
+                    for="deatils"
+                    class="title" style="align-self: flex-start;">简介</label>
                     <div class="content c5">
-                        <textarea 
-                        v-model="form.deatil"
-                        cols="30" rows="10" placeholder="输入视频简介"></textarea>
+                        <textarea
+                        id="deatils"
+                        :maxlength="config.deatils_size"
+                        v-model="form.deatil" cols="30" rows="10" placeholder="输入视频简介"></textarea>
                     </div>
                 </li>
                 <div class="submit">
-                    <button>立即投稿</button>
+                    <button type="submit" @click.prevent="">立即投稿</button>
                 </div>
             </ul>
         </div>
@@ -201,15 +206,16 @@ const router = useRouter()
 
 //#region 需要上传的全部内容 
 //
+
 const videos = reactive([])
 //上传表单
 const form = reactive({
     cover: null,
     title: '',
     type: 'zhuanzai',
-    zhuanzai:'',
+    zhuanzai: '',
     ca: '',
-    tags: ['你好世界','符合规定是','天天学习'],
+    tags: [],
     deatil: '',
 })
 //配置限制
@@ -256,15 +262,15 @@ const add = (e) => {
     }
     uploadStore.uploadstart('video');
 }
-const videoupload_tags=ref()
-const addtag=(val)=>{
-val=val.trim()
-if(val==''||form.tags.includes(val)||form.tags.length>=config.tags_count) return
-form.tags.push(val)
-videoupload_tags.value.value=''
+const videoupload_tags = ref()
+const addtag = (val) => {
+    val = val.trim()
+    if (val == '' || form.tags.includes(val) || form.tags.length >= config.tags_count) return
+    form.tags.push(val)
+    videoupload_tags.value.value = ''
 }
-const deltag=(name)=>{
-    form.tags=form.tags.filter(tag=>tag!==name)
+const deltag = (name) => {
+    form.tags = form.tags.filter(tag => tag !== name)
 }
 //计算属性 视频总大小 MB
 const videos_size = computed(() => {
@@ -288,12 +294,31 @@ const show2 = ref(false)
 const show3 = ref(false)
 // #region 方便测试 给videos添加第一个视频
 onMounted(() => {
-
     videos.push({
         name: '第一个视频.mp4',
         size: '344453333'
     })
+    // videos.length=0
     uploadStore.uploadstart('video');
+})
+//推荐标签 推荐话题
+const reclist = reactive({
+    tags: [],
+    huas: []
+})
+const tags = computed(() => {
+    return reclist.tags.filter(tag => !form.tags.includes(tag))
+})
+const huas = computed(() => {
+    return reclist.huas.filter(tag => !form.tags.includes(tag))
+})
+onMounted(() => {
+    for (let i = 0; i < mock('@integer(3,15)'); i++) {
+        reclist.tags.push(mock('@cword(3,7)'))
+    }
+    for (let i = 0; i < mock('@integer(3,15)'); i++) {
+        reclist.huas.push(mock('@cword(3,7)'))
+    }
 })
 //#endregion
 /**
@@ -331,7 +356,6 @@ onMounted(() => {
 }
 
 .video_upload .upload {
-
     height: 40px;
     width: 150px;
     border-radius: 8px;
@@ -562,25 +586,33 @@ form .header .add {
     align-items: center;
     justify-content: space-between;
 }
-.c4 .input .tag{
+
+.c4 .input .tags {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.c4 .input .tag {
     cursor: pointer;
     margin: 0;
     display: inline;
     flex-shrink: 0;
-    color:#fff;
+    color: #fff;
     background-color: #0aaee0;
     font-size: 13px;
     padding: 2px;
     border-radius: 4px;
     margin-right: 3px;
 }
+
 .c4 .input input {
     // padding-left: 5px;
     width: 80%;
     height: 90%;
 }
 
-.c4 .input span.sys  {
+.c4 .input span.sys {
     flex-shrink: 0;
     color: #e6e7e8;
 }
@@ -606,8 +638,9 @@ form .header .add {
 }
 
 .c4 .tag li {
-  background:rgba(0,0,0,0.3);
-    color:#212121;
+    background: rgba(0, 0, 0, 0.3);
+    color: #212121;
+    margin-bottom: 20px;
 }
 
 .c4 .tag .t .list li {
