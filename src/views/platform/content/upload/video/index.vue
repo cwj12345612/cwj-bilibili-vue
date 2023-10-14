@@ -170,7 +170,9 @@
                 <li>
                     <div class="title" style="align-self: flex-start;">简介</div>
                     <div class="content c5">
-                        <textarea cols="30" rows="10" placeholder="输入视频简介"></textarea>
+                        <textarea 
+                        v-model="form.deatil"
+                        cols="30" rows="10" placeholder="输入视频简介"></textarea>
                     </div>
                 </li>
                 <div class="submit">
@@ -636,8 +638,11 @@ form .header .add {
     border-radius: 4px;
 }
 
-.c5 textarea {
+.c5 textarea,
+.c5 textarea:focus {
+    outline: none;
     width: 80%;
+    border: 1px solid #99a299;
 }
 
 .submit button {
