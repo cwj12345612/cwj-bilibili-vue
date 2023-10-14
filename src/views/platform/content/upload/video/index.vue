@@ -7,7 +7,7 @@
         </label>
         <label class="upload" for="upload">
             <span>上传视频</span>
-            <input type="file" multiple id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="change">
+            <input type="file" id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="add">
         </label>
         <ul class="desc">
             <a href="https://www.bilibili.com/blackboard/blackroom.html" target="_blank">
@@ -46,26 +46,36 @@
         </ul>
     </div>
     <form v-if="uploadStore.ing">
-
         <div class="header">
-            <h3>3个视频 共4GB<span style="color: #99a299;font-size: 13px;margin-left: 20px;">剩余{{ 200-3 }}集且容量{{ 20-4 }}GB</span></h3>
+            <h3>{{ videos.length }} 个视频 共 {{ videos_size }} MB
+                <span>
+                    剩余{{ config.video_count - videos.length }}集且容量{{ config.videos_size - videos_size
+                    }}MB</span>
+            </h3>
             <label class="add" for="add">添加视频</label>
-            <input id="add" type="file" style="display: none;">
-
+            <input id="add" multiple @change="add" type="file" accept=".mp4 , .flv , .mkv" style="display: none;">
         </div>
         <div class="form">
             <ul class="videos">
-                <li v-for="index in 4">
+                <li v-for="(file, index) in videos">
                     <div class="icon">
                         <i class="colourless bofangshu"></i>
                     </div>
                     <div class="desc">
                         <div class="title">
-                            <h4>
-                                {{ mock('@cword(10,30)') }}
-                            </h4>
+                            <div style="display: flex;align-items: flex-end;">
+                                <h4>
+
+                                    {{ file.name.length <= 20 ? file.name.substring(0, file.name.lastIndexOf('.')) :
+                                        file.name.substring(0, 20) }} <!-- {{
+                                        file.name.substring(0,file.name.lastIndexOf('.')) }} -->
+                                </h4>
+                                <span style="font-size: 13px; color: #99a299;flex-shrink: 0;margin-left: 10px;">类型:
+                                    {{ file.name.substring(file.name.lastIndexOf('.') + 1) }}</span>
+                            </div>
                             <div class="setting">
-                                <span style="margin-right: 20px;">0%</span>
+                                <span style="margin-right: 20px;color: #99a299;font-size: 14px;">30MB/{{
+                                    fileSzieToString(file) }}</span>
                                 <i class="colourless bofangqi-zanting" title="暂停上传"></i>
                                 <i class="colourless shuayishua" title="重新上传"></i>
                                 <i class="colourless guanbi" title="取消上传"></i>
@@ -77,21 +87,35 @@
             </ul>
             <ul class="text">
                 <li>
+                    <div class="title">封面</div>
+                    <div class="content img">
+
+                        <img class="videoupload_img" src="@\assets\images\初夏之星.png" alt="">
+                        <input accept=".jpg , .jpeg , .png" type="file" id="videoupload_img" @change="changeimg"
+                            style="display: none;">
+                        <label for="videoupload_img">点击更换封面</label>
+                    </div>
+                </li>
+                <li>
+
                     <div class="title">标题</div>
                     <div class="content c1">
-                        <input type="text" :value="mock('@cword(100)')" placeholder="请输入标题">
-                        <span>8/100</span>
+                        <input type="text" maxlength="100" v-model="form.title" placeholder="请输入标题">
+                        <span>{{form.title.length}} / {{ config.title_count }}</span>
                     </div>
                 </li>
                 <li>
                     <div class="title">类型</div>
                     <div class="content c2">
                         <div>
-                            <input type="radio" checked name="type"><span>自制</span>
+                            <input type="radio"  v-model="form.type" value="zizhi" :value="zhizhi" name="type"><span>自制</span>
                         </div>
                         <div class="zz">
-                            <input type="radio" name="type"><span style="margin-right: 10px;">转载</span>
-                            <input type="text" placeholder="转载请注明出处">
+                            <input type="radio" v-model="form.type" value="zhuanzai" name="type"><span style="margin-right: 10px;">转载</span>
+                            <input type="text"
+                            :disabled="form.type==='zizhi'" 
+                            v-model="form.zhuanzai"
+                             placeholder="转载请注明出处">
                         </div>
 
                     </div>
@@ -99,9 +123,9 @@
                 <li>
                     <div class="title">分区</div>
                     <div class="content c3">
-                        <select>
-                            <option selected>{{ mock('@cword(5,10)') }}</option>
-                            <option v-for="index in 7">{{ mock('@cword(5,20)') }}</option>
+                        <select >
+                       <option selected >请选择分区</option>
+                            <option v-for="index in 7"   :value="mock('@cword(3,10)')">{{ mock('@cword(5,20)') }}</option>
 
                         </select>
                     </div>
@@ -110,8 +134,20 @@
                     <div class="title" style="align-self: flex-start;">标签</div>
                     <div class="content c4">
                         <div class="input">
-                            <input type="text" placeholder="按下回车键Enter添加标签">
-                            <span>还可以添加{{ mock('@integer(3,10)') }}个标签</span>
+                           <ul style="flex-shrink: 0;">
+                            <span 
+                            @click.prevent="deltag(tag)"
+                            v-for="tag in form.tags"
+                            class="tag">{{ tag }}</span>
+                           </ul>
+
+
+                            <input type="text"
+                            ref="videoupload_tags"
+                            v-if="config.tags_count>form.tags.length"
+                            @keyup.ctrl.enter="addtag($event.target.value)"
+                            placeholder="按下ctrl键加enter键添加,点击标签删除">
+                            <span class="sys">还可以添加{{ config.tags_count-form.tags.length }}个标签</span>
                         </div>
                         <div class="tag">
                             <div class="t">
@@ -139,13 +175,12 @@
                 </li>
                 <div class="submit">
                     <button>立即投稿</button>
-
                 </div>
             </ul>
         </div>
     </form>
 </template>
-<script setup>
+<script setup >
 // #region  引入组件
 
 //  #endregion
@@ -155,32 +190,120 @@ import { computed, ref, defineEmits, reactive, watch, toRef, toRefs, onMounted, 
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
 import { useuploadStore } from '@/pinia/uploadstore.js'
 import { useRoute, useRouter } from 'vue-router'
+import { fileSzieToString } from '@/utils/fileUtils'
 const pageconfigStore = usepageconfigStore()
 const uploadStore = useuploadStore()
 const route = useRoute()
 const router = useRouter()
 // #endregion
 
+//#region 需要上传的全部内容 
+//
+const videos = reactive([])
+//上传表单
+const form = reactive({
+    cover: null,
+    title: '',
+    type: 'zhuanzai',
+    zhuanzai:'',
+    ca: '',
+    tags: ['你好世界','符合规定是','天天学习'],
+    deatil: '',
+})
+//配置限制
+const config = reactive({
+    video_count: 20,
+    //单位MB
+    videos_size: 20 * 1024,
+    title_count: 100,
+    tags_count: 7,
+    deatils_size: 1000
+
+})
+//#endregion
+/**
+ * 更换视频封面
+ * @param {*} e 
+ */
+const changeimg = (e) => {
+    let files = e.target.files
+    if (!files?.length) return
+    let fr = new FileReader();
+    fr.readAsDataURL(files[0])
+    fr.onload = (e) => {
+        document.querySelector('.videoupload_img').src = e.target.result
+        form.cover = files[0]
+        console.log(form.cover)
+    }
+
+}
+//#region 方法
+const add = (e) => {
+    // console.log('此处需要检查视频是否符合要求')
+    const files = e.target.files;
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        // alert(file.name)
+        // 对每个文件进行检查
+        if (file.name.substring(0, file.name.lastIndexOf('.')).length > 20) {
+            // alert("文件名过长 请减短文件名\n"+file.name);
+            // break
+        }
+        //
+        videos.push(file)
+    }
+    uploadStore.uploadstart('video');
+}
+const videoupload_tags=ref()
+const addtag=(val)=>{
+val=val.trim()
+if(val==''||form.tags.includes(val)||form.tags.length>=config.tags_count) return
+form.tags.push(val)
+videoupload_tags.value.value=''
+}
+const deltag=(name)=>{
+    form.tags=form.tags.filter(tag=>tag!==name)
+}
+//计算属性 视频总大小 MB
+const videos_size = computed(() => {
+    let count = 0
+    for (let i = 0; i < videos.length; i++) {
+        const file = videos[i]
+        count += parseInt(file.size / (1024 * 1024))
+    }
+    return count
+})
+//#endregion
+
+
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
-const change = () => {
-    uploadStore.uploading('video');
-}
-const submit = () => {
-
-    uploadStore.uploadend();
-}
 const show1 = ref(false)
 const show2 = ref(false)
 const show3 = ref(false)
+// #region 方便测试 给videos添加第一个视频
+onMounted(() => {
+
+    videos.push({
+        name: '第一个视频.mp4',
+        size: '344453333'
+    })
+    uploadStore.uploadstart('video');
+})
+//#endregion
+/**
+* 添加第一个视频文件
+* @param {*} e
+*/
 
 //#endregion
 
 </script>
-<style scoped>
+<!-- <style lang="less" scoped  src="@\assets\css\test.less"></style> -->
+<style scoped lang="less">
 .video_upload {
     /* background-color: #fff; */
     width: 826px;
@@ -273,6 +396,13 @@ form .header h3 {
     font-weight: normal;
     margin-right: 20px;
     font-size: 20px;
+
+    span {
+
+        color: #99a299;
+        font-size: 13px;
+        // margin-left: 20px;
+    }
 }
 
 form .header .add {
@@ -328,11 +458,12 @@ form .header .add {
 .videos li .desc .title {
     display: flex;
     align-items: center;
-    width: 100%;
+
     justify-content: space-between;
 }
 
 .videos li .desc .title h4 {
+
     font-weight: normal;
     font-size: 20px;
 }
@@ -361,7 +492,7 @@ form .header .add {
 }
 
 .text li {
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     display: grid;
     width: 100%;
     grid-template-columns: 200px 1fr;
@@ -422,20 +553,33 @@ form .header .add {
 }
 
 .c4 .input {
-    height: 30px;
+    height: 40px;
     width: 100%;
     border: 2px solid #e6e7e8;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-
+.c4 .input .tag{
+    cursor: pointer;
+    margin: 0;
+    display: inline;
+    flex-shrink: 0;
+    color:#fff;
+    background-color: #0aaee0;
+    font-size: 13px;
+    padding: 2px;
+    border-radius: 4px;
+    margin-right: 3px;
+}
 .c4 .input input {
+    // padding-left: 5px;
     width: 80%;
     height: 90%;
 }
 
-.c4 .input span {
+.c4 .input span.sys  {
+    flex-shrink: 0;
     color: #e6e7e8;
 }
 
@@ -460,7 +604,8 @@ form .header .add {
 }
 
 .c4 .tag li {
-    background-color: #e6e7e8;
+  background:rgba(0,0,0,0.3);
+    color:#212121;
 }
 
 .c4 .tag .t .list li {
@@ -501,5 +646,31 @@ form .header .add {
     color: #fff;
     border: none;
     border-radius: 6px;
+}
+
+.text .img {
+
+    aspect-ratio: 16/9;
+    height: 100px;
+    /* background-color: gold; */
+    position: relative;
+}
+
+.text .img label {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    color: #fff;
+    padding: 5px 0;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: 13px;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.6);
+    }
 }
 </style>

@@ -7,7 +7,7 @@ export const useuploadStore=defineStore('uploadStore',{
         /**
          * 是否正在上传
          */
-        ing:true,
+        ing:false,
         /**
          * 上传文件类型 
          *      video text audio
@@ -15,11 +15,18 @@ export const useuploadStore=defineStore('uploadStore',{
     type:null,
     }),
     actions:{
-        uploading(type){
-            console.log('上传'+type)
+        /**
+         * 开启文件上传
+         * @param {} type 
+         */
+        uploadstart(type){
+            // console.log('上传'+type)
             this.ing=true
             this.type=type
         },
+        /**
+         * 文件上传完成
+         */
         uploadend(){
             this.ing=false
             this.type=null
