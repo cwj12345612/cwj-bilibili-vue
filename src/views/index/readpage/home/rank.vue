@@ -1,5 +1,7 @@
 <template>
-<div class="rank"></div>
+<div class="rank">
+    排行榜
+</div>
 </template>
 <script setup>
 // #region  引入组件
@@ -28,7 +30,7 @@ const mock=(str)=>{return Mock.mock(str)}
 .rank{
     height: 600px;
     
-    background-color: olivedrab;
+    /* background-color: olivedrab; */
     width: 20%;
 }
 </style>

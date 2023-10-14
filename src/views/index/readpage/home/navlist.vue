@@ -54,7 +54,7 @@ const navlist = reactive([
 .navlist {
     padding-left: 30px;
     width: 200px;
-    background-color: burlywood;
+    /* background-color: burlywood; */
 
 }
 

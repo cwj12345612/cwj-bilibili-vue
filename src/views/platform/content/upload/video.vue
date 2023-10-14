@@ -55,7 +55,7 @@
         </div>
         <div class="form">
             <ul class="videos">
-                <li v-for="index in 100">
+                <li v-for="index in 4">
                     <div class="icon">
                         <i class="colourless bofangshu"></i>
                     </div>

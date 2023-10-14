@@ -8,7 +8,7 @@
 <script setup>
 // #region  引入组件
 import readpage_home_navlist from './navlist.vue'
-import readpage_home_content from './content.vue'
+import readpage_home_content from './content'
 import readpage_home_rank from './rank.vue'
 //  #endregion
 
@@ -36,7 +36,7 @@ const submit=(ca)=>{
 .home {
  margin-top: 20px;
     /* height: 680px; */
-    background-color: aqua;
+    /* background-color: aqua; */
     max-width: 1980px;
     min-width: 1020px;
     width: 91vw;
@@ -44,10 +44,5 @@ const submit=(ca)=>{
     justify-content: space-between;
 }
 
-.content{
-    height: 600px;
-    overflow: auto;
-    background-color: palevioletred;
-    width: 60%;
-}
+
 </style>

@@ -36,13 +36,17 @@ const readpage = {
             children: [
                 {
                     path: ':ca',
-                    component: () => import('@/views/index/readpage/home')
-                }
+                    component: () => import('@/views/index/readpage/home'),
+                  name:'read_home'  
+                },
+              
+
             ]
         },
         {
-            path: 'readlist',
-            component: () => import('@/views/index/readpage/readlist.vue')
+            path: 'readlist/:id',
+            component: () => import('@/views/index/readpage/readlist.vue'),
+            
         },
         {
             path: ':cid',
