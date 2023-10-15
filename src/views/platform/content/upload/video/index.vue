@@ -158,14 +158,18 @@
                             <div class="t" v-if="tags.length>0&&(config.tags_count>form.tags.length)">
                                 <h4>推荐标签</h4>
                                 <ul class="list">
-                                    <li v-for="tag in tags" @click.prevent="addtag(tag)">
+                                    <li
+                                    title="点击添加"
+                                    v-for="tag in tags" @click.prevent="addtag(tag)">
                                         {{ tag }}</li>
                                 </ul>
                             </div>
                             <div class="hua" v-if="huas.length>0&&(config.tags_count>form.tags.length)">
                                 <h4>推荐话题</h4>
                                 <ul class="hualist">
-                                    <li @click.prevent="addtag(hua)" v-for="hua in huas">{{ hua }}</li>
+                                    <li 
+                                    title="点击添加"
+                                    @click.prevent="addtag(hua)" v-for="hua in huas">{{ hua }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -472,9 +476,10 @@ form .header .add {
 }
 
 .videos li .desc {
-    padding-top: 5px;
-    padding-bottom: 10px;
-    padding-right: 20px;
+    // padding-top: 5px;
+    // padding-bottom: 10px;
+    // padding-right: 20px;
+    padding: 5px 20px 10px 0;
     width: 100%;
     height: 100%;
     display: flex;
