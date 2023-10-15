@@ -119,7 +119,9 @@
                         <div class="zz">
                             <input type="radio" v-model="form.type" value="zhuanzai" name="type"><span
                                 style="margin-right: 10px;">转载</span>
-                            <input type="text" :disabled="form.type === 'zizhi'" v-model="form.zhuanzai"
+                            <input type="text" 
+                            :disabled="form.type === 'zizhi'"
+                             v-model="form.zhuanzai"
                                 placeholder="转载请注明出处">
                         </div>
 
@@ -553,6 +555,8 @@ form .header .add {
 .c2 {
     display: flex;
     align-items: center;
+    // background-color: aquamarine;
+    height: 40px;
 }
 
 .c2>div {
@@ -563,15 +567,26 @@ form .header .add {
 }
 
 .c2 .zz {
+    height: 100%;
+    align-items: center;
     display: flex;
 
 }
 
 .c2 .zz input[type='text'] {
+    height: 80%;
+    flex-shrink: 0;
+    background-color: #fcfae0;
     border: 1px solid #e6e7e8;
     padding-left: 5px;
 }
-
+.c2 .zz input[type='text']:focus{
+    
+    border: #0aaee0 2px solid;
+}
+.c2 .zz input[type='text'][disabled]{
+    background-color: #99a299;
+}
 .c3 select {
     padding: 5px 10px;
     border-radius: 6px;
