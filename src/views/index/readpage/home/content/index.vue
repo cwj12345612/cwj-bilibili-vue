@@ -50,7 +50,9 @@
                 <div
                 v-if="mock('@bool()')"
                 class="img">
+                <router-link  :to="li.href">
                     <img :src="li.img" alt="">
+                        </router-link>
                 </div>
             </li>
         </ul>
@@ -235,6 +237,10 @@ watch(() => route.fullPath, () => {
                     margin-left: 10px;
                     flex-shrink: 0;
                     background: none;
+                    &:hover{
+                        color: #0aaee0;
+                        border-color: #0aaee0;
+                    }
                 }
             }
 

@@ -98,14 +98,10 @@
                 </li>
                 <li>
 
-                    <label class="title" 
-                    for="title"
-                    :title="form.title">标题</label>
+                    <label class="title" for="title" :title="form.title">标题</label>
                     <div class="content c1">
-                        <input
-                        id="title"
-                        :title="form.title"
-                        type="text" maxlength="100" v-model="form.title" placeholder="请输入标题">
+                        <input id="title" :title="form.title" type="text" maxlength="100" v-model="form.title"
+                            placeholder="请输入标题">
                         <span>{{ form.title.length }} / {{ config.title_count }}</span>
                     </div>
                 </li>
@@ -119,9 +115,7 @@
                         <div class="zz">
                             <input type="radio" v-model="form.type" value="zhuanzai" name="type"><span
                                 style="margin-right: 10px;">转载</span>
-                            <input type="text" 
-                            :disabled="form.type === 'zizhi'"
-                             v-model="form.zhuanzai"
+                            <input type="text" :disabled="form.type === 'zizhi'" v-model="form.zhuanzai"
                                 placeholder="转载请注明出处">
                         </div>
 
@@ -138,52 +132,39 @@
                     </div>
                 </li>
                 <li>
-                    <label class="title" 
-                   for="tags"
-                    style="align-self: flex-start;">标签</label>
+                    <label class="title" for="tags" style="align-self: flex-start;">标签</label>
                     <div class="content c4">
                         <div class="input">
                             <ul class="tags">
-                                <span
-                                title="点击删除"
-                                @click.prevent="deltag(tag)" v-for="tag in form.tags" class="tag">{{ tag }}</span>
+                                <span title="点击删除" @click.prevent="deltag(tag)" v-for="tag in form.tags" class="tag">{{ tag
+                                }}</span>
                             </ul>
-                            <input type="text" 
-                            id="tags"
-                            ref="videoupload_tags" v-if="config.tags_count > form.tags.length"
+                            <input type="text" id="tags" ref="videoupload_tags" v-if="config.tags_count > form.tags.length"
                                 @keyup.enter="addtag($event.target.value)" placeholder="按下enter键添加,点击标签删除">
                             <span class="sys">还可以添加{{ config.tags_count - form.tags.length }}个标签</span>
                         </div>
                         <div class="tag">
-                            <div class="t" v-if="tags.length>0&&(config.tags_count>form.tags.length)">
+                            <div class="t" v-if="tags.length > 0 && (config.tags_count > form.tags.length)">
                                 <h4>推荐标签</h4>
                                 <ul class="list">
-                                    <li
-                                    title="点击添加"
-                                    v-for="tag in tags" @click.prevent="addtag(tag)">
+                                    <li title="点击添加" v-for="tag in tags" @click.prevent="addtag(tag)">
                                         {{ tag }}</li>
                                 </ul>
                             </div>
-                            <div class="hua" v-if="huas.length>0&&(config.tags_count>form.tags.length)">
+                            <div class="hua" v-if="huas.length > 0 && (config.tags_count > form.tags.length)">
                                 <h4>推荐话题</h4>
                                 <ul class="hualist">
-                                    <li 
-                                    title="点击添加"
-                                    @click.prevent="addtag(hua)" v-for="hua in huas">{{ hua }}</li>
+                                    <li title="点击添加" @click.prevent="addtag(hua)" v-for="hua in huas">{{ hua }}</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </li>
                 <li>
-                    <label
-                    for="deatils"
-                    class="title" style="align-self: flex-start;">简介</label>
+                    <label for="deatils" class="title" style="align-self: flex-start;">简介</label>
                     <div class="content c5">
-                        <textarea
-                        id="deatils"
-                        :maxlength="config.deatils_size"
-                        v-model="form.deatil" cols="30" rows="10" placeholder="输入视频简介"></textarea>
+                        <textarea id="deatils" :maxlength="config.deatils_size" v-model="form.deatil" cols="30" rows="10"
+                            placeholder="输入视频简介"></textarea>
                     </div>
                 </li>
                 <div class="submit">
@@ -585,13 +566,16 @@ form .header .add {
     border: 1px solid #e6e7e8;
     padding-left: 5px;
 }
-.c2 .zz input[type='text']:focus{
-    
+
+.c2 .zz input[type='text']:focus {
+
     border: #0aaee0 2px solid;
 }
-.c2 .zz input[type='text'][disabled]{
+
+.c2 .zz input[type='text'][disabled] {
     background-color: #99a299;
 }
+
 .c3 select {
     padding: 5px 10px;
     border-radius: 6px;
