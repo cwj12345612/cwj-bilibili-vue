@@ -18,7 +18,7 @@
         <ul class="list"
        
         >
-            <li v-for="index in 70">
+            <li v-for="index in 4">
                 <a href="#">
                     <span class="index">P{{ index }}</span>
                     <span class="title">{{ mock('@cword(4,50)') }}</span>
@@ -110,7 +110,7 @@ const mock = (str) => { return Mock.mock(str) }
     overflow: auto;
     padding-left: 15px;
     width: 100%;
-height: 340px;
+max-height: 340px;
     /* background-color: palegoldenrod; */
 }
 /* .rightlist_videolist .list::-webkit-scrollbar{display: none;} */

@@ -14,7 +14,9 @@
             </ul>
             <select>
                 <option :value="mock('@id()')">默认排序</option>
-                <option :value="mock('@id()')" v-for="index in 5">{{ mock('@cword(3,7)') }}</option>
+                <option 
+                :value="mock('@id()')" 
+                v-for="index in 5">{{ mock('@cword(3,7)') }}</option>
 
             </select>
         </div>
@@ -47,12 +49,10 @@
 
                     </div>
                 </div>
-                <div
-                v-if="mock('@bool()')"
-                class="img">
-                <router-link  :to="li.href">
-                    <img :src="li.img" alt="">
-                        </router-link>
+                <div v-if="mock('@bool()')" class="img">
+                    <router-link :to="li.href">
+                        <img :src="li.img" alt="">
+                    </router-link>
                 </div>
             </li>
         </ul>
@@ -104,7 +104,7 @@ watch(() => route.fullPath, () => {
     for (let index = 0; index < parseInt(count); index++) {
         list.push(
             {
-                id: mock('@id()'), title: mock('@cword(7,200)'), desc: mock('@cword(10,1000)'),href:'/read/'+mock('@id()'),
+                id: mock('@id()'), title: mock('@cword(7,200)'), desc: mock('@cword(10,1000)'), href: '/read/' + mock('@id()'),
                 sys: {
                     zan: mock('@integer(100,10000)'),
                     kan: mock('@integer(100,10000)'),
@@ -112,7 +112,7 @@ watch(() => route.fullPath, () => {
                     pin: mock('@integer(100,10000)'),
                 },
                 img: require('@/assets/images/初夏之星.png'),
-                list: mock('@bool()') ? '/read/readlist/'+mock('@id()') : false
+                list: mock('@bool()') ? '/read/readlist/' + mock('@id()') : false
             }
         )
     }
@@ -237,7 +237,8 @@ watch(() => route.fullPath, () => {
                     margin-left: 10px;
                     flex-shrink: 0;
                     background: none;
-                    &:hover{
+
+                    &:hover {
                         color: #0aaee0;
                         border-color: #0aaee0;
                     }
