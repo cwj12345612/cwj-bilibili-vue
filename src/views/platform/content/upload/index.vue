@@ -1,21 +1,24 @@
 <template>
+  <template v-if="!uploadStore.ing">
     <ul class="header" 
-    
-    v-if="!uploadStore.ing" >
+     >
         <li v-for="(li, index) in list" 
         >
             <router-link :to="li.href">
                 {{ li.title }}</router-link>
         </li>
     </ul>
-    <!-- <video_upload ></video_upload> -->
-    <!-- <text_upload></text_upload> -->
     <router-view></router-view>
+  </template>
+   <template  
+   v-if="uploadStore.ing"
+   >
+    <router-view></router-view>
+   </template>
 </template>
 <script setup>
 // #region  引入组件
-import video_upload from './video'
-import text_upload from './text'
+
 //  #endregion
 
 // #region 引入vue pinia 路由

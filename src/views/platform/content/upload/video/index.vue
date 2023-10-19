@@ -286,7 +286,7 @@ onMounted(() => {
         size: '344453333'
     })
     // videos.length=0
-    uploadStore.uploadstart('video');
+    // uploadStore.uploadstart('video');
 })
 //推荐标签 推荐话题
 const reclist = reactive({
