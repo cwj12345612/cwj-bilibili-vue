@@ -91,7 +91,7 @@ const mock = (str) => { return Mock.mock(str) }
         .videodeatail {
             color: #ffffff;
             width: 100%;
-            background: @transparency;
+            // background: @transparency;
             position: absolute;
             bottom: 0;
             display: flex;

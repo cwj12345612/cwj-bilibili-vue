@@ -2,8 +2,8 @@
 <div class="homepage_categoryitems">
 <div class="title">
     <div class="logo">
-        <i class="colour dianying"></i>
-        <span>电影</span>
+        <i :class="ca.icon"></i>
+        <span>{{ ca.title }}</span>
     </div>
     <div class="buttons">
         <button class="change">
@@ -42,7 +42,15 @@ const router=useRouter()
 import Mock from 'mockjs'
 
 const mock=(str)=>{return Mock.mock(str)}
-
+const calist=[
+    {icon:'colour dianying',title:'电影'},
+    {icon:'colour dianshiju',title:'电视剧'},
+    {icon:'colour guochandonghuatuijian',title:'动画'},
+    {icon:'colour yule',title:'纪录片'},
+]
+const ca=computed(()=>{
+    return calist[Math.floor(calist.length*Math.random())]
+})
 //#endregion
 
 </script>

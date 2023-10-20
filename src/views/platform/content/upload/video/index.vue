@@ -49,7 +49,7 @@
         <div class="header">
             <h3>{{ videos.length }} 个视频 共 {{ videos_size }} MB
                 <span>
-                    剩余{{ config.video_count - videos.length }}集且容量{{ config.videos_size - videos_size
+                    剩余{{ config.video_count - videos.length }}集 且容量{{ config.videos_size - videos_size
                     }}MB</span>
             </h3>
             <label class="add" for="add">添加视频</label>
@@ -207,7 +207,7 @@ const form = reactive({
 })
 //配置限制
 const config = reactive({
-    video_count: 20,
+    video_count: 200,
     //单位MB
     videos_size: 20 * 1024,
     title_count: 100,
@@ -286,7 +286,7 @@ onMounted(() => {
         size: '344453333'
     })
     // videos.length=0
-    // uploadStore.uploadstart('video');
+    uploadStore.uploadstart('video');
 })
 //推荐标签 推荐话题
 const reclist = reactive({
@@ -432,7 +432,14 @@ form .header .add {
     padding-left: 50px;
     /* background-color: cadetblue; */
 }
+.form :has(>input[type='text']:focus)
+{
+    border-color: #0aaee0;
+}
 
+.form  .c5 textarea:focus{
+  border: 2px solid #0aaee0;
+}
 .form .videos {
     max-height: calc(60px * 5);
     overflow: auto;
