@@ -31,7 +31,8 @@ const mock=(str)=>{return Mock.mock(str)}
     color: #99a299;
     width: 350px;
     height: 230px;
-    background-color: darkgoldenrod;
+    /* background-color: darkgoldenrod; */
+    border-radius: 8px;
     border: 1px solid #99a299;
 }
 </style>

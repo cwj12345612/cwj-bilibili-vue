@@ -18,7 +18,7 @@
         <ul class="list"
        
         >
-            <li v-for="index in 4">
+            <li v-for="index in parseInt(mock('@integer(2,20)'))">
                 <a href="#">
                     <span class="index">P{{ index }}</span>
                     <span class="title">{{ mock('@cword(4,50)') }}</span>
