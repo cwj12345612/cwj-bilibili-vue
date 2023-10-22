@@ -4,28 +4,26 @@
             <div class="videos">
                 <span>视频选集</span>
                 <span>(23/33)</span>
-              
+
             </div>
             <div class="playauto">
                 <span>自动连播</span>
-                <span class="btn" >
+                <span class="btn">
                     <i class="colourless bofangqi-xiayiji"></i>
-                <i class="colourless bofangqi-zanting" v-if="false"></i>
+                    <i class="colourless bofangqi-zanting" v-if="false"></i>
                 </span>
             </div>
-          
+
         </div>
-        <ul class="list"
-       
-        >
-            <li v-for="index in parseInt(mock('@integer(2,20)'))">
-                <a href="#">
-                    <span class="index">P{{ index }}</span>
-                    <span class="title">{{ mock('@cword(4,50)') }}</span>
-                    <span class="duration">19:42</span>
-                </a>
+        <ul class="list">
+            <li v-for="(li, index) in list">
+                <router-link :to="li.href">
+                    <span class="index">P{{ li.index }}</span>
+                    <span class="title">{{ li.title }}</span>
+                    <span class="duration">{{ li.duration }}</span>
+                </router-link>
             </li>
-</ul>
+        </ul>
     </div>
 </template>
 <script setup>
@@ -47,16 +45,37 @@ const router = useRouter()
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
-
+const list = reactive([])
 //#endregion
-
+onMounted(() => {
+    const id = route.params.id
+    console.log(id)
+    list.length = 0;
+    list.push({
+        id: mock('@id'),
+        index: 1,
+        title: mock('@cword(4,50)'),
+        duration: parseInt(mock('@integer(3,30)')) + ':' + parseInt(mock('@integer(1,59)')),
+        href: `/play/${id}`
+    })
+    for (let i = 1; i < parseInt(mock('@integer(2,30)')); i++) {
+        const video = {
+            id: mock('@id'),
+            index: i + 1,
+            title: mock('@cword(4,50)'),
+            duration: parseInt(mock('@integer(3,30)')) + ':' + parseInt(mock('@integer(1,59)')),
+            href: `/play/${mock('@id()')}`
+        }
+        list.push(video);
+    }
+})
 </script>
-<style scoped>
+<style scoped lang="less">
 .rightlist_videolist {
     width: 100%;
     /* background-color: teal; */
     margin-top: 15px;
-   background-color: rgb(241, 242, 243);
+    background-color: rgb(241, 242, 243);
     border-radius: var(--border-radius-min);
     overflow: hidden;
     display: flex;
@@ -85,12 +104,15 @@ const mock = (str) => { return Mock.mock(str) }
     align-items: center;
     justify-content: flex-start;
 }
-.rightlist_videolist .header .videos .btn:hover{
+
+.rightlist_videolist .header .videos .btn:hover {
     color: #0aaee0;
 }
-.rightlist_videolist .header .playauto .btn{
+
+.rightlist_videolist .header .playauto .btn {
     cursor: pointer;
 }
+
 .rightlist_videolist .header .playauto {
 
     /* background-color: thistle; */
@@ -106,33 +128,46 @@ const mock = (str) => { return Mock.mock(str) }
     cursor: pointer;
 
 }
-.rightlist_videolist .list{
+
+.rightlist_videolist .list {
     overflow: auto;
     padding-left: 15px;
     width: 100%;
-max-height: 340px;
+    max-height: 340px;
     /* background-color: palegoldenrod; */
 }
+
 /* .rightlist_videolist .list::-webkit-scrollbar{display: none;} */
 .rightlist_videolist .list li {
     font-size: 13px;
     width: 100%;
     height: 30px;
-    margin: 5px  0;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    flex-grow: 1;
 }
-.rightlist_videolist .list li:hover a{
+
+.rightlist_videolist .list li:hover a {
     color: #0aaeec;
 }
-.rightlist_videolist .list li a{
+
+.rightlist_videolist .list li a {
+    width: 100%;
     display: grid;
     grid-template-columns: 0.6fr 4fr 1fr;
+
+    &.router-link-exact-active {
+        color: #0aaee0;
+    }
 }
-.rightlist_videolist .list li a .title{
-        text-overflow: ellipsis;
+
+.rightlist_videolist .list li a .title {
+    text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-all;
     white-space: nowrap;
 
-}
-</style>
+}</style>
 

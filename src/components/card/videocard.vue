@@ -18,9 +18,9 @@
             </div>
         </a>
 
-        <a class="title" href="/play">
+        <router-link class="title" :to="`/play/${mock('@id()')}`">
             {{ mock('@cword(4,60)') }}
-        </a>
+        </router-link>
         <a class="info" href="/space">
             <i class="colourless UPzhu"></i>
             <span>{{ mock('@cword(2,7)') }}</span>
