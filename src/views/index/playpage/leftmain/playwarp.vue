@@ -136,7 +136,7 @@ const change = () => {
 watch(()=>route.params,()=>{
    const id= route.params.id
    console.log(id)
-   let comments = []
+      let comments = []
     for (let i = 0; i < 30000; i++) {
         comments.push(
             {

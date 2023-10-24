@@ -1,6 +1,6 @@
 <template>
     <div class="nav" :class="pageconfigStore.scroll > (192 + 64) ? 'scroll' : undefined"
-        :style="pageconfigStore.dynamicWH({ normal: 1283, max: 1283, min: 1101 })">
+      >
         <ul class="navlist">
             <li v-for="(li, index) in icons">
                 <router-link :to="li.href">
@@ -65,7 +65,9 @@ const rightlist = [
 </script>
 <style scoped>
 .nav {
-
+    max-width: 1283px;
+min-width: 1101px;
+max-width: 90vw;
     background-color: #fff;
     width: 100%;
     padding: 0 20px;

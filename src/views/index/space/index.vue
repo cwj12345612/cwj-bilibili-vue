@@ -1,5 +1,5 @@
 <template>
-    <div id="spacepage" :style="pageconfigStore.dynamicWH({ normal: 1283, max: 1283, min: 1101 })">
+    <div id="spacepage" >
         <spacepage_top></spacepage_top>
         <div class="content">
             <!-- <spacepage_home></spacepage_home> -->
@@ -35,8 +35,12 @@ const mock = (str) => { return Mock.mock(str) }
 </script>
 <style scoped>
 #spacepage {
-
-
+/* 
+:style="pageconfigStore.dynamicWH({ normal: 1283, max: 1283, min: 1101 })"
+*/
+max-width: 1283px;
+min-width: 1101px;
+max-width: 90vw;
     /* height: 1000px; */
     /* background-color: orange; */
     display: flex;

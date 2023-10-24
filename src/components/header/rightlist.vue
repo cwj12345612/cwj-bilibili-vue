@@ -1,8 +1,13 @@
 <template>
     <ul class="rightlist">
         <li class="headavatar">
-            <router-link :to="headavatar.href">
+            <router-link :to="headavatar.href" v-if="userStore.isLogin">
                 <img :src="headavatar.avatarsrc" :alt="headavatar.id">
+            </router-link>
+            <router-link to="/login" v-if="!userStore.isLogin">
+                    <span>
+                        登录
+                    </span>
             </router-link>
         </li>
 
@@ -33,8 +38,9 @@ import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmou
 
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
 import { useRoute, useRouter } from 'vue-router'
+import {useUserStore} from '@/pinia/userStore'
 const pageconfigStore = usepageconfigStore()
-
+const userStore =useUserStore()
 const route = useRoute()
 const router = useRouter()
 // #endregion
@@ -82,7 +88,7 @@ const list = reactive([
 }
 
 .headavatar {
-
+    /* background-color: #fb7299; */
     margin-right: 10px;
     width: 60px;
     height: 50px;
@@ -93,6 +99,7 @@ const list = reactive([
 }
 
 .headavatar a {
+    
 
     display: flex;
     justify-content: flex-end;
@@ -100,12 +107,21 @@ const list = reactive([
 }
 
 .headavatar img {
-
+/* background-color: #fb7299; */
     height: 38px;
     width: 38px;
     border-radius: 50%;
 }
-
+.headavatar span{
+    color: #fff;
+  background-color: #0aaee0;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    width: 38px;
+    border-radius: 50%;
+}
 .constcontribute {
 flex-shrink: 0;
     max-width: 90px;

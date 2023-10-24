@@ -37,6 +37,7 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .spacepage_dynamic{
+    width: 100%;
     display: flex;
     justify-content: space-between;
 }

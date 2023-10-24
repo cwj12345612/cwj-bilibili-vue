@@ -1,3 +1,4 @@
+
 // #region 开发文档路由 正常使用时删除
 const dev = [
     {
@@ -60,6 +61,7 @@ const space = {
     name: 'spacepage',
     redirect: { name: 'spacepage_home' },
     component: () => import('@/views/index/space'),
+    meta:{needLogin:true},
     children: [
         {
             path: 'home',
@@ -203,10 +205,12 @@ const main = [
             ...category,
             space,
             readpage,
+           
         ]
     },
 ]
 //#endregion
+import {useUserStore} from '@/pinia/userStore'
 
 //#region 创作中心路由 以后需要动态从后台获取
 /**
@@ -330,6 +334,21 @@ const routes = [
     ...main,
 
     platform,
-    ...dev
+    ...dev,
+    {
+        path:"/login",
+        component:()=>import('@/views/index/Loginpage'),
+        //已经登录就不能再访问
+        beforeEnter: (to, from, next)=>{
+            // console.log("你好")
+            const userStore=useUserStore()
+            if(userStore.isLogin){
+                next("/")
+            }else{
+                next()
+            }
+            
+        }
+    }
 ]
 export default routes

@@ -2,10 +2,12 @@
 import static_routes from './static'
 import  {usepageconfigStore} from '@/pinia/pageconfig'
 import { createRouter,createWebHistory } from "vue-router"; 
+import { useUserStore} from '@/pinia/userStore'
 const router= createRouter({
     history:createWebHistory(),
     routes:static_routes
 })
+//设置页面状态守卫
 router.beforeEach((to,from,next)=>{
     const pageconfig=usepageconfigStore()
   const list= to.matched
@@ -20,5 +22,20 @@ router.beforeEach((to,from,next)=>{
    }
   }
     next()
+})
+router.beforeEach((to,from,next)=>{
+  // console.log("验证是否需要登录")
+  const userStore=useUserStore()
+  if(to.meta.needLogin&&!userStore.isLogin){
+   const is= window.confirm("该操作需要登录");
+    if(is){
+      location.href="/login"
+    }else{
+      // next(from)
+    }
+  }else{
+    next()
+  }
+
 })
 export default router
