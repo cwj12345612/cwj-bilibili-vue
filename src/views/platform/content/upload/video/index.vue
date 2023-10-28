@@ -124,11 +124,20 @@
                 <li>
                     <div class="title">分区</div>
                     <div class="content c3">
-                        <select>
-                            <option selected>请选择分区</option>
-                            <option v-for="index in 7" :value="mock('@cword(3,10)')">{{ mock('@cword(5,20)') }}</option>
-
-                        </select>
+                        <span class="now" title="点击选择分区">
+                            科技 · 计算机应用
+                        </span>
+                        <div class="list">
+                            <ul class="category">
+                                <li v-for="index in 7">{{ mock('@cword(2,5)') }}</li>
+                            </ul>
+                            <ul class="content">
+                                <li v-for="index in 4">
+                                    <h3>{{ mock('@cword(3,5)') }}</h3>
+                                    <p>{{ mock('@cword(20)') }}</p>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </li>
                 <li>
@@ -513,7 +522,7 @@ form .header .add {
     /* background-color: blueviolet; */
 }
 
-.text li {
+.text>li {
     margin-bottom: 30px;
     display: grid;
     width: 100%;
@@ -584,11 +593,95 @@ form .header .add {
     background-color: #99a299;
 }
 
-.c3 select {
-    padding: 5px 10px;
-    border-radius: 6px;
-    border: 2px solid #e6e7e8;
+.c3 {
+    position: relative;
+
+    .now {
+        border: #61666d 1px solid;
+        padding: 3px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+            color: #0aaee0;
+            border-color: #0aaee0;
+        }
+
+    }
+
+    .list {
+        border-radius: 8px;
+        background-color: #fff;
+        top: 30px;
+        border: 2px solid #61666d;
+        max-width: 500px;
+        max-height: 200px;
+        position: absolute;
+        // background-color: aquamarine;
+
+        display: flex;
+
+        .category {
+            flex-grow: 1;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: auto;
+
+            li {
+                padding: 5px 20px;
+                padding-left: 10px;
+                cursor: pointer;
+                text-overflow: ellipsis;
+
+                &:hover {
+                    color: #0aaee0;
+                }
+            }
+        }
+
+        .content {
+            overflow: auto;
+
+            display: flex;
+            flex-direction: column;
+            // background-color: orange;
+            padding-left: 10px;
+
+            li {
+                &:hover {
+                    color: #0aaee0;
+                }
+
+                cursor: pointer;
+                padding: 5px 0;
+                display: flex;
+                align-items: center;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                word-break: break-all;
+                white-space: nowrap;
+
+                h3 {
+                    font-weight: normal;
+                    font-size: 20px;
+                    margin-right: 20px;
+                }
+
+                p {
+
+                    color: #99a299;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    word-break: break-all;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
 }
+
+
 
 .c4 .input {
     height: 40px;
@@ -650,8 +743,8 @@ form .header .add {
 }
 
 .c4 .tag li {
-  background-color: #0aaee0;
-  color: #fff;
+    background-color: #0aaee0;
+    color: #fff;
     margin-bottom: 20px;
 }
 
