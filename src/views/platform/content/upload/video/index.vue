@@ -45,7 +45,7 @@
             </li>
         </ul>
     </div>
-    <form v-show="uploadStore.status == 'begin'">
+    <form v-if="uploadStore.status == 'begin'">
         <div class="header">
             <h3>{{ videos.length }} 个视频 共 {{ videos_size }} MB
                 <span>
@@ -132,12 +132,8 @@
                                 <li v-for="index in 7">{{ mock('@cword(2,5)') }}</li>
                             </ul>
                             <ul class="content">
-                                <li :title="mock('@cword(5,90)')"
-                                @click="show4=false"
-                                v-for="index in 4">
-                                    <h3
-                                    
-                                    >{{ mock('@cword(3,5)') }}</h3>
+                                <li :title="mock('@cword(5,90)')" @click="show4 = false" v-for="index in 4">
+                                    <h3>{{ mock('@cword(3,5)') }}</h3>
                                     <p>{{ mock('@cword(20)') }}</p>
                                 </li>
                             </ul>
@@ -160,9 +156,7 @@
                             <div class="t" v-if="tags.length > 0 && (config.tags_count > form.tags.length)">
                                 <h4>推荐标签</h4>
                                 <ul class="list">
-                                    <li title="点击添加"
-                                    
-                                    v-for="tag in tags" @click.prevent="addtag(tag)">
+                                    <li title="点击添加" v-for="tag in tags" @click.prevent="addtag(tag)">
                                         {{ tag }}</li>
                                 </ul>
                             </div>
@@ -183,11 +177,40 @@
                     </div>
                 </li>
                 <div class="submit">
-                    <button type="submit" @click.prevent="">立即投稿</button>
+                    <button type="submit" @click.prevent="submit">立即投稿</button>
                 </div>
             </ul>
         </div>
     </form>
+    <ul class="videos ing" v-if="uploadStore.status=='ing'">
+                <li v-for="(file, index) in videos">
+                    <div class="icon">
+                        <i class="colourless bofangshu"></i>
+                    </div>
+                    <div class="desc">
+                        <div class="title">
+                            <div style="display: flex;align-items: flex-end;">
+                                <h4>
+
+                                    {{ file.name.length <= 20 ? file.name.substring(0, file.name.lastIndexOf('.')) :
+                                        file.name.substring(0, 20) }} <!-- {{
+                                        file.name.substring(0,file.name.lastIndexOf('.')) }} -->
+                                </h4>
+                                <span style="font-size: 13px; color: #99a299;flex-shrink: 0;margin-left: 10px;">类型:
+                                    {{ file.name.substring(file.name.lastIndexOf('.') + 1) }}</span>
+                            </div>
+                            <div class="setting">
+                                <span style="margin-right: 20px;color: #99a299;font-size: 14px;">30MB/{{
+                                    fileSzieToString(file) }}</span>
+                                <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i>
+                                <i class="colourless shuayishua" title="重新上传"></i>
+                                <i class="colourless guanbi" title="取消上传"></i> -->
+                            </div>
+                        </div>
+                        <div class="jindu"></div>
+                    </div>
+                </li>
+            </ul>
 </template>
 <script setup >
 // #region  引入组件
@@ -274,6 +297,9 @@ const addtag = (val) => {
 const deltag = (name) => {
     form.tags = form.tags.filter(tag => tag !== name)
 }
+const submit=()=>{
+    uploadStore.status='ing'
+}
 //计算属性 视频总大小 MB
 const videos_size = computed(() => {
     let count = 0
@@ -295,7 +321,14 @@ const show1 = ref(false)
 const show2 = ref(false)
 const show3 = ref(false)
 // #region 方便测试 给videos添加第一个视频
-
+onMounted(() => {
+    videos.push({
+        name: '第一个视频.mp4',
+        size: '344453333'
+    })
+    // videos.length=0
+    uploadStore.uploadstart('video');
+})
 //推荐标签 推荐话题
 const reclist = reactive({
     tags: [],
@@ -449,12 +482,12 @@ form .header .add {
     border: 2px solid #0aaee0;
 }
 
-.form .videos {
+ .videos {
     max-height: calc(60px * 5);
     overflow: auto;
 }
 
-.form .videos li {
+ .videos li {
     display: flex;
     width: 100%;
     /* background-color: darkgoldenrod; */
