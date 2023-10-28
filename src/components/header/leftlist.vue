@@ -1,10 +1,9 @@
 <template>
     <ul class="leftlist" :class="pageconfigStore.globalclass">
-        <li class="item" 
-        v-for="li in list" :key="li.id" :class="pageconfigStore.globalclass">
+        <li class="item" v-for="li in list" :key="li.id" :class="pageconfigStore.globalclass">
             <a :href="li.href" :class="pageconfigStore.globalclass">
                 <i v-if="li.icon" :class="li.icon"></i>
-                <span v-if="isshowspan||!li.icon">{{ li.title }}</span>
+                <span v-if="isshowspan || !li.icon">{{ li.title }}</span>
             </a>
 
         </li>
@@ -90,8 +89,7 @@ const isshowspan = computed(() => {
 }
 
 .item a.moviepage.scroll,
-.item a.popularpage.scroll
- {
+.item a.popularpage.scroll {
     color: #ffffff;
 }
 

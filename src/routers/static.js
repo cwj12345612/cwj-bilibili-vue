@@ -22,6 +22,11 @@ const category = [
         path: 'anime',
         name: 'animepage',
         component: () => import('@/views/index/category/animationpage')
+    },
+    {
+        path:'v/:category',
+        name:'categorypage',
+        component:()=>import('@/views/index/category/otherpage')
     }
 ]
 //专栏页

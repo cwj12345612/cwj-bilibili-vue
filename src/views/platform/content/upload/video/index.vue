@@ -151,12 +151,12 @@
                                         {{ tag }}</li>
                                 </ul>
                             </div>
-                            <div class="hua" v-if="huas.length > 0 && (config.tags_count > form.tags.length)">
+                            <!-- <div class="hua" v-if="huas.length > 0 && (config.tags_count > form.tags.length)">
                                 <h4>推荐话题</h4>
                                 <ul class="hualist">
                                     <li title="点击添加" @click.prevent="addtag(hua)" v-for="hua in huas">{{ hua }}</li>
                                 </ul>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </li>
@@ -432,14 +432,15 @@ form .header .add {
     padding-left: 50px;
     /* background-color: cadetblue; */
 }
-.form :has(>input[type='text']:focus)
-{
+
+.form :has(>input[type='text']:focus) {
     border-color: #0aaee0;
 }
 
-.form  .c5 textarea:focus{
-  border: 2px solid #0aaee0;
+.form .c5 textarea:focus {
+    border: 2px solid #0aaee0;
 }
+
 .form .videos {
     max-height: calc(60px * 5);
     overflow: auto;
@@ -625,7 +626,7 @@ form .header .add {
 
 .c4 .input span.sys {
     flex-shrink: 0;
-    color: #e6e7e8;
+    color: #99a299;
 }
 
 .c4 .tag {
@@ -649,8 +650,8 @@ form .header .add {
 }
 
 .c4 .tag li {
-    background: rgba(0, 0, 0, 0.3);
-    color: #212121;
+  background-color: #0aaee0;
+  color: #fff;
     margin-bottom: 20px;
 }
 

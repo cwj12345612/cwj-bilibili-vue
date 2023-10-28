@@ -66,6 +66,10 @@ header {
             background-color: #242628;
         }
     }
+    &.categorypage{
+   position: absolute;
+      
+    }
 }
 
 

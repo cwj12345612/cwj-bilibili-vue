@@ -1,5 +1,5 @@
 <template>
-    <div class="homepage_banner">
+    <div class="banner">
         <img :src="bigpic" alt="">
         <a class="logo" href="/">
             <i class="colourless bilibili"></i>
@@ -46,7 +46,7 @@ onMounted(() => {
 
 </script>
 <style scoped>
-.homepage_banner {
+.banner {
     width: 100%;
     position: relative;
     /* background-color: cadetblue; */
@@ -55,7 +55,7 @@ onMounted(() => {
     height: 20vh;
 }
 
-.homepage_banner .logo {
+.banner .logo {
     max-height: 120px;
     min-height: 77.5px;
     height: 10vh;
@@ -67,7 +67,7 @@ onMounted(() => {
 
 }
 
-.homepage_banner .logo i {
+.banner .logo i {
     font-size: 50px;
     color: #ffffff;
 }
