@@ -27,12 +27,9 @@ router.beforeEach((to,from,next)=>{
   // console.log("验证是否需要登录")
   const userStore=useUserStore()
   if(to.meta.needLogin&&!userStore.isLogin){
-   const is= window.confirm("该操作需要登录");
-    if(is){
-      location.href="/login"
-    }else{
-      // next(from)
-    }
+  
+    alert("需要登录")
+    next({name:'homepage'})
   }else{
     next()
   }

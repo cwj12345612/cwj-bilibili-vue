@@ -8,10 +8,7 @@
             </div>
             <div class="playauto">
                 <span>自动连播</span>
-                <span class="btn">
-                    <i class="colourless bofangqi-xiayiji"></i>
-                    <i class="colourless bofangqi-zanting" v-if="false"></i>
-                </span>
+                <el-switch v-model="value3" inline-prompt active-text="是" inactive-text="否" />
             </div>
 
         </div>
@@ -41,7 +38,7 @@ const router = useRouter()
 // #endregion
 
 // #region  模拟数据 mockjs
-
+const value3 = ref(true)
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
@@ -169,5 +166,6 @@ onMounted(() => {
     word-break: break-all;
     white-space: nowrap;
 
-}</style>
+}
+</style>
 

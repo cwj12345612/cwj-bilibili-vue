@@ -71,10 +71,9 @@ const space = {
        if(to.query.uid){
         next()
        }else{
-       if(!userStore.isLogin&&confirm('需要登录')){
-        next("/login")
-       }else{
-        next('/')
+       if(!userStore.isLogin){
+        alert("需要登录")
+        next({name:'homepage'})
        }
        }
     },
@@ -351,20 +350,6 @@ const routes = [
 
     platform,
     ...dev,
-    {
-        path:"/login",
-        component:()=>import('@/views/index/Loginpage'),
-        //已经登录就不能再访问
-        beforeEnter: (to, from, next)=>{
-            // console.log("你好")
-            const userStore=useUserStore()
-            if(userStore.isLogin){
-                next("/")
-            }else{
-                next()
-            }
-            
-        }
-    }
+  
 ]
 export default routes

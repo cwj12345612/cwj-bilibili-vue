@@ -1,14 +1,19 @@
 <template>
     <ul class="rightlist">
+        <loginform v-if="islogin"></loginform>
         <li class="headavatar">
             <router-link :to="headavatar.href" v-if="userStore.isLogin">
                 <img :src="headavatar.avatarsrc" :alt="headavatar.id">
             </router-link>
-            <router-link to="/login" v-if="!userStore.isLogin">
+            <a
+            @click="islogin=!islogin"
+            to="javascript:;" 
+            v-if="!userStore.isLogin" >
                     <span>
                         登录
                     </span>
-            </router-link>
+                </a>
+                
         </li>
 
         <li class="item" v-for="li in list">
@@ -30,7 +35,7 @@
 </template>
 <script setup>
 // #region  引入组件
-
+import loginform from '@/views/index/Loginpage'
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -43,8 +48,11 @@ const pageconfigStore = usepageconfigStore()
 const userStore =useUserStore()
 const route = useRoute()
 const router = useRouter()
+
 // #endregion
+const islogin=ref(false)
 //是否显示文字
+
 const isshowspan = computed(() => {
     const width = pageconfigStore.width * 0.32
     const min = 380

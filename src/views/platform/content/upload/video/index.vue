@@ -132,7 +132,9 @@
                                 <li v-for="index in 7">{{ mock('@cword(2,5)') }}</li>
                             </ul>
                             <ul class="content">
-                                <li v-for="index in 4">
+                                <li 
+                                :title="mock('@cword(5,90)')"
+                                v-for="index in 4">
                                     <h3>{{ mock('@cword(3,5)') }}</h3>
                                     <p>{{ mock('@cword(20)') }}</p>
                                 </li>

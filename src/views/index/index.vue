@@ -1,10 +1,12 @@
 <template>
  <cwj_header></cwj_header>
   <router-view></router-view>
+
 </template>
 <script setup>
 // #region  引入组件
 import cwj_header from '@/components/header'
+import loginform from './Loginpage'
 //  #endregion
 
 // #region 引入vue pinia 路由

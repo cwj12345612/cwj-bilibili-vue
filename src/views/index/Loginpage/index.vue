@@ -63,15 +63,16 @@ const mock = (str) => { return Mock.mock(str) }
 
 </script>
 <style scoped>
-html,
-body {
-  margin: 0;
-  font-family: "PingFang SC", "Microsoft Yahei", sans-serif;
-}
+
 
 .container {
-  width: 100vw;
-  height: 100vh;
+  position: absolute;
+  z-index: 10086;
+ 
+  transform: translateX(-100%);
+  top: 64px;
+  width: 500px;
+  height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
