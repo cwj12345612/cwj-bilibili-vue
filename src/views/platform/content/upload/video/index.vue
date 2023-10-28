@@ -1,5 +1,5 @@
 <template>
-    <div class="video_upload" v-if="!uploadStore.ing">
+    <div class="video_upload" v-if="uploadStore.status == 'no'">
 
         <label class="icon" for="upload">
             <i class="colourless tianjia"></i>
@@ -45,7 +45,7 @@
             </li>
         </ul>
     </div>
-    <form v-if="uploadStore.ing">
+    <form v-show="uploadStore.status == 'begin'">
         <div class="header">
             <h3>{{ videos.length }} 个视频 共 {{ videos_size }} MB
                 <span>
@@ -124,18 +124,20 @@
                 <li>
                     <div class="title">分区</div>
                     <div class="content c3">
-                        <span class="now" title="点击选择分区">
+                        <span class="now" title="点击选择分区" @click="show4 = !show4">
                             科技 · 计算机应用
                         </span>
-                        <div class="list">
+                        <div class="list" v-if="show4">
                             <ul class="category">
                                 <li v-for="index in 7">{{ mock('@cword(2,5)') }}</li>
                             </ul>
                             <ul class="content">
-                                <li 
-                                :title="mock('@cword(5,90)')"
+                                <li :title="mock('@cword(5,90)')"
+                                @click="show4=false"
                                 v-for="index in 4">
-                                    <h3>{{ mock('@cword(3,5)') }}</h3>
+                                    <h3
+                                    
+                                    >{{ mock('@cword(3,5)') }}</h3>
                                     <p>{{ mock('@cword(20)') }}</p>
                                 </li>
                             </ul>
@@ -158,7 +160,9 @@
                             <div class="t" v-if="tags.length > 0 && (config.tags_count > form.tags.length)">
                                 <h4>推荐标签</h4>
                                 <ul class="list">
-                                    <li title="点击添加" v-for="tag in tags" @click.prevent="addtag(tag)">
+                                    <li title="点击添加"
+                                    
+                                    v-for="tag in tags" @click.prevent="addtag(tag)">
                                         {{ tag }}</li>
                                 </ul>
                             </div>
@@ -201,7 +205,7 @@ const uploadStore = useuploadStore()
 const route = useRoute()
 const router = useRouter()
 // #endregion
-
+const show4 = ref(false)
 //#region 需要上传的全部内容 
 //
 
@@ -291,14 +295,7 @@ const show1 = ref(false)
 const show2 = ref(false)
 const show3 = ref(false)
 // #region 方便测试 给videos添加第一个视频
-onMounted(() => {
-    videos.push({
-        name: '第一个视频.mp4',
-        size: '344453333'
-    })
-    // videos.length=0
-    uploadStore.uploadstart('video');
-})
+
 //推荐标签 推荐话题
 const reclist = reactive({
     tags: [],

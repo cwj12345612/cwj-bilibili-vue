@@ -241,14 +241,14 @@ const upload = {
             name: 'upload_video',
             component: () => import('@/views/platform/content/upload/video')
         },
-        {
-            path: 'text',
-            component: () => import('@/views/platform/content/upload/text')
-        },
-        {
-            path: 'audio',
-            component: () => import('@/views/platform/content/upload/audio')
-        }
+        // {
+        //     path: 'text',
+        //     component: () => import('@/views/platform/content/upload/text')
+        // },
+        // {
+        //     path: 'audio',
+        //     component: () => import('@/views/platform/content/upload/audio')
+        // }
     ]
 }
 const upload_manager = {

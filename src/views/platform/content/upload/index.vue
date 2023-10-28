@@ -1,20 +1,16 @@
 <template>
-  <template v-if="!uploadStore.ing">
-    <ul class="header" 
-     >
-        <li v-for="(li, index) in list" 
+   
+        <ul class="header" 
+        v-if="uploadStore.status=='no'"
         >
-            <router-link :to="li.href">
-                {{ li.title }}</router-link>
-        </li>
-    </ul>
-    <router-view></router-view>
-  </template>
-   <template  
-   v-if="uploadStore.ing"
-   >
-    <router-view></router-view>
-   </template>
+            <li v-for="(li, index) in list.splice(0,1)">
+                <router-link :to="li.href">
+                    {{ li.title }}</router-link>
+            </li>
+        </ul>
+        <router-view></router-view>
+  
+ 
 </template>
 <script setup>
 // #region  引入组件

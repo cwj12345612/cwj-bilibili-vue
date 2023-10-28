@@ -4,15 +4,14 @@ import { dataUtils } from '@/utils/dataUtils'
 
 export const useuploadStore=defineStore('uploadStore',{
     state:()=>({
-        /**
-         * 是否正在上传
-         */
-        ing:false,
+      
         /**
          * 上传文件类型 
          *      video text audio
          */
     type:null,
+    // no begin ing end
+    status:'no',
     }),
     actions:{
         /**
@@ -21,7 +20,7 @@ export const useuploadStore=defineStore('uploadStore',{
          */
         uploadstart(type){
             // console.log('上传'+type)
-            this.ing=true
+            this.status='begin'
             this.type=type
         },
         /**
