@@ -2,7 +2,7 @@
     <div class="carousel">
         <ul class="content">
             <div class="img">
-                <img :src="list[index].img"  alt="">
+            <a href="#">    <img :src="list[index].img"  alt=""></a>
                 <span class="msg">
                     {{list[index].title }}
                 </span>
@@ -86,11 +86,11 @@ setTimeout(() => {
 //#endregion
 
 </script>
-<style scoped>
+<style scoped lang="less">
 .carousel {
     width: 100%;
     height: 300px;
-    background-color: cadetblue;
+    // background-color: cadetblue;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -102,6 +102,8 @@ setTimeout(() => {
         /* background-color: burlywood; */
 
         .img {
+            border-radius: 8px;
+            overflow: hidden;
             margin: 0 auto;
             width: 90%;
             height: 270px;

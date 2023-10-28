@@ -49,7 +49,7 @@ const mock = (str) => { return Mock.mock(str) }
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    background-color: palevioletred;
+    // background-color: palevioletred;
     width: 100%;
     height: 64px;
 
@@ -62,7 +62,7 @@ const mock = (str) => { return Mock.mock(str) }
     .list {
         display: flex;
         align-items: center;
-        background-color: #fff;
+        // background-color: #fff;
 
         li {
             // background-color: blueviolet;

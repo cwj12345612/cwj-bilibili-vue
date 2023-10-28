@@ -1,4 +1,4 @@
-
+import {useUserStore} from '@/pinia/userStore'
 // #region 开发文档路由 正常使用时删除
 const dev = [
     {
@@ -66,7 +66,18 @@ const space = {
     name: 'spacepage',
     redirect: { name: 'spacepage_home' },
     component: () => import('@/views/index/space'),
-    meta:{needLogin:true},
+    beforeEnter:(to,from,next)=>{
+        const userStore=useUserStore()
+       if(to.query.uid){
+        next()
+       }else{
+       if(!userStore.isLogin&&confirm('需要登录')){
+        next("/login")
+       }else{
+        next('/')
+       }
+       }
+    },
     children: [
         {
             path: 'home',
@@ -215,7 +226,7 @@ const main = [
     },
 ]
 //#endregion
-import {useUserStore} from '@/pinia/userStore'
+
 
 //#region 创作中心路由 以后需要动态从后台获取
 /**
