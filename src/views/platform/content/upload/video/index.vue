@@ -1,50 +1,5 @@
 <template>
-    <div class="video_upload" v-if="uploadStore.status == 'no'">
-
-        <label class="icon" for="upload">
-            <i class="colourless tianjia"></i>
-            <span>拖拽到此处也可以上传</span>
-        </label>
-        <label class="upload" for="upload">
-            <span>上传视频</span>
-            <input type="file" id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="add">
-        </label>
-        <ul class="desc">
-            <a href="https://www.bilibili.com/blackboard/blackroom.html" target="_blank">
-                <li>
-                    禁止发布的内容
-                </li>
-            </a>
-            <li @mouseover="show1 = true" @mouseout="show1 = false">
-                <span>视频大小限制</span>
-                <div class="title-block" v-show="show1">
-                    <span>单个视频不超过2GB</span>
-                    <br>
-                    <span>总的视频不超过20GB且数量不超过200集</span>
-                </div>
-            </li>
-            <li @mouseover="show2 = true" @mouseout="show2 = false">
-                <span>视频格式限制</span>
-                <div class="title-block" v-show="show2">
-                    <span>推荐格式: mp4 flv</span>
-                    <br>
-                    <span>其他格式: mkv</span>
-                </div>
-            </li>
-            <li @mouseover="show3 = true" @mouseout="show3 = false">
-                <span>其他注意事项</span>
-                <div class="title-block" v-show="show3">
-                    <span>请事先检查视频是否可以正常播放，请不要上传已损坏的视频</span>
-
-                    <br>
-                    <span>请不要上传冒充视频格式的其他类型文件 (如图片格式修改为MP4格式)</span>
-
-                    <br>
-                    <span>一经发现则封号处理</span>
-                </div>
-            </li>
-        </ul>
-    </div>
+    <uploadvideo_no @adf="add" v-if="uploadStore.status == 'no'"></uploadvideo_no>
     <form v-if="uploadStore.status == 'begin'">
         <div class="header">
             <h3>{{ videos.length }} 个视频 共 {{ videos_size }} MB
@@ -64,24 +19,24 @@
                     <div class="desc">
                         <div class="title">
                             <div style="display: flex;align-items: flex-end;">
-                                <h4>
-
+                                <h4 :title="file.name.substring(0, file.name.lastIndexOf('.'))">
+                                    <!-- {{ file.name }} -->
                                     {{ file.name.length <= 20 ? file.name.substring(0, file.name.lastIndexOf('.')) :
-                                        file.name.substring(0, 20) }} <!-- {{
+                                        file.name.substring(0, 20) + '...' }} <!-- {{
                                         file.name.substring(0,file.name.lastIndexOf('.')) }} -->
                                 </h4>
                                 <span style="font-size: 13px; color: #99a299;flex-shrink: 0;margin-left: 10px;">类型:
                                     {{ file.name.substring(file.name.lastIndexOf('.') + 1) }}</span>
                             </div>
                             <div class="setting">
-                                <span style="margin-right: 20px;color: #99a299;font-size: 14px;">30MB/{{
+                                <span style="margin-right: 20px;color: #99a299;font-size: 14px;">{{
                                     fileSzieToString(file) }}</span>
                                 <i class="colourless bofangqi-zanting" title="暂停上传"></i>
                                 <i class="colourless shuayishua" title="重新上传"></i>
                                 <i class="colourless guanbi" title="取消上传"></i>
                             </div>
                         </div>
-                        <div class="jindu"></div>
+                        <!-- <div class="jindu"></div> -->
                     </div>
                 </li>
             </ul>
@@ -124,17 +79,30 @@
                 <li>
                     <div class="title">分区</div>
                     <div class="content c3">
-                        <span class="now" title="点击选择分区" @click="show4 = !show4">
-                            科技 · 计算机应用
+                        <span class="now" @click="show4 = !show4">
+                            {{
+                                casukeys.filter(key => key.cid == form.cid)[0]?.cname
+
+                            }} · {{
+    casukeys.filter(key => key.cid == form.cid)[0] ?
+    casulist[form.cid] ?
+        casulist[form.cid].filter(li => li.sid == form.sid)[0]?.sname
+        : undefined
+    : undefined }}
                         </span>
                         <div class="list" v-if="show4">
                             <ul class="category">
-                                <li v-for="index in 7">{{ mock('@cword(2,5)') }}</li>
+
+                                <li :key="ca.cid" :style="`color: ${form.cid == ca.cid ? '#0aaee0' : undefined};`"
+                                    @click="form.cid = ca.cid" v-for="(ca, index) in casukeys">{{ ca.cname }}</li>
                             </ul>
                             <ul class="content">
-                                <li :title="mock('@cword(5,90)')" @click="show4 = false" v-for="index in 4">
-                                    <h3>{{ mock('@cword(3,5)') }}</h3>
-                                    <p>{{ mock('@cword(20)') }}</p>
+                                <li @click="form.sid = li.sid" :style="`color: ${form.sid == li.sid ? '#0aaee0' : undefined};`"
+                                    v-for="li in casulist[form.cid] ">
+                                    <h3>{{ li.sname }}</h3>
+                                    <p :title="form.cid && form.sid ?
+                                            (casukeys.filter(key => key.cid == form.cid)[0]?.cname + ' · ' + casulist[form.cid].filter(li => li.sid == form.sid)[0]?.sname + (li.synopsis ? (':' + li.synopsis) : ''))
+                                            : undefined">{{ li.synopsis ?? '暂无简介' }}</p>
                                 </li>
                             </ul>
                         </div>
@@ -145,76 +113,41 @@
                     <div class="content c4">
                         <div class="input">
                             <ul class="tags">
-                                <span title="点击删除" @click.prevent="deltag(tag)" v-for="tag in form.tags" class="tag">{{ tag
-                                }}</span>
+                                <span title="点击删除" @click.prevent=" form.tags = form.tags.filter(t => t !== tag)"
+                                    v-for="tag in form.tags" class="tag">{{ tag
+                                    }}</span>
                             </ul>
                             <input type="text" id="tags" ref="videoupload_tags" v-if="config.tags_count > form.tags.length"
-                                @keyup.enter="addtag($event.target.value)" placeholder="按下enter键添加,点击标签删除">
+                                @keyup.enter.prevent="addtag($event, $event.target.value)" placeholder="按下enter键添加,点击标签删除">
                             <span class="sys">还可以添加{{ config.tags_count - form.tags.length }}个标签</span>
                         </div>
-                        <div class="tag">
-                            <div class="t" v-if="tags.length > 0 && (config.tags_count > form.tags.length)">
-                                <h4>推荐标签</h4>
-                                <ul class="list">
-                                    <li title="点击添加" v-for="tag in tags" @click.prevent="addtag(tag)">
-                                        {{ tag }}</li>
-                                </ul>
-                            </div>
-                            <!-- <div class="hua" v-if="huas.length > 0 && (config.tags_count > form.tags.length)">
-                                <h4>推荐话题</h4>
-                                <ul class="hualist">
-                                    <li title="点击添加" @click.prevent="addtag(hua)" v-for="hua in huas">{{ hua }}</li>
-                                </ul>
-                            </div> -->
-                        </div>
+
                     </div>
                 </li>
                 <li>
                     <label for="deatils" class="title" style="align-self: flex-start;">简介</label>
                     <div class="content c5">
-                        <textarea id="deatils" :maxlength="config.deatils_size" v-model="form.deatil" cols="30" rows="10"
+                        <textarea id="deatils" :maxlength="config.deatils_size" v-model="form.synopsis" cols="30" rows="10"
                             placeholder="输入视频简介"></textarea>
                     </div>
                 </li>
                 <div class="submit">
-                    <button type="submit" @click.prevent="submit">立即投稿</button>
+                    <input type="button" @click.prevent="submit" value="立即投稿">
                 </div>
             </ul>
         </div>
     </form>
-    <ul class="videos ing" v-if="uploadStore.status=='ing'">
-                <li v-for="(file, index) in videos">
-                    <div class="icon">
-                        <i class="colourless bofangshu"></i>
-                    </div>
-                    <div class="desc">
-                        <div class="title">
-                            <div style="display: flex;align-items: flex-end;">
-                                <h4>
 
-                                    {{ file.name.length <= 20 ? file.name.substring(0, file.name.lastIndexOf('.')) :
-                                        file.name.substring(0, 20) }} <!-- {{
-                                        file.name.substring(0,file.name.lastIndexOf('.')) }} -->
-                                </h4>
-                                <span style="font-size: 13px; color: #99a299;flex-shrink: 0;margin-left: 10px;">类型:
-                                    {{ file.name.substring(file.name.lastIndexOf('.') + 1) }}</span>
-                            </div>
-                            <div class="setting">
-                                <span style="margin-right: 20px;color: #99a299;font-size: 14px;">30MB/{{
-                                    fileSzieToString(file) }}</span>
-                                <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i>
-                                <i class="colourless shuayishua" title="重新上传"></i>
-                                <i class="colourless guanbi" title="取消上传"></i> -->
-                            </div>
-                        </div>
-                        <div class="jindu"></div>
-                    </div>
-                </li>
-            </ul>
+    <uploadvideo_ing v-if="uploadStore.status == 'ing'" :videos="videos"></uploadvideo_ing>
+    <uploadvideo_succeed v-if="uploadStore.status == 'succeed'"></uploadvideo_succeed>
 </template>
 <script setup >
 // #region  引入组件
-
+import uploadvideo_no from './no.vue'
+import uploadvideo_begin from './begin.vue'
+import uploadvideo_ing from './ing.vue'
+import uploadvideo_succeed from './succeed.vue'
+import uploadvideo_fail from './fail.vue'
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -227,23 +160,9 @@ const pageconfigStore = usepageconfigStore()
 const uploadStore = useuploadStore()
 const route = useRoute()
 const router = useRouter()
+import { GetCategoryAndSubarea } from '@/api/uploadvideo'
 // #endregion
 const show4 = ref(false)
-//#region 需要上传的全部内容 
-//
-
-const videos = reactive([])
-//上传表单
-const form = reactive({
-    cover: null,
-    title: '',
-    type: 'zhuanzai',
-    zhuanzai: '',
-    ca: '',
-    tags: [],
-    deatil: '',
-})
-//配置限制
 const config = reactive({
     video_count: 200,
     //单位MB
@@ -251,8 +170,35 @@ const config = reactive({
     title_count: 100,
     tags_count: 7,
     deatils_size: 1000
-
 })
+// #region 方便测试 给videos添加第一个视频
+onMounted(() => {
+    for (let index = 0; index < 1; index++) {
+        videos.push({
+            name: '第一个视频.mp4',
+            size: '344453333'
+        })
+    }
+    // videos.length=0
+    uploadStore.uploadstart('video');
+})
+
+//计算属性 视频总大小 MB
+const videos_size = computed(() => {
+    let count = 0
+    for (let i = 0; i < videos.length; i++) {
+        const file = videos[i]
+        count += parseInt(file.size / (1024 * 1024))
+    }
+    return count
+})
+const addtag = (e, val) => {
+    val = val.trim()
+    if (val == '' || form.tags.includes(val) || form.tags.length >= config.tags_count) return
+    form.tags.push(val)
+    e.target.value = ''
+
+}
 //#endregion
 /**
  * 更换视频封面
@@ -266,49 +212,63 @@ const changeimg = (e) => {
     fr.onload = (e) => {
         document.querySelector('.videoupload_img').src = e.target.result
         form.cover = files[0]
-        console.log(form.cover)
+        // console.log(form.cover)
     }
-
 }
-//#region 方法
+//#region 需要上传的全部内容 
+//
+
+const videos = reactive([])
+
+//上传表单
+const form = reactive({
+    cover: null,  //封面
+    title: '', //标题
+    type: 'zhuanzai', //
+    zhuanzai: '',
+    cid: 0, //类别
+    sid: 0, //分区
+    tags: [],
+    synopsis: '',//简介
+})
+/**
+ * 添加视频
+ * @param {} e 
+ */
 const add = (e) => {
     // console.log('此处需要检查视频是否符合要求')
     const files = e.target.files;
-    for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        // alert(file.name)
-        // 对每个文件进行检查
-        if (file.name.substring(0, file.name.lastIndexOf('.')).length > 20) {
-            // alert("文件名过长 请减短文件名\n"+file.name);
-            // break
-        }
-        //
-        videos.push(file)
-    }
+    files.forEach(video => {
+        videos.push(video)
+    });
     uploadStore.uploadstart('video');
 }
-const videoupload_tags = ref()
-const addtag = (val) => {
-    val = val.trim()
-    if (val == '' || form.tags.includes(val) || form.tags.length >= config.tags_count) return
-    form.tags.push(val)
-    videoupload_tags.value.value = ''
-}
-const deltag = (name) => {
-    form.tags = form.tags.filter(tag => tag !== name)
-}
-const submit=()=>{
-    uploadStore.status='ing'
-}
-//计算属性 视频总大小 MB
-const videos_size = computed(() => {
-    let count = 0
-    for (let i = 0; i < videos.length; i++) {
-        const file = videos[i]
-        count += parseInt(file.size / (1024 * 1024))
-    }
-    return count
+
+//#region  从后台获取类别和分区
+
+const casukeys = reactive([])
+const casulist = reactive({})
+watch(() => form.cid, () => {
+    form.sid = casulist[form.cid][0].sid
+}, { immediate: false })
+onMounted(() => {
+    GetCategoryAndSubarea().then(req => {
+        // console.log(req)
+        req.forEach(list => {
+            casukeys.push({ cid: list[0].cid, cname: list[0].cname })
+            casulist[list[0].cid] = list
+        })
+        form.cid = casukeys[0].cid
+
+        form.sid = casulist[form.cid][0].sid
+
+    })
 })
+
+const submit = () => {
+    uploadStore.status = 'ing'
+}
+
 //#endregion
 
 
@@ -317,122 +277,11 @@ const videos_size = computed(() => {
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
-const show1 = ref(false)
-const show2 = ref(false)
-const show3 = ref(false)
-// #region 方便测试 给videos添加第一个视频
-onMounted(() => {
-    videos.push({
-        name: '第一个视频.mp4',
-        size: '344453333'
-    })
-    // videos.length=0
-    uploadStore.uploadstart('video');
-})
-//推荐标签 推荐话题
-const reclist = reactive({
-    tags: [],
-    huas: []
-})
-const tags = computed(() => {
-    return reclist.tags.filter(tag => !form.tags.includes(tag))
-})
-const huas = computed(() => {
-    return reclist.huas.filter(tag => !form.tags.includes(tag))
-})
-onMounted(() => {
-    for (let i = 0; i < mock('@integer(3,15)'); i++) {
-        reclist.tags.push(mock('@cword(3,7)'))
-    }
-    for (let i = 0; i < mock('@integer(3,15)'); i++) {
-        reclist.huas.push(mock('@cword(3,7)'))
-    }
-})
-//#endregion
-/**
-* 添加第一个视频文件
-* @param {*} e
-*/
 
-//#endregion
 
 </script>
 <!-- <style lang="less" scoped  src="@\assets\css\test.less"></style> -->
 <style scoped lang="less">
-.video_upload {
-    /* background-color: #fff; */
-    width: 826px;
-    height: 266px;
-    max-height: 500px;
-    margin: 0 auto;
-    margin-top: 20px;
-    border: 2px dashed #ccc;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.video_upload .icon {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.video_upload .upload {
-    height: 40px;
-    width: 150px;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #0aaee0;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.video_upload .upload span {
-    color: #fff;
-    font-size: 16px;
-}
-
-.video_upload .upload input {
-    display: none;
-}
-
-.video_upload .desc {
-    margin-top: 40px;
-    /* background-color: aquamarine; */
-    display: flex;
-    align-items: center;
-}
-
-.video_upload .desc li {
-    position: relative;
-    margin: 0 10px;
-    cursor: pointer;
-    color: #99a299;
-    font-size: 14px;
-}
-
-.video_upload .desc li:hover>span {
-    color: #0aaee0;
-}
-
-.title-block {
-    position: absolute;
-    padding: 10px 30px;
-    white-space: nowrap;
-    bottom: 20px;
-    right: -50%;
-    color: #000;
-    background-color: #fcfae0;
-}
-
 form {
     /* background-color: bisque; */
     /* height: 100%; */
@@ -482,12 +331,13 @@ form .header .add {
     border: 2px solid #0aaee0;
 }
 
- .videos {
+.videos {
     max-height: calc(60px * 5);
     overflow: auto;
 }
 
- .videos li {
+.videos li {
+    border-bottom: 2px solid #e6e7e8;
     display: flex;
     width: 100%;
     /* background-color: darkgoldenrod; */
@@ -661,7 +511,7 @@ form .header .add {
             overflow: auto;
 
             li {
-                padding: 5px 20px;
+                padding: 10px 50px;
                 padding-left: 10px;
                 cursor: pointer;
                 text-overflow: ellipsis;
@@ -679,6 +529,7 @@ form .header .add {
             flex-direction: column;
             // background-color: orange;
             padding-left: 10px;
+            padding-right: 100px;
 
             li {
                 &:hover {
@@ -686,7 +537,7 @@ form .header .add {
                 }
 
                 cursor: pointer;
-                padding: 5px 0;
+                padding: 8px 0;
                 display: flex;
                 align-items: center;
                 text-overflow: ellipsis;
@@ -815,7 +666,7 @@ form .header .add {
     border: 1px solid #99a299;
 }
 
-.submit button {
+.submit input {
     padding: 10px;
     background-color: #0aaee0;
     color: #fff;

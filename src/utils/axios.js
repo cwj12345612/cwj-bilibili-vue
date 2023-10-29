@@ -3,10 +3,10 @@ import axios from "axios";
 axios.interceptors.request.use(
     config=>{
         //设置token
-        if(sessionStorage.getItem('token')){
-            config.headers.token=sessionStorage.getItem('token')
-        }else if(localStorage.getItem('token')){
-            config.headers.token=localStorage.getItem('token')
+        if(sessionStorage.getItem('Authorization')){
+            config.headers.Authorization=sessionStorage.getItem('Authorization')
+        }else if(localStorage.getItem('Authorization')){
+            config.headers.Authorization=localStorage.getItem('Authorization')
         }
     //    console.log(new Date().getTime());
     /**

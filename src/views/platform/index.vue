@@ -9,7 +9,7 @@
                     创作中心
                 </h3>
                 <div class="index">
-                    <a href="/" target="_blank">
+                    <a href="/"  rel="opener" target="_blank">
                         <i class="colourless shouye"></i>
                         主站
                     </a>

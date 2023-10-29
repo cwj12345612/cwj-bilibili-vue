@@ -1,4 +1,4 @@
-import {useUserStore} from '@/pinia/userStore'
+
 // #region 开发文档路由 正常使用时删除
 const dev = [
     {
@@ -24,9 +24,9 @@ const category = [
         component: () => import('@/views/index/category/animationpage')
     },
     {
-        path:'v/:category',
-        name:'categorypage',
-        component:()=>import('@/views/index/category/otherpage')
+        path: 'v/:category',
+        name: 'categorypage',
+        component: () => import('@/views/index/category/otherpage')
     }
 ]
 //专栏页
@@ -43,16 +43,16 @@ const readpage = {
                 {
                     path: ':ca',
                     component: () => import('@/views/index/readpage/home'),
-                  name:'read_home'  
+                    name: 'read_home'
                 },
-              
+
 
             ]
         },
         {
             path: 'readlist/:id',
             component: () => import('@/views/index/readpage/readlist.vue'),
-            
+
         },
         {
             path: ':cid',
@@ -66,16 +66,21 @@ const space = {
     name: 'spacepage',
     redirect: { name: 'spacepage_home' },
     component: () => import('@/views/index/space'),
-    beforeEnter:(to,from,next)=>{
-        const userStore=useUserStore()
-       if(to.query.uid){
-        next()
-       }else{
-       if(!userStore.isLogin){
-        alert("需要登录")
-        next({name:'homepage'})
-       }
-       }
+    beforeEnter: (to, from, next) => {
+        const userStore = useUserStore()
+        if (to.query.uid) {
+            next()
+        } else {
+            if (!userStore.isLogin) {
+                alert("需要登录")
+                next({ name: 'homepage' })
+            } else if (userStore.isLogin) {
+                next()
+            } else if (!to.query.uid && !userStore.isLogin) {
+                alert('路径错误')
+                next({ name: 'homepage' })
+            }
+        }
     },
     children: [
         {
@@ -220,12 +225,12 @@ const main = [
             ...category,
             space,
             readpage,
-           
+
         ]
     },
 ]
 //#endregion
-
+import { useUserStore } from '@/pinia/userStore'
 
 //#region 创作中心路由 以后需要动态从后台获取
 /**
@@ -235,6 +240,24 @@ const upload = {
     path: 'upload',
     component: () => import('@/views/platform/content/upload'),
     redirect: { name: 'upload_video' },
+    beforeEnter: (to, from, next) => {
+        next()
+        return
+        //
+        setTimeout(() => {
+            const userStore = useUserStore()
+            // console.log(!userStore.isLogin)
+            if (!userStore.isLogin) {
+                alert("需要登录才能投稿")
+                { next({ name: 'homepage' }) }
+
+            } else {
+                next()
+            }
+        }, 40);
+
+    },
+ 
     children: [
         {
             path: 'video',
@@ -344,12 +367,12 @@ const platform = {
     ]
 }
 
-//#endgion
+//#endregion
 const routes = [
     ...main,
 
     platform,
     ...dev,
-  
+
 ]
 export default routes

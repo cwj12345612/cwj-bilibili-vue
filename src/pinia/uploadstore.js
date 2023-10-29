@@ -10,7 +10,7 @@ export const useuploadStore=defineStore('uploadStore',{
          *      video text audio
          */
     type:null,
-    // no begin ing end
+    // no begin ing succeed fail
     status:'no',
     }),
     actions:{

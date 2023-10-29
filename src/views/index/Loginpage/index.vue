@@ -2,7 +2,7 @@
   <div class="container">
     <form action="#" class="login-form">
       <h2>登 录</h2>
-      <input v-model="loginuser.username" type="text" placeholder="用户名" />
+      <input v-model="loginuser.email" type="email" placeholder="邮箱" />
       <input v-model="loginuser.password" type="password" name="password" placeholder="密码" />
       <button type="submit" @click.prevent="login">登录</button>
     </form>
@@ -17,6 +17,7 @@
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/pinia/userStore.js'
+import {login as userlogin} from '@/api/user'
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
@@ -30,26 +31,15 @@ import axios from '@/utils/axios'
 
 // #region  发送请求 
 const loginuser = reactive({
-  username: '',
+  email: '',
   password: '',
 })
 const login = () => {
-  if (loginuser.username.trim() == '' || loginuser.password.trim() == '') {
-    alert("用户名和密码不能为空")
+  if (loginuser.email.trim() == '' || loginuser.password.trim() == '') {
+    alert("游戏和密码都不能为空")
     return
   }
-  axios.post('/api/login',
-    loginuser
-  ).then(req => {
-    //  i
-    // console.log(req)
-    const user = req.data;
-    userStore.login(user)
-    router.push("/")
-  }).catch(e => {
-    alert("不存在此用户")
-    location.reload();
-  })
+userlogin(loginuser)
 }
 // #endregion
 
@@ -76,7 +66,8 @@ const mock = (str) => { return Mock.mock(str) }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url("../../../assets//images/视频图片.png") fixed no-repeat;
+  background-color: #0aaee0;
+  /* background: url("../../../assets//images/视频图片.png") fixed no-repeat; */
   background-size: cover;
 }
 
