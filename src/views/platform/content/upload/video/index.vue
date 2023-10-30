@@ -2,9 +2,9 @@
     <uploadvideo_no @adf="add" v-if="uploadStore.status == 'no'"></uploadvideo_no>
     <form v-if="uploadStore.status == 'begin'">
         <div class="header">
-            <h3>{{ videos.length }} 个视频 共 {{ videos_size }} MB
+            <h3>{{ upfile.videos.length }} 个视频 共 {{ videos_size }} MB
                 <span>
-                    剩余{{ config.video_count - videos.length }}集 且容量{{ config.videos_size - videos_size
+                    剩余{{ config.video_count - upfile.videos.length }}集 且容量{{ config.videos_size - videos_size
                     }}MB</span>
             </h3>
             <label class="add" for="add">添加视频</label>
@@ -12,7 +12,7 @@
         </div>
         <div class="form">
             <ul class="videos">
-                <li v-for="(file, index) in videos">
+                <li v-for="(file, index) in upfile.videos">
                     <div class="icon">
                         <i class="colourless bofangshu"></i>
                     </div>
@@ -97,12 +97,13 @@
                                     @click="form.cid = ca.cid" v-for="(ca, index) in casukeys">{{ ca.cname }}</li>
                             </ul>
                             <ul class="content">
-                                <li @click="form.sid = li.sid" :style="`color: ${form.sid == li.sid ? '#0aaee0' : undefined};`"
+                                <li @click="form.sid = li.sid"
+                                    :style="`color: ${form.sid == li.sid ? '#0aaee0' : undefined};`"
                                     v-for="li in casulist[form.cid] ">
                                     <h3>{{ li.sname }}</h3>
                                     <p :title="form.cid && form.sid ?
-                                            (casukeys.filter(key => key.cid == form.cid)[0]?.cname + ' · ' + casulist[form.cid].filter(li => li.sid == form.sid)[0]?.sname + (li.synopsis ? (':' + li.synopsis) : ''))
-                                            : undefined">{{ li.synopsis ?? '暂无简介' }}</p>
+                                        (casukeys.filter(key => key.cid == form.cid)[0]?.cname + ' · ' + casulist[form.cid].filter(li => li.sid == form.sid)[0]?.sname + (li.synopsis ? (':' + li.synopsis) : ''))
+                                        : undefined">{{ li.synopsis ?? '暂无简介' }}</p>
                                 </li>
                             </ul>
                         </div>
@@ -131,14 +132,14 @@
                             placeholder="输入视频简介"></textarea>
                     </div>
                 </li>
-                <div class="submit">
+                <div class="submit" >
                     <input type="button" @click.prevent="submit" value="立即投稿">
                 </div>
             </ul>
         </div>
     </form>
 
-    <uploadvideo_ing v-if="uploadStore.status == 'ing'" :videos="videos"></uploadvideo_ing>
+    <uploadvideo_ing v-if="uploadStore.status == 'ing'" :videos="upfile.videos"></uploadvideo_ing>
     <uploadvideo_succeed v-if="uploadStore.status == 'succeed'"></uploadvideo_succeed>
 </template>
 <script setup >
@@ -160,9 +161,10 @@ const pageconfigStore = usepageconfigStore()
 const uploadStore = useuploadStore()
 const route = useRoute()
 const router = useRouter()
-import { GetCategoryAndSubarea } from '@/api/uploadvideo'
+import { GetCategoryAndSubarea,uploadFrom,uploadCover,uploadVideos } from '@/api/uploadvideo'
 // #endregion
 const show4 = ref(false)
+//#region 上传限制
 const config = reactive({
     video_count: 200,
     //单位MB
@@ -171,23 +173,24 @@ const config = reactive({
     tags_count: 7,
     deatils_size: 1000
 })
+//#endregion
 // #region 方便测试 给videos添加第一个视频
-onMounted(() => {
-    for (let index = 0; index < 1; index++) {
-        videos.push({
-            name: '第一个视频.mp4',
-            size: '344453333'
-        })
-    }
-    // videos.length=0
-    uploadStore.uploadstart('video');
-})
+// onMounted(() => {
+//     for (let index = 0; index < 1; index++) {
+//         videos.push({
+//             name: '第一个视频.mp4',
+//             size: '344453333'
+//         })
+//     }
+//     // videos.length=0
+//     uploadStore.uploadstart('video');
+// })
 
 //计算属性 视频总大小 MB
 const videos_size = computed(() => {
     let count = 0
-    for (let i = 0; i < videos.length; i++) {
-        const file = videos[i]
+    for (let i = 0; i < upfile.videos.length; i++) {
+        const file = upfile.videos[i]
         count += parseInt(file.size / (1024 * 1024))
     }
     return count
@@ -200,10 +203,7 @@ const addtag = (e, val) => {
 
 }
 //#endregion
-/**
- * 更换视频封面
- * @param {*} e 
- */
+//#regin 更换视频封面
 const changeimg = (e) => {
     let files = e.target.files
     if (!files?.length) return
@@ -211,26 +211,31 @@ const changeimg = (e) => {
     fr.readAsDataURL(files[0])
     fr.onload = (e) => {
         document.querySelector('.videoupload_img').src = e.target.result
-        form.cover = files[0]
+       upfile.cover= files[0]
         // console.log(form.cover)
     }
 }
+//#endregion
 //#region 需要上传的全部内容 
 //
 
-const videos = reactive([])
-
+// const videos = reactive([])
+const upfile=reactive({
+    videos:[],
+    cover:null
+})
 //上传表单
 const form = reactive({
-    cover: null,  //封面
-    title: '', //标题
-    type: 'zhuanzai', //
-    zhuanzai: '',
+
+    title: '标题1', //标题
+    type: 'zhuanzai', //是否未自制
+    zhuanzai: '百度',//转自
     cid: 0, //类别
     sid: 0, //分区
-    tags: [],
-    synopsis: '',//简介
+    tags: ['csharp','netcore','vue','axios'],
+    synopsis: '测试文件上传1',//简介
 })
+//#endregion
 /**
  * 添加视频
  * @param {} e 
@@ -238,9 +243,11 @@ const form = reactive({
 const add = (e) => {
     // console.log('此处需要检查视频是否符合要求')
     const files = e.target.files;
-    files.forEach(video => {
-        videos.push(video)
-    });
+    // console.log(files)
+    for(let file of files){
+       upfile.videos.push(file)
+    }
+
     uploadStore.uploadstart('video');
 }
 
@@ -254,6 +261,7 @@ watch(() => form.cid, () => {
 onMounted(() => {
     GetCategoryAndSubarea().then(req => {
         // console.log(req)
+        if(!req) return
         req.forEach(list => {
             casukeys.push({ cid: list[0].cid, cname: list[0].cname })
             casulist[list[0].cid] = list
@@ -265,19 +273,25 @@ onMounted(() => {
     })
 })
 
-const submit = () => {
-    uploadStore.status = 'ing'
-}
+
 
 //#endregion
+//#region 上传
 
+const submit = () => {
+// uploadFrom(form).then(()=>
+// uploadCover(upfile.cover)
+// )
 
+uploadVideos(upfile.videos)
+    uploadStore.status = 'ing'
+}
+//#endregion
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
-
 
 </script>
 <!-- <style lang="less" scoped  src="@\assets\css\test.less"></style> -->

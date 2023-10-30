@@ -7,7 +7,9 @@
         </label>
         <label class="upload" for="upload">
             <span>上传视频</span>
-            <input type="file" id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="add">
+            <input 
+            multiple
+            type="file" id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="add">
         </label>
         <ul class="desc">
             <a href="https://www.bilibili.com/blackboard/blackroom.html" target="_blank">
