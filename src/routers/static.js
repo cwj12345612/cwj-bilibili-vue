@@ -241,8 +241,7 @@ const upload = {
     component: () => import('@/views/platform/content/upload'),
     redirect: { name: 'upload_video' },
     beforeEnter: (to, from, next) => {
-        next()
-        return
+      
         //
         setTimeout(() => {
             const userStore = useUserStore()

@@ -183,7 +183,7 @@ const config = reactive({
 //         })
 //     }
 //     // videos.length=0
-//     uploadStore.uploadstart('video');
+    uploadStore.uploadstart('video');
 // })
 
 //计算属性 视频总大小 MB
@@ -226,7 +226,6 @@ const upfile=reactive({
 })
 //上传表单
 const form = reactive({
-
     title: '标题1', //标题
     type: 'zhuanzai', //是否未自制
     zhuanzai: '百度',//转自
@@ -280,10 +279,11 @@ onMounted(() => {
 
 const submit = () => {
 // uploadFrom(form).then(()=>
-// uploadCover(upfile.cover)
+//     uploadCover(upfile.cover).then(()=>
+//         uploadVideos(upfile.videos)
+//                                 )
 // )
-
-uploadVideos(upfile.videos)
+uploadFrom(form)
     uploadStore.status = 'ing'
 }
 //#endregion

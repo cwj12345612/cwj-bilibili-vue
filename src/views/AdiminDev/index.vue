@@ -4,6 +4,7 @@
         <div class="c">
             你好
         </div>
+        <button @click.prevent="t5">测试jwt1</button>
     </div>
 </template>
 <script setup>
@@ -18,7 +19,7 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
-
+import axios from '@/utils/axios';
 import { readBuffer, isPNG } from '@/utils/fileUtils'
 // #endregion
 
@@ -32,7 +33,12 @@ function change(e) {
 console.log('此处需要检查文件类型');
 
 }
-
+const t5=()=>{
+    axios.get('/api/test2/t5')
+    .then(req=>{
+        console.log(req.data)
+    })
+}
 
 //#endregion
 

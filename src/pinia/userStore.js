@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import axios from '@/utils/axios'
+
 /**
  * 存储用户状态
  */

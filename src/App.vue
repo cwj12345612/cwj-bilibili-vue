@@ -8,7 +8,7 @@ import index from '@/views/index'
 import platform from '@/views/platform'
 //#endregion
 
-import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
+import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, onBeforeMount } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/pinia/userStore'

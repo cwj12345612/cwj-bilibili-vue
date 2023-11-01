@@ -1,12 +1,21 @@
 // 路由守卫
 import static_routes from './static'
 import  {usepageconfigStore} from '@/pinia/pageconfig'
-import { createRouter,createWebHistory } from "vue-router"; 
+import { createRouter,createWebHistory } from "vue-router";
+import  Pinia  from 'pinia'; 
 import { useUserStore} from '@/pinia/userStore'
 const router= createRouter({
     history:createWebHistory(),
     routes:static_routes
 })
+router.beforeEach((to,from,next)=>{
+
+  //延迟50ms
+  setTimeout(() => {
+    next()
+   }, 50);
+  }
+)
 //设置页面状态守卫
 router.beforeEach((to,from,next)=>{
     const pageconfig=usepageconfigStore()

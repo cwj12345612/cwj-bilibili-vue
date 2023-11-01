@@ -9,18 +9,18 @@ export async function GetCategoryAndSubarea() {
     })
 
 }
-
+//#region  上传表单
 /**
  * 上传表单
  */
 export async function uploadFrom(form) {
     await axios.post('/api/uploadvideo/UploadFrom',
         form
-        , {
-            headers: { 'Content-Type': 'multipart/form-data' }
-
-        })
+        )
 }
+//#endregion
+
+
 //#region  上传封面 cover
 /**
  * 上传视频封面
