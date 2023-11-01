@@ -75,7 +75,7 @@ const mock=(str)=>{return Mock.mock(str)}
 <style scoped l lang="less">
 
 .videos {
-    max-height: calc(60px * 5);
+    max-height: calc(60px * 10);
     overflow: auto;
 }
 

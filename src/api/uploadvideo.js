@@ -64,7 +64,7 @@ export async function uploadVideos(videos) {
        videolist.push(uploadvideo(video))
     }
     Promise.all(videolist).then(()=>{
-        // console.log('所有视频上传完成');
+        console.log('所有视频上传完成');
         //发送写入数据库请求
 
     })

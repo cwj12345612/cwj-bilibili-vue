@@ -5,7 +5,7 @@ import { dataUtils } from '@/utils/dataUtils'
 export const usevideouploadstore=defineStore('videouploadstore',{
     state:()=>({
     // no begin ing succeed fail
-    status:'no',
+    status:'succeed',
     //记录视频的信息: 大小 时长 上传进度条
     videolist:{}
     }),
