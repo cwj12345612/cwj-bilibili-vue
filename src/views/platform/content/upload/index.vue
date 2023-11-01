@@ -1,7 +1,7 @@
 <template>
    
         <ul class="header" 
-        v-if="uploadStore.status=='no'"
+        v-if="videouploadstore.status=='no'"
         >
             <li v-for="(li, index) in list.splice(0,1)">
                 <router-link :to="li.href">
@@ -22,10 +22,10 @@
 
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, shallowRef } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
-import { useuploadStore } from '@/pinia/uploadstore.js'
+import { usevideouploadstore } from '@/pinia/videouploadstore.js'
 import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
-const uploadStore = useuploadStore();
+const videouploadstore = usevideouploadstore();
 const route = useRoute()
 const router = useRouter()
 

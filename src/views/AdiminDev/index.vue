@@ -5,11 +5,12 @@
             你好
         </div>
         <button @click.prevent="t5">测试jwt1</button>
+        <primiseall></primiseall>
     </div>
 </template>
 <script setup>
 // #region  引入组件
-
+import primiseall from './promiseall.vue'
 //  #endregion
 
 // #region 引入vue pinia 路由

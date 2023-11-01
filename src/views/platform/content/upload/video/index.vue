@@ -1,6 +1,6 @@
 <template>
-    <uploadvideo_no @adf="add" v-if="uploadStore.status == 'no'"></uploadvideo_no>
-    <form v-if="uploadStore.status == 'begin'">
+    <uploadvideo_no @add="add" v-if="videouploadstore.status == 'no'"></uploadvideo_no>
+    <form v-if="videouploadstore.status == 'begin'">
         <div class="header">
             <h3>{{ upfile.videos.length }} 个视频 共 {{ videos_size }} MB
                 <span>
@@ -31,9 +31,11 @@
                             <div class="setting">
                                 <span style="margin-right: 20px;color: #99a299;font-size: 14px;">{{
                                     fileSzieToString(file) }}</span>
-                                <i class="colourless bofangqi-zanting" title="暂停上传"></i>
-                                <i class="colourless shuayishua" title="重新上传"></i>
-                                <i class="colourless guanbi" title="取消上传"></i>
+                                <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i> -->
+                                <!-- <i class="colourless shuayishua" title="重新上传"></i> -->
+                                <i class="colourless guanbi" 
+                                @click.prevent="upfile.videos=upfile.videos.filter(v=>v.name!==file.name)"
+                                title="取消上传"></i>
                             </div>
                         </div>
                         <!-- <div class="jindu"></div> -->
@@ -93,7 +95,8 @@
                         <div class="list" v-if="show4">
                             <ul class="category">
 
-                                <li :key="ca.cid" :style="`color: ${form.cid == ca.cid ? '#0aaee0' : undefined};`"
+                                <li :key="ca.cid" 
+                                :style="`color: ${form.cid == ca.cid ? '#0aaee0' : undefined};`"
                                     @click="form.cid = ca.cid" v-for="(ca, index) in casukeys">{{ ca.cname }}</li>
                             </ul>
                             <ul class="content">
@@ -139,8 +142,8 @@
         </div>
     </form>
 
-    <uploadvideo_ing v-if="uploadStore.status == 'ing'" :videos="upfile.videos"></uploadvideo_ing>
-    <uploadvideo_succeed v-if="uploadStore.status == 'succeed'"></uploadvideo_succeed>
+    <uploadvideo_ing v-if="videouploadstore.status == 'ing'" :videos="upfile.videos"></uploadvideo_ing>
+    <uploadvideo_succeed v-if="videouploadstore.status == 'succeed'"></uploadvideo_succeed>
 </template>
 <script setup >
 // #region  引入组件
@@ -154,11 +157,11 @@ import uploadvideo_fail from './fail.vue'
 // #region 引入vue pinia 路由
 import { computed, ref, defineEmits, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
-import { useuploadStore } from '@/pinia/uploadstore.js'
+import { usevideouploadstore } from '@/pinia/videouploadstore.js'
 import { useRoute, useRouter } from 'vue-router'
 import { fileSzieToString } from '@/utils/fileUtils'
 const pageconfigStore = usepageconfigStore()
-const uploadStore = useuploadStore()
+const videouploadstore = usevideouploadstore()
 const route = useRoute()
 const router = useRouter()
 import { GetCategoryAndSubarea,uploadFrom,uploadCover,uploadVideos } from '@/api/uploadvideo'
@@ -183,7 +186,7 @@ const config = reactive({
 //         })
 //     }
 //     // videos.length=0
-    uploadStore.uploadstart('video');
+// videouploadstore.uploadstart('video');
 // })
 
 //计算属性 视频总大小 MB
@@ -231,9 +234,11 @@ const form = reactive({
     zhuanzai: '百度',//转自
     cid: 0, //类别
     sid: 0, //分区
+   
     tags: ['csharp','netcore','vue','axios'],
     synopsis: '测试文件上传1',//简介
 })
+form.size=videos_size;
 //#endregion
 /**
  * 添加视频
@@ -246,10 +251,12 @@ const add = (e) => {
     for(let file of files){
        upfile.videos.push(file)
     }
-
-    uploadStore.uploadstart('video');
+    videouploadstore.uploadstart('video');
 }
-
+watch(()=>upfile.videos.length,(nl,ol)=>{
+    console.log(nl)
+    console.log(ol)
+})
 //#region  从后台获取类别和分区
 
 const casukeys = reactive([])
@@ -257,6 +264,8 @@ const casulist = reactive({})
 watch(() => form.cid, () => {
     form.sid = casulist[form.cid][0].sid
 }, { immediate: false })
+
+
 onMounted(() => {
     GetCategoryAndSubarea().then(req => {
         // console.log(req)
@@ -266,9 +275,8 @@ onMounted(() => {
             casulist[list[0].cid] = list
         })
         form.cid = casukeys[0].cid
-
         form.sid = casulist[form.cid][0].sid
-
+// console.log(form)
     })
 })
 
@@ -278,12 +286,12 @@ onMounted(() => {
 //#region 上传
 
 const submit = () => {
-// uploadFrom(form).then(()=>
-//     uploadCover(upfile.cover).then(()=>
-//         uploadVideos(upfile.videos)
-//                                 )
-// )
-uploadFrom(form)
+uploadFrom(form).then(
+    ()=> uploadCover(upfile.cover,form).then(
+        ()=>uploadVideos(upfile.videos)
+                                )
+)
+// uploadFrom(form)
     uploadStore.status = 'ing'
 }
 //#endregion

@@ -2,33 +2,37 @@
 import { defineStore } from 'pinia'
 import { dataUtils } from '@/utils/dataUtils'
 
-export const useuploadStore=defineStore('uploadStore',{
+export const usevideouploadstore=defineStore('videouploadstore',{
     state:()=>({
       
-        /**
-         * 上传文件类型 
-         *      video text audio
-         */
-    type:null,
+    
     // no begin ing succeed fail
     status:'no',
+    //记录视频的信息: 大小 时长 上传进度条
+    videolist:[]
     }),
     actions:{
         /**
          * 开启文件上传
          * @param {} type 
          */
-        uploadstart(type){
+        uploadstart(){
             // console.log('上传'+type)
             this.status='begin'
-            this.type=type
+           
         },
         /**
          * 文件上传完成
          */
         uploadend(){
             this.ing=false
-            this.type=null
+          
+        },
+        /**
+         * 增加或者删除视频
+         */
+        changeVideoList(){
+
         }
     },
     getters:{

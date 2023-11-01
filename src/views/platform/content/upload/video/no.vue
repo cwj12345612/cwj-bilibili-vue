@@ -58,14 +58,14 @@ import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmou
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
-const emit=defineEmits(['adf'])
+const emit=defineEmits(['add'])
 // #endregion
 const show4 = ref(false)
 const show1 = ref(false)
 const show2 = ref(false)
 const show3 = ref(false)
 const add=(e)=>{
-emit('adf',e)
+emit('add',e)
 }
 // #region 第三方库
 

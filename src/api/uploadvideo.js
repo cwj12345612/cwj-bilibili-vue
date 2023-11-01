@@ -1,6 +1,7 @@
 import axios from "@/utils/axios";
 import md5 from "js-md5";
-
+import { useUserStore} from '@/pinia/userStore'
+import {usevideouploadstore} from '@/pinia/videouploadstore'
 export async function GetCategoryAndSubarea() {
     return await axios.get('/api/uploadvideo/CategoryAndSubarea').then(req => {
         return req.data;
@@ -14,6 +15,10 @@ export async function GetCategoryAndSubarea() {
  * 上传表单
  */
 export async function uploadFrom(form) {
+    const userStore=useUserStore()
+    const key=form.title+'#'+userStore.user.id+'#'+form.cid+'#'+form.sid+'#'+form.size
+    console.log(key)
+    form.md5=md5(key)
     await axios.post('/api/uploadvideo/UploadFrom',
         form
         )
@@ -26,14 +31,14 @@ export async function uploadFrom(form) {
  * 上传视频封面
  * @param {*} cover 
  */
-export async function uploadCover(cover) {
+export async function uploadCover(cover,form) {
     if (!cover) {
         console.log("封面不存在");
         return;
     }
     const formData = new FormData();
     formData.append("cover", cover);
-    await axios.post('/api/uploadvideo/Cover',
+    await axios.post('/api/uploadvideo/Cover/'+form.md5,
         formData,
         {
             headers: {
@@ -53,12 +58,18 @@ export async function uploadVideos(videos) {
         console.log("视频不存在");
         return
     }
+    const videolist=[]
     for (let video of videos) {
-        uploadvideo(video)
+ 
+       videolist.push(uploadvideo(video))
     }
+    Promise.all(videolist).then(()=>{
+        // console.log('所有视频上传完成');
+        //发送写入数据库请求
+
+    })
 }
-export async function uploadvideo(video) {
-      
+export async function uploadvideo(video) {   
     const fileChunks = []
     //每个分片文件大小
     const blockSize = 1024 * 1024
@@ -118,9 +129,7 @@ export async function uploadvideo(video) {
        
 
     }
-    await axios.all(axioslist).then(req => {
-   
-  
+ return   await axios.all(axioslist).then(async() => {
         //每一集的全部分片上传成功后 发出合并请求
         const mergeform = {
             FileName: video.name,
@@ -128,12 +137,9 @@ export async function uploadvideo(video) {
             Total: video.size,
             chunks: fileChunks.length,
             Type:video.name.substring(video.name.lastIndexOf("."))
-        }
-       
-        axios.post('/api/uploadvideo/mergeform',
-        
+        }       
+      await  axios.post('/api/uploadvideo/mergeform',   
         mergeform,
-          
         ).then(req=>{
             console.log('成功上传'+video.name)
         })

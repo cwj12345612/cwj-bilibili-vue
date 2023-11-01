@@ -34,14 +34,13 @@ router.beforeEach((to,from,next)=>{
 })
 router.beforeEach((to,from,next)=>{
   // console.log("验证是否需要登录")
+
   const userStore=useUserStore()
-  if(to.meta.needLogin&&!userStore.isLogin){
-  
+  if(to.meta?.needLogin&&!userStore.isLogin){
     alert("需要登录")
     next({name:'homepage'})
   }else{
     next()
   }
-
 })
 export default router
