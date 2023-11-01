@@ -123,7 +123,11 @@ export async function uploadvideo(video) {
                     'Content-Type': 'multipart/form-data'
                 }
             }
-        ))
+        ).then(req=>{
+            const videoStore=usevideouploadstore()
+            videoStore.uploadvideo(video.name)
+        })
+        )
       
 
        
@@ -141,7 +145,9 @@ export async function uploadvideo(video) {
       await  axios.post('/api/uploadvideo/mergeform',   
         mergeform,
         ).then(req=>{
+         
             console.log('成功上传'+video.name)
+           
         })
     })
 }

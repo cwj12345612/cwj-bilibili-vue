@@ -18,14 +18,24 @@
                             {{ file.name.substring(file.name.lastIndexOf('.') + 1) }}</span>
                     </div>
                     <div class="setting">
-                        <span style="margin-right: 20px;color: #99a299;font-size: 14px;">30MB/{{
-                            fileSzieToString(file) }}</span>
+                        <span style="margin-right: 20px;color: #99a299;font-size: 14px;">
+                        {{(videolist[file.name].nowsize>videolist[file.name].size
+                        ?videolist[file.name].size
+                        :videolist[file.name].nowsize
+                        )+'MB/'+ videolist[file.name].size+'MB'}}</span>
                         <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i>
                                 <i class="colourless shuayishua" title="重新上传"></i>
                                 <i class="colourless guanbi" title="取消上传"></i> -->
                     </div>
                 </div>
-                <div class="jindu"></div>
+                <el-progress
+      :percentage="videolist[file.name].schedule"
+      :stroke-width="15"
+      :status="videolist[file.name].schedule ==100? 'success':undefined"
+    
+      striped-flow
+      :duration="5"
+    />
             </div>
         </li>
     </ul>
@@ -38,14 +48,20 @@
 // #region 引入vue pinia 路由
 import {computed,ref,reactive,watch,toRef,toRefs,onMounted,onBeforeUnmount,defineProps} from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
+import{ usevideouploadstore} from '@/pinia/videouploadstore'
 import {useRoute,useRouter} from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route=useRoute()
 const router=useRouter()
+const videouploadstore=usevideouploadstore()
 import { fileSzieToString } from '@/utils/fileUtils'
 // #endregion
 defineProps({
     videos:Array
+})
+const videolist=computed(()=>{
+   
+    return videouploadstore.videolist;
 })
 // #region  模拟数据 mockjs
 

@@ -33,9 +33,9 @@
                                     fileSzieToString(file) }}</span>
                                 <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i> -->
                                 <!-- <i class="colourless shuayishua" title="重新上传"></i> -->
-                                <i class="colourless guanbi" 
-                                @click.prevent="upfile.videos=upfile.videos.filter(v=>v.name!==file.name)"
-                                title="取消上传"></i>
+                                <i class="colourless guanbi"
+                                    @click.prevent="upfile.videos = upfile.videos.filter(v => v.name !== file.name)"
+                                    title="取消上传"></i>
                             </div>
                         </div>
                         <!-- <div class="jindu"></div> -->
@@ -95,8 +95,7 @@
                         <div class="list" v-if="show4">
                             <ul class="category">
 
-                                <li :key="ca.cid" 
-                                :style="`color: ${form.cid == ca.cid ? '#0aaee0' : undefined};`"
+                                <li :key="ca.cid" :style="`color: ${form.cid == ca.cid ? '#0aaee0' : undefined};`"
                                     @click="form.cid = ca.cid" v-for="(ca, index) in casukeys">{{ ca.cname }}</li>
                             </ul>
                             <ul class="content">
@@ -135,7 +134,7 @@
                             placeholder="输入视频简介"></textarea>
                     </div>
                 </li>
-                <div class="submit" >
+                <div class="submit">
                     <input type="button" @click.prevent="submit" value="立即投稿">
                 </div>
             </ul>
@@ -164,7 +163,7 @@ const pageconfigStore = usepageconfigStore()
 const videouploadstore = usevideouploadstore()
 const route = useRoute()
 const router = useRouter()
-import { GetCategoryAndSubarea,uploadFrom,uploadCover,uploadVideos } from '@/api/uploadvideo'
+import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos } from '@/api/uploadvideo'
 // #endregion
 const show4 = ref(false)
 //#region 上传限制
@@ -214,7 +213,7 @@ const changeimg = (e) => {
     fr.readAsDataURL(files[0])
     fr.onload = (e) => {
         document.querySelector('.videoupload_img').src = e.target.result
-       upfile.cover= files[0]
+        upfile.cover = files[0]
         // console.log(form.cover)
     }
 }
@@ -223,9 +222,9 @@ const changeimg = (e) => {
 //
 
 // const videos = reactive([])
-const upfile=reactive({
-    videos:[],
-    cover:null
+const upfile = reactive({
+    videos: [],
+    cover: null
 })
 //上传表单
 const form = reactive({
@@ -234,11 +233,11 @@ const form = reactive({
     zhuanzai: '百度',//转自
     cid: 0, //类别
     sid: 0, //分区
-   
-    tags: ['csharp','netcore','vue','axios'],
+
+    tags: ['csharp', 'netcore', 'vue', 'axios'],
     synopsis: '测试文件上传1',//简介
 })
-form.size=videos_size;
+form.size = videos_size;
 //#endregion
 /**
  * 添加视频
@@ -248,14 +247,13 @@ const add = (e) => {
     // console.log('此处需要检查视频是否符合要求')
     const files = e.target.files;
     // console.log(files)
-    for(let file of files){
-       upfile.videos.push(file)
+    for (let file of files) {
+        upfile.videos.push(file)
     }
     videouploadstore.uploadstart('video');
 }
-watch(()=>upfile.videos.length,(nl,ol)=>{
-    console.log(nl)
-    console.log(ol)
+watch(() => upfile.videos.length, () => {
+ videouploadstore.changeVideoList(upfile.videos)  
 })
 //#region  从后台获取类别和分区
 
@@ -269,14 +267,14 @@ watch(() => form.cid, () => {
 onMounted(() => {
     GetCategoryAndSubarea().then(req => {
         // console.log(req)
-        if(!req) return
+        if (!req) return
         req.forEach(list => {
             casukeys.push({ cid: list[0].cid, cname: list[0].cname })
             casulist[list[0].cid] = list
         })
         form.cid = casukeys[0].cid
         form.sid = casulist[form.cid][0].sid
-// console.log(form)
+        // console.log(form)
     })
 })
 
@@ -286,13 +284,13 @@ onMounted(() => {
 //#region 上传
 
 const submit = () => {
-uploadFrom(form).then(
-    ()=> uploadCover(upfile.cover,form).then(
-        ()=>uploadVideos(upfile.videos)
-                                )
-)
-// uploadFrom(form)
-    uploadStore.status = 'ing'
+    uploadFrom(form).then(
+        () => uploadCover(upfile.cover, form).then(
+            () => uploadVideos(upfile.videos)
+        )
+    )
+    // uploadFrom(form)
+    videouploadstore.status = 'ing'
 }
 //#endregion
 // #region  模拟数据 mockjs

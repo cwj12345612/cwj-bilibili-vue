@@ -242,6 +242,8 @@ const upload = {
     redirect: { name: 'upload_video' },
     beforeEnter: (to, from, next) => {
         //
+        // next()
+        // return
         setTimeout(() => {
             const userStore = useUserStore()
             // console.log(!userStore.isLogin)
