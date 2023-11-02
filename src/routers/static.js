@@ -244,7 +244,7 @@ const upload = {
         //
         // next()
         // return
-        setTimeout(() => {
+     
             const userStore = useUserStore()
             // console.log(!userStore.isLogin)
             if (!userStore.isLogin) {
@@ -254,7 +254,7 @@ const upload = {
             } else {
                 next()
             }
-        }, 40);
+      
 
     },
  

@@ -30,7 +30,7 @@
                 </div>
                 <el-progress
       :percentage="videolist[file.name].schedule"
-      :stroke-width="15"
+      :stroke-width="10"
       :status="videolist[file.name].schedule ==100? 'success':undefined"
     
       striped-flow

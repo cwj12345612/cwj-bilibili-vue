@@ -8,8 +8,8 @@ export const useUserStore = defineStore('useUserStore', {
   state: () => ({
     user: {
       Authorization: sessionStorage.getItem('Authorization'),
-      id: sessionStorage.getItem('user') ? JSON.parse('user')?.id : null,
-      email: sessionStorage.getItem('user') ? JSON.parse('user')?.email : null
+      id: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo'))?.id : null,
+      email: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo'))?.email : null
     }
   }),
   actions: {

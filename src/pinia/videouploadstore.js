@@ -5,7 +5,7 @@ import { dataUtils } from '@/utils/dataUtils'
 export const usevideouploadstore=defineStore('videouploadstore',{
     state:()=>({
     // no begin ing succeed fail
-    status:'succeed',
+    status:'no',
     //记录视频的信息: 大小 时长 上传进度条
     videolist:{}
     }),
@@ -23,9 +23,10 @@ export const usevideouploadstore=defineStore('videouploadstore',{
          * 文件上传完成
          */
         uploadend(){
-            this.ing=false
-          
+           this.status='succeed'
+          this.videolist={}
         },
+       
         /**
          * 增加或者删除视频
          */
@@ -34,7 +35,7 @@ export const usevideouploadstore=defineStore('videouploadstore',{
          const videoNames=   Object.keys(this.videolist);
         const list=  videos.filter(v=>!videoNames.includes(v.name))
         if(list.length==0) return
-        let ss=[]
+     
        list.forEach(li=>{
             const name=  li.name
             const msg={

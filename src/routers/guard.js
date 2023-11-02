@@ -8,14 +8,7 @@ const router= createRouter({
     history:createWebHistory(),
     routes:static_routes
 })
-router.beforeEach((to,from,next)=>{
 
-  //延迟50ms
-  setTimeout(() => {
-    next()
-   }, 50);
-  }
-)
 //设置页面状态守卫
 router.beforeEach((to,from,next)=>{
     const pageconfig=usepageconfigStore()

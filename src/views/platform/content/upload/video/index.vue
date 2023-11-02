@@ -163,7 +163,7 @@ const pageconfigStore = usepageconfigStore()
 const videouploadstore = usevideouploadstore()
 const route = useRoute()
 const router = useRouter()
-import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos } from '@/api/uploadvideo'
+import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos,WirteSql } from '@/api/uploadvideo'
 // #endregion
 const show4 = ref(false)
 //#region 上传限制
@@ -176,18 +176,17 @@ const config = reactive({
     deatils_size: 1000
 })
 //#endregion
-// #region 方便测试 给videos添加第一个视频
-// onMounted(() => {
-//     for (let index = 0; index < 1; index++) {
-//         videos.push({
-//             name: '第一个视频.mp4',
-//             size: '344453333'
-//         })
-//     }
-//     // videos.length=0
-// videouploadstore.uploadstart('video');
-// })
+// #region  模拟数据 mockjs
 
+import Mock from 'mockjs'
+
+const mock = (str) => { return Mock.mock(str) }
+//#endregion
+// #region 方便测试
+onMounted(() => {
+videouploadstore.uploadstart('video');
+})
+//endregion
 //计算属性 视频总大小 MB
 const videos_size = computed(() => {
     let count = 0
@@ -205,7 +204,7 @@ const addtag = (e, val) => {
 
 }
 //#endregion
-//#regin 更换视频封面
+//#region 更换视频封面
 const changeimg = (e) => {
     let files = e.target.files
     if (!files?.length) return
@@ -219,26 +218,24 @@ const changeimg = (e) => {
 }
 //#endregion
 //#region 需要上传的全部内容 
-//
 
-// const videos = reactive([])
 const upfile = reactive({
     videos: [],
     cover: null
 })
 //上传表单
 const form = reactive({
-    title: '标题1', //标题
+    title: mock("@cword(3,10)"), //标题
     type: 'zhuanzai', //是否未自制
-    zhuanzai: '百度',//转自
+    zhuanzai: mock('@url()'),//转自
     cid: 0, //类别
     sid: 0, //分区
-
     tags: ['csharp', 'netcore', 'vue', 'axios'],
-    synopsis: '测试文件上传1',//简介
+    synopsis: mock('@cword(20,1000)'),//简介
 })
 form.size = videos_size;
 //#endregion
+//#region 添加视频
 /**
  * 添加视频
  * @param {} e 
@@ -255,6 +252,7 @@ const add = (e) => {
 watch(() => upfile.videos.length, () => {
  videouploadstore.changeVideoList(upfile.videos)  
 })
+//#endregion
 //#region  从后台获取类别和分区
 
 const casukeys = reactive([])
@@ -286,18 +284,15 @@ onMounted(() => {
 const submit = () => {
     uploadFrom(form).then(
         () => uploadCover(upfile.cover, form).then(
-            () => uploadVideos(upfile.videos)
+            () => uploadVideos(upfile.videos).then(
+                ()=>{WirteSql() })
+
         )
     )
     // uploadFrom(form)
     videouploadstore.status = 'ing'
 }
 //#endregion
-// #region  模拟数据 mockjs
-
-import Mock from 'mockjs'
-
-const mock = (str) => { return Mock.mock(str) }
 
 </script>
 <!-- <style lang="less" scoped  src="@\assets\css\test.less"></style> -->

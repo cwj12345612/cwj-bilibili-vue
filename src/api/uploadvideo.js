@@ -16,12 +16,17 @@ export async function GetCategoryAndSubarea() {
  */
 export async function uploadFrom(form) {
     const userStore=useUserStore()
-    const key=form.title+'#'+userStore.user.id+'#'+form.cid+'#'+form.sid+'#'+form.size
-    console.log(key)
-    form.md5=md5(key)
+ 
+    form.md5=md5(JSON.stringify(form))
+    // console.log(form)
     await axios.post('/api/uploadvideo/UploadFrom',
         form
-        )
+        ).then(req=>{
+            // console.log(req.data)
+            //存入浏览器session备用
+          const upvideolist=  JSON.stringify(req.data)
+          sessionStorage.setItem('upvideolist',upvideolist)
+        })
 }
 //#endregion
 
@@ -58,16 +63,11 @@ export async function uploadVideos(videos) {
         console.log("视频不存在");
         return
     }
-    const videolist=[]
+  
     for (let video of videos) {
- 
-       videolist.push(uploadvideo(video))
+ await   uploadvideo(video)
     }
-    Promise.all(videolist).then(()=>{
-        console.log('所有视频上传完成');
-        //发送写入数据库请求
-
-    })
+   
 }
 export async function uploadvideo(video) {   
     const fileChunks = []
@@ -79,7 +79,7 @@ export async function uploadvideo(video) {
     // console.log(video)
     let i = 0;
     //每一集的每一分片的MD5都是相同的
-    const videoMd5 = md5(video.name + video.size)
+    const videoMd5 = md5(JSON.parse(sessionStorage.getItem('upvideolist'))?.md5+video.name + video.size)
     while (fileStreamPos < video.size) {
         const chunk = {
             file: video.slice(fileStreamPos, endPos),
@@ -116,7 +116,7 @@ export async function uploadvideo(video) {
             querystring += "&"
         })
 
-     axioslist.push(   axios.post('/api/uploadvideo/Chunk' + querystring,
+     axioslist.push(axios.post('/api/uploadvideo/Chunk' + querystring,
             form,
             {
                 headers: {
@@ -133,24 +133,48 @@ export async function uploadvideo(video) {
        
 
     }
+
  return   await axios.all(axioslist).then(async() => {
+  const du=  new Promise((resolve)=>{
+        const videoElement = document.createElement('video');
+        videoElement.src = URL.createObjectURL(video);
+        videoElement.addEventListener('loadedmetadata', function() {
+          resolve(
+           videoElement.duration,
+          );
+        });
+    })
+   const duration= parseInt(await du)
         //每一集的全部分片上传成功后 发出合并请求
         const mergeform = {
             FileName: video.name,
             VideoMd5:videoMd5,
-            Total: video.size,
+            size: parseInt(video.size /(1024*1024)),
+            duration:duration,
             chunks: fileChunks.length,
             Type:video.name.substring(video.name.lastIndexOf("."))
         }       
-      await  axios.post('/api/uploadvideo/mergeform',   
+        // console.log(mergeform)
+      await  axios.post('/api/uploadvideo/mergeform?formMd5='+JSON.parse(sessionStorage.getItem('upvideolist'))?.md5,   
         mergeform,
-        ).then(req=>{
-         
-            console.log('成功上传'+video.name)
-           
+        ).then(req=>{  
+            // console.log('成功上传'+video.name)
+        //    console.log(req.data)
         })
     })
 }
 //#endregion
+//#region 写入数据库
+export async function WirteSql() {
+    // console.log(JSON.parse(sessionStorage.getItem('upvideolist'))?.md5)
+    const md5=  JSON.parse(sessionStorage.getItem('upvideolist'))?.md5
 
+    axios.post('/api/uploadvideo/WirteSql?formmd5='+md5)
+    .then(req=>{
+       sessionStorage.removeItem("videolist")
+       sessionStorage.setItem('uploadsucceed',JSON.stringify({size:req.data.size,count:req.data.count}))
+       usevideouploadstore().uploadend()
+    })
+}
+//#endregion
 
