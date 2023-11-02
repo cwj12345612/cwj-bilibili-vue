@@ -4,6 +4,7 @@
     <homepage_channel></homepage_channel>
   <homepage_main></homepage_main>
   <homepage_more v-for="index in 4" ></homepage_more>
+  
 </div>
 </template>
 <script setup>

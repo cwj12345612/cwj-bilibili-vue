@@ -1,12 +1,12 @@
 <template>
     <ul class="rightlist">
-        <loginform v-if="islogin"></loginform>
+     
         <li class="headavatar">
             <router-link :to="headavatar.href" v-if="userStore.isLogin">
                 <img :src="headavatar.avatarsrc" :alt="headavatar.id">
             </router-link>
             <a
-            @click="islogin=!islogin"
+            @click="dialogFormVisible=true"
             to="javascript:;" 
             v-if="!userStore.isLogin" >
                     <span>
@@ -32,15 +32,36 @@
             </a>
         </li>
     </ul>
+<!-- 登录对话框 -->
+    <el-dialog
+    style="width: 50%;"
+    v-model="dialogFormVisible" title="登录" >
+    <el-form :model="form">
+      <el-form-item label="请输入邮箱" :label-width="100">
+        <el-input v-model="form.email" autocomplete="off"  />
+      </el-form-item>
+      <el-form-item label="请输入密码" :label-width="100">
+        <el-input type="password" v-model="form.password" autocomplete="off"  />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="submit">
+          登录
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script setup>
 // #region  引入组件
-import loginform from '@/views/index/Loginpage'
+
 //  #endregion
 
 // #region 引入vue pinia 路由
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
-
+import { ElMessage } from 'element-plus'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
 import { useRoute, useRouter } from 'vue-router'
 import {useUserStore} from '@/pinia/userStore'
@@ -48,10 +69,9 @@ const pageconfigStore = usepageconfigStore()
 const userStore =useUserStore()
 const route = useRoute()
 const router = useRouter()
-
+import {login} from '@/api/user'
 // #endregion
-const islogin=ref(false)
-//是否显示文字
+
 
 const isshowspan = computed(() => {
     const width = pageconfigStore.width * 0.32
@@ -83,6 +103,20 @@ const list = reactive([
 ])
 //#endregion
 
+const dialogFormVisible = ref(false)
+
+const form = reactive({
+  email:'',
+  password:''
+})
+const submit=()=>{
+    if(form.email.trim()==''||form.password.trim()==''){
+alert('请输入邮箱和密码')
+return
+    }
+login(form)
+dialogFormVisible.value=false
+}
 </script>
 <style scoped>
 .rightlist {

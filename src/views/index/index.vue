@@ -1,7 +1,7 @@
 <template>
  <cwj_header></cwj_header>
   <router-view></router-view>
-
+  <el-backtop :right="100" :bottom="100" />
 </template>
 <script setup>
 // #region  引入组件
