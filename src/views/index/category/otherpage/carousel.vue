@@ -1,19 +1,20 @@
 <template>
-    <div class="carousel">
-        <ul class="content">
-            <div class="img">
-            <a href="#">    <img :src="list[index].img"  alt=""></a>
+    <el-carousel 
+   
+    :interval="4000" type="card" height="300px" trigger="click" arrow="always" style="width: 100%;">
+        <el-carousel-item 
+     
+        v-for="(li, item) in list" :key="li.id">
+            <router-link :to="li.url == '#' ? '/play/333' : li.url"
+                style="display: block;width: 100%;height: 100%;position: relative;">
+
+                <el-image :src="li.img" style="width: 100%;height: 100%;" />
                 <span class="msg">
-                    {{list[index].title }}
+                    {{ li.title }}
                 </span>
-            </div>
-        </ul>
-        <ul class="li">
-            <li 
-            @click="skip(i)"
-            v-for="i in list.length" :class="i-1 == index ? 'active' : undefined"></li>
-        </ul>
-    </div>
+            </router-link>
+        </el-carousel-item>
+    </el-carousel>
 </template>
 <script setup>
 // #region  引入组件
@@ -46,97 +47,26 @@ onMounted(() => {
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
-const list=reactive([
+const list = reactive([
 
-{id:mock('@id()'),title:mock('@cword(5,20)'),img:require('@/assets/images/category1.webp'),url:'#'},
-        {id:mock('@id()'),title:mock('@cword(5,20)'),img:require('@/assets/images/category2.webp'),url:'#'},
-        {id:mock('@id()'),title:mock('@cword(5,20)'),img:require('@/assets/images/category3.webp'),url:'#'},
-        {id:mock('@id()'),title:mock('@cword(5,20)'),img:require('@/assets/images/category4.webp'),url:'#'},
-     
+    { id: mock('@id()'), title: mock('@cword(5,20)'), img: require('@/assets/images/category1.webp'), url: '#' },
+    { id: mock('@id()'), title: mock('@cword(5,20)'), img: require('@/assets/images/category2.webp'), url: '#' },
+    { id: mock('@id()'), title: mock('@cword(5,20)'), img: require('@/assets/images/category3.webp'), url: '#' },
+    { id: mock('@id()'), title: mock('@cword(5,20)'), img: require('@/assets/images/category4.webp'), url: '#' },
+
 ])
 
-//当前索引
-const index=ref(0)
-const li=computed(()=>{
-    return list[index.value]
-})
-onMounted(()=>{
-    ca()
-})
-let Interval=null;
-const ca=()=>{
-clearInterval(Interval)
-Interval=setInterval(() => {
-   
-   if(index.value+1==list.length){
-    index.value=0
-   } else{
-    index.value+=1
-   }
 
-}, 3000);
-}
-const skip=(now)=>{
-    clearInterval(Interval)
-    index.value=now-1
-setTimeout(() => {
-  ca()
-}, 1000);
-}
 //#endregion
 
 </script>
-<style scoped lang="less">
-.carousel {
-    width: 100%;
-    height: 300px;
-    // background-color: cadetblue;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+<style scoped>
+.msg {
+    position: absolute;
+    bottom: 10px;
+    left: 20px;
+    color: #fff;
+    font-size: 20px;
 
-    .content {
-        width: 100%;
-        height: 270px;
-        /* background-color: burlywood; */
-
-        .img {
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 0 auto;
-            width: 90%;
-            height: 270px;
-            position: relative;
-
-            .msg {
-                position: absolute;
-                bottom: 10px;
-                left: 20px;
-                color: #fff;
-                font-size: 20px;
-
-            }
-        }
-    }
-
-    .li {
-
-        display: flex;
-
-
-        & li {
-            cursor: pointer;
-            height: 14px;
-            width: 14px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.3);
-            margin-right: 10px;
-
-            &.active {
-                background-color: #0aaee0;
-            }
-        }
-    }
 }
 </style>

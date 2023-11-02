@@ -1,21 +1,32 @@
 <template>
     <div class="carousel">
-        <ul class="pics">
-            <li v-show="index === carousel.index - 1" v-for="(li, index) in list">
-                <img :src="li.src" alt="">
-            </li>
-        </ul>
+        <el-carousel 
+        indicator-position="none"
+        arrow="never"
+        ref="moviepage_carousel"
+        @change="change"
+        style="width: 100%;height: 100%;"
+         direction="vertical" >
+    <el-carousel-item 
+    style="width: 100%;height: 100%;"
+    :name="li.id"
+    v-for="(li,item) in list" :key="li.id">
+      <el-image 
+      style="width: 100%;height: 100%;"
+      :src="li.src" ></el-image>
+    </el-carousel-item>
+  </el-carousel>
 
         <ul class="items">
-            <li v-for="(li, index) in list">
-                <a :href="li.href" :class="index === carousel.index - 1 ? 'active' : undefined">
+            <li v-for="(li, index) in list" @mouseover="hover(li.id)">
+                <router-link :to="li.href" >
                     <div class="title">
                         {{ li.title }}
                     </div>
-                    <div class="desc" v-show="index === carousel.index - 1">
+                    <div class="desc" v-show="index === nowindex- 0">
                         {{ li.desc }}
                     </div>
-                </a>
+                </router-link>
             </li>
 
         </ul>
@@ -43,13 +54,7 @@ import Mock from 'mockjs'
 const mock = (str) => { return Mock.mock(str) }
 const list = reactive([])
 //#endregion
-const carousel = reactive({
-    index: 1,
-    total: 0
-})
-carousel.total = computed(() => {
-    return list.length
-})
+const nowindex=ref(0)
 onMounted(() => {
     const temp = [
         { id: mock('@id()'), src: require("@/assets/images/movie1.webp"), title: mock('@cword(3,10)'), desc: mock('@cword(10,100)'), href: '/play' },
@@ -64,24 +69,16 @@ onMounted(() => {
     temp.forEach(li => {
         list.push(li)
     })
+})
 
-})
-onMounted(() => {
-    ca()
-})
-//轮播
-let Interval = null
-const ca = () => {
-    clearInterval(Interval)
-    Interval = setInterval(() => {
-        carousel.index += 1
-        if (carousel.index > carousel.total) {
-            carousel.index = 1
-        }
-    }, 3000)
+const change=(nl)=>{
+    nowindex.value=nl
 }
-
-
+const moviepage_carousel=ref()
+const hover=(id)=>{
+    // console.log(id)
+    moviepage_carousel.value.setActiveItem(id)
+}
 </script>
 <style scoped>
 .carousel {
@@ -97,27 +94,13 @@ const ca = () => {
     height: 50vh;
 }
 
-.carousel .pics {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.carousel .pics li {
-    width: 100%;
-    height: 100%;
-    flex-shrink: 0;
-    flex-grow: 1;
-}
 
 
 
 .items {
+    /* background-color: orange; */
     background: var(--transparency);
     max-height: calc(100% - 64px);
-
     position: absolute;
     top: 64px;
     right: calc(calc((100% - calc(100% * calc(1244 / 1425)))) / 2);
