@@ -9,10 +9,10 @@
                     创作中心
                 </h3>
                 <div class="index">
-                    <a href="/"  rel="opener" target="_blank">
+                    <router-link  to="/"  rel="opener" target="_blank">
                         <i class="colourless shouye"></i>
                         主站
-                    </a>
+                    </router-link>
                 </div>
             </div>
             <div class="right">

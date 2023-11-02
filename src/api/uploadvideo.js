@@ -166,6 +166,7 @@ export async function uploadvideo(video) {
 //#endregion
 //#region 写入数据库
 export async function WirteSql() {
+   
     // console.log(JSON.parse(sessionStorage.getItem('upvideolist'))?.md5)
     const md5=  JSON.parse(sessionStorage.getItem('upvideolist'))?.md5
 

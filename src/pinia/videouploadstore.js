@@ -31,7 +31,7 @@ export const usevideouploadstore=defineStore('videouploadstore',{
          * 增加或者删除视频
          */
         changeVideoList(videos){
-            console.log("影片塑料"+videos.length)
+            // console.log("影片塑料"+videos.length)
          const videoNames=   Object.keys(this.videolist);
         const list=  videos.filter(v=>!videoNames.includes(v.name))
         if(list.length==0) return

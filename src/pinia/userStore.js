@@ -20,7 +20,7 @@ export const useUserStore = defineStore('useUserStore', {
       this.user.Authorization = user.token
       ElNotification({
         title: '登录成功',
-        message: "2023-10-10 21:10:10",
+        message: user.loginTime,
         // position: 'Top-right',
         type: 'success',
         zIndex:10087
