@@ -218,7 +218,8 @@ flex-shrink: 0;
 .item a.searchpage,
 .item a.playpage,
 .item a.spacepage ,
-.item a.readpage {
+.item a.readpage ,
+.item a.channelpage {
     color: #18191c;
 }
 

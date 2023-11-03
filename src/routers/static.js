@@ -200,6 +200,18 @@ const popular = {
         { path: 'weekly', component: () => import('@/views/index/popularpage/weekly.vue') },
     ]
 }
+const channelpage={
+    path:'channel',
+    name:'channelpage',
+    component:()=>import('@/views/index/channelpage/index.vue'),
+    redirect:"/channel/index",
+    children:[
+        {
+            path:'index',
+            component:()=>import('@/views/index/channelpage/home.vue')
+        }
+    ]
+}
 const main = [
     {
         path: '/',
@@ -225,7 +237,7 @@ const main = [
             ...category,
             space,
             readpage,
-
+            channelpage,
         ]
     },
 ]

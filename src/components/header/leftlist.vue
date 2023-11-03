@@ -41,7 +41,7 @@ const isshowspan = computed(() => {
 
 // #endregion
 </script>
-<style scoped>
+<style scoped lang="less" >
 /* #region 默认状态 */
 .leftlist {
     max-width: 537px;
@@ -80,8 +80,11 @@ const isshowspan = computed(() => {
 .item a.searchpage,
 .item a.playpage,
 .item a.spacepage,
-.item a.readpage {
+.item a.readpage,
+.item a.channelpage
+ {
     color: #18191c;
+  
 }
 
 .item a.moviepage {
@@ -95,11 +98,10 @@ const isshowspan = computed(() => {
 
 
 
-li:first-child.searchpage i,
-li:first-child.playpage i {
+
+li:first-child.channelpage i {
     color: #00aeec;
 }
-
 li:first-child.scroll i {
     color: #00aeec;
 }
