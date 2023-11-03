@@ -213,15 +213,33 @@ const channelpage={
         {
             path:'type/:id',
             component:()=>import('@/views/index/channelpage/channel_type.vue')
+           
         },
         {
             path:':id',
-            component:()=>import('@/views/index/channelpage/channel.vue')
+            component:()=>import('@/views/index/channelpage/channel.vue'),
+            beforeEnter:(to,from,next)=>{
+               if(to.params.id=='type'){
+                alert('非法路径')
+                next('/channel')
+                return
+               }
+                next()
+            }
         },
         {
             path:'search',
             component:()=>import('@/views/index/channelpage/channelsearch.vue'),
-           
+            beforeEnter:(to,from,next)=>{
+                const text=  to.query.text
+                
+                if(!text||text.trim()==''){
+                  alert('请输入要寻找的频道')
+                  next('/channel')
+                  return
+                }
+                next()
+              }
         }
     ]
 }
@@ -256,6 +274,8 @@ const main = [
 ]
 //#endregion
 import { useUserStore } from '@/pinia/userStore'
+
+
 
 //#region 创作中心路由 以后需要动态从后台获取
 /**

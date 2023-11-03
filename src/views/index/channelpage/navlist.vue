@@ -1,8 +1,11 @@
 <template>
     <div class="navlist">
         <div class="search">
-            <input type="text" placeholder="搜索频道">
-            <button>
+            <input type="text" 
+            v-model="text"
+            @keyup.enter.prevent="search"
+            placeholder="搜索频道">
+            <button @click.prevent="search">
                 <i class="colourless faxianweixuanzhongxuanzhong"></i>
             </button>
         </div>
@@ -16,10 +19,10 @@
                 </span>
             </a>
             <ul class="list" :class="showlist ? undefined : 'sq'">
-                <a href="/channel">
+                <router-link to="/channel/index">
                     <span style="color: #222;font-size: 14px;">全部</span>
                     <span style="font-size: 12px;">{{ channel_types.reduce((r, c) => { return r + c.count }, 0) }}</span>
-                </a>
+                </router-link>
                 <router-link :to="`/channel/type/${channel.id}`" v-for="channel in channel_types">
                     <span style="color: #222;font-size: 16px;">{{ channel.title }}</span>
                     <span style="font-size: 12px;">{{ channel.count }}</span>
@@ -83,7 +86,20 @@ import Mock from 'mockjs'
 const mock = (str) => { return Mock.mock(str) }
 const showlist = ref(false)
 const setting = ref(false)
-
+const text=ref('')
+const search=()=>{
+    if(text.value.trim()==''){
+                  alert('请输入要寻找的频道')
+                 
+                  return
+                }
+        router.push({
+            path:'/channel/search',
+            query:{
+                text:text.value.trim()
+            }
+        })        
+}
 const channel_types = reactive([])
 onMounted(() => {
     const temp = [
@@ -113,6 +129,7 @@ onMounted(() => {
 </script>
 <style scoped lang="less">
 .navlist {
+   border-right: 2px solid #99a299;
     height: calc(100vh - 64px);
     width: 264px;
     background-color: #fff;
@@ -124,6 +141,7 @@ onMounted(() => {
     justify-content: flex-start;
 
     .search {
+     
         width: 100%;
         height: 40px;
         background-color: #fff;

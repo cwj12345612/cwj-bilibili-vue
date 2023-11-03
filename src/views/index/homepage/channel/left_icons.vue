@@ -33,7 +33,7 @@ const mock = (str) => {
 const list = [
     { id: mock('@id()'), name: '动态', icon: 'colourless dongtaiweixuanzhong', route: '#' },
     { id: mock('@id()'), name: '热门', icon: 'colour bianjituijian', route: '/popular/all' },
-    { id: mock('@id()'), name: '频道', icon: 'colourless fenquxuanzhong', route: '#' },
+    { id: mock('@id()'), name: '频道', icon: 'colourless fenquxuanzhong', route: '/channel' },
 
 ]
 //#endregion

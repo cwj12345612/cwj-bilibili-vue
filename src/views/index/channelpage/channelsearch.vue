@@ -2,12 +2,22 @@
     <div class="search">
         <div class="head">
             <h4>搜索结果</h4>
-            <span>{{ mock('@integer(2,10)') }}</span>
+            <span>{{count}}</span>
         </div>
-<channelcard
+<ul 
+v-if="count>0"
+>
+    <channelcard
+
 v-for="index in 6"
 style="margin-bottom: 30px;"
 ></channelcard>
+</ul>
+<h4
+v-if="count==0"
+>
+{{ `不存在“${route.query.text}”频道`}}
+</h4>
     </div>
 </template>
 <script setup>
@@ -27,7 +37,7 @@ const router = useRouter()
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
-
+const count=ref(10)
 const mock = (str) => { return Mock.mock(str) }
 
 //#endregion

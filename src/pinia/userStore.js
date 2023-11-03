@@ -52,7 +52,7 @@ export const useUserStore = defineStore('useUserStore', {
      * @returns 是否已经登录
      */
     isLogin() {
-      // if (!this.user || !this.user.Authorization || !this.user.id || !this.user.email) return false
+      if (!this.user || !this.user.Authorization || !this.user.id || !this.user.email) return false
       return true;
     }
   }
