@@ -209,6 +209,19 @@ const channelpage={
         {
             path:'index',
             component:()=>import('@/views/index/channelpage/home.vue')
+        },
+        {
+            path:'type/:id',
+            component:()=>import('@/views/index/channelpage/channel_type.vue')
+        },
+        {
+            path:':id',
+            component:()=>import('@/views/index/channelpage/channel.vue')
+        },
+        {
+            path:'search',
+            component:()=>import('@/views/index/channelpage/channelsearch.vue'),
+           
         }
     ]
 }

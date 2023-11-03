@@ -18,12 +18,12 @@
             <ul class="list" :class="showlist ? undefined : 'sq'">
                 <a href="/channel">
                     <span style="color: #222;font-size: 14px;">全部</span>
-                    <span style="font-size: 12px;">{{ mock('@integer(30,1000)') }}</span>
+                    <span style="font-size: 12px;">{{ channel_types.reduce((r, c) => { return r + c.count }, 0) }}</span>
                 </a>
-                <a :href="`/channel/type/23`" v-for="index in 15">
-                    <span style="color: #222;font-size: 16px;">{{ mock('@cword(2,5)') }}</span>
-                    <span style="font-size: 12px;">{{ mock('@integer(30,1000)') }}</span>
-                </a>
+                <router-link :to="`/channel/type/${channel.id}`" v-for="channel in channel_types">
+                    <span style="color: #222;font-size: 16px;">{{ channel.title }}</span>
+                    <span style="font-size: 12px;">{{ channel.count }}</span>
+                </router-link>
             </ul>
             <div class="open" @click="showlist = !showlist">
                 <span>{{ showlist ? '收起' : '展开' }}</span>
@@ -37,22 +37,26 @@
                 <h4 style="font-size: 18px;  font-weight: normal;">
                     我的订阅
                 </h4>
-                <span style="cursor: pointer;" class="setting" @click="setting=!setting">{{ setting ?'保存':'管理' }}</span>
+                <span style="cursor: pointer;" class="setting" @click="setting = !setting">{{ setting ? '保存' : '管理' }}</span>
             </div>
             <ul class="list">
                 <li v-for="index in 7">
-                 <a href="#">
-                    <div class="left">
-                    <div class="img" style="height: 100%;">
-                        <img src="@\assets\images\channel1.webp" alt="">
+
+
+                    <router-link :to="setting ? '#' : '/channel/10086??tab=featured'">
+                        <div class="left">
+                            <div class="img" style="height: 100%;">
+                                <img src="@\assets\images\channel1.webp" alt="">
+                            </div>
+                            <h4 style="font-weight: normal; font-size: 16px; margin-left: 10px;color: #222;">公开课</h4>
+                        </div>
+                    </router-link>
+
+                    <div class="setting" v-if="setting">
+                        <span title="删除">删除</span>
+                        <span title="置顶">置顶</span>
                     </div>
-                    <h4 style="font-weight: normal; font-size: 16px; margin-left: 10px;color: #222;">公开课</h4>
-                   </div>
-                   <div class="setting" v-if="setting">
-                    <span>删除</span>
-                    <span>置顶</span>
-                   </div>
-                 </a>
+
                 </li>
             </ul>
         </div>
@@ -78,7 +82,32 @@ import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
 const showlist = ref(false)
-const setting=ref(false)
+const setting = ref(false)
+
+const channel_types = reactive([])
+onMounted(() => {
+    const temp = [
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
+    ]
+    temp.forEach(li => {
+        channel_types.push(li)
+    })
+})
 //#endregion
 
 </script>
@@ -138,7 +167,7 @@ const setting=ref(false)
             background-color: #fff;
 
             &:focus {
-                background: rgb(231, 231, 231);
+                background: rgb(244, 244, 244);
             }
 
             h4 {
@@ -164,10 +193,11 @@ const setting=ref(false)
                 height: 40px;
                 // background-color: aquamarine;
                 align-items: center;
-                &:where(:hover,.router-link-active){
-                    background: rgb(244, 244, 244);
+
+                &:where(:hover, .router-link-active) {
+                    background: rgb(231, 231, 231);
                 }
-              
+
             }
         }
 
@@ -186,12 +216,14 @@ const setting=ref(false)
             }
         }
     }
-    .mylist{
+
+    .mylist {
         margin-top: 10px;
         width: 100%;
         border-top: 2px solid #99a299;
+
         // background-color: orange;
-        .header{
+        .header {
             width: 100%;
             display: flex;
             justify-content: space-between;
@@ -199,13 +231,16 @@ const setting=ref(false)
             padding: 10px 0;
 
         }
-        .list{
+
+        .list {
             display: flex;
             flex-direction: column;
-            a{
-                &:where(:hover,.router-link-active){
+
+            li {
+                &:where(:hover, .router-link-active) {
                     background: rgb(244, 244, 244);
                 }
+
                 padding: 5px 0;
                 // background-color:blueviolet;
                 height: 40px;
@@ -213,15 +248,24 @@ const setting=ref(false)
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                .left{
-                    display: flex;
-                    align-items: center;
+
+                a {
+                    display: block;
+
                     height: 100%;
+
+                    .left {
+                        display: flex;
+                        align-items: center;
+                        height: 100%;
+                    }
                 }
-                .setting{
+
+                .setting {
                     display: flex;
                     align-items: center;
-                    span{
+
+                    span {
                         color: #99a299;
                         cursor: pointer;
                         margin-left: 10px;

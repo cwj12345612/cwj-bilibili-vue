@@ -6,7 +6,7 @@
                 <span>{{ mock('@integer(20,400)') }}</span>
             </div>
             <div class="list">
-                <el-scrollbar always="true">
+                <el-scrollbar>
                     <div class="scrollbar-flex-content">
                         <a v-for="index in 30" href="#" class="card">
                             <div class="img">
@@ -29,19 +29,16 @@
                 <h4>热门频道</h4>
                 <span>{{ mock('@integer(20,100)') }}</span>
             </div>
-            <ul class="list">
-                    <li>
-                        <div class="header">
-
-                        </div>
-                    </li>
+            <ul class="list" v-for="index in 7">
+                <channelcard></channelcard>
             </ul>
         </div>
+
     </div>
 </template>
 <script setup>
 // #region  引入组件
-
+import channelcard from './channelcard/channelcard.vue'
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -67,7 +64,7 @@ const mock = (str) => { return Mock.mock(str) }
     min-width: 890px;
     max-width: 1286px;
     width: 75vw;
-    height: 1000px;
+    // height: 1000px;
     margin: 0 auto;
     padding-top: 30px;
     background-color: rgb(244, 244, 244);
@@ -78,7 +75,7 @@ const mock = (str) => { return Mock.mock(str) }
 
         .header {
             padding: 10px 0;
-            background-color: aquamarine;
+            // background-color: aquamarine;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -142,10 +139,11 @@ const mock = (str) => { return Mock.mock(str) }
     .hot {
         margin-top: 20px;
         width: 100%;
+
         .header {
-            
+
             padding: 10px 0;
-            background-color: aquamarine;
+            // background-color: aquamarine;
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -162,19 +160,17 @@ const mock = (str) => { return Mock.mock(str) }
                 font-size: 14px;
             }
         }
-        ul.list{
+
+        .list {
+            margin-bottom: 50px;
             margin-top: 10px;
             width: 100%;
-          background-color: #0aaee0;
-            display: flex;
-            flex-direction: column;
-            li{
-                width: 100%;
-                .header{
-                    width: 100%;
-                    height: 50px;
-                }
-            }
+
+            // display: flex;
+            // flex-direction: column;
+
+
         }
     }
-}</style>
+}
+</style>

@@ -36,12 +36,12 @@ const mock=(str)=>{return Mock.mock(str)}
 width: 100%;
 height: calc(100vh - 64px);
 // overflow: auto;
-background-color: orange;
+// background-color: orange;
 display: flex;
 justify-content: space-between;
 .content{
     flex-grow: 1;
-    background-color: palevioletred;
+    // background-color: palevioletred;
     flex-shrink: 1;
     max-height: 100%;
     overflow: auto;
