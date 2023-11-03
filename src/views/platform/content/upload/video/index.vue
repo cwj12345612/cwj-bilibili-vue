@@ -2,9 +2,9 @@
     <uploadvideo_no @add="add" v-if="videouploadstore.status == 'no'"></uploadvideo_no>
     <form v-if="videouploadstore.status == 'begin'">
         <div class="header">
-            <h3>{{ upfile.videos.length }} 个视频 共 {{ videos_size }} MB
+            <h3>{{ upfile.videos.length }} 个视频 共 {{ form.size }} MB
                 <span>
-                    剩余{{ config.video_count - upfile.videos.length }}集 且容量{{ config.videos_size - videos_size
+                    剩余{{ config.video_count - upfile.videos.length }}集 且容量{{ config.videos_size - form.size
                     }}MB</span>
             </h3>
             <label class="add" for="add">添加视频</label>
@@ -121,7 +121,8 @@
                                     }}</span>
                             </ul>
                             <input type="text" id="tags" ref="videoupload_tags" v-if="config.tags_count > form.tags.length"
-                                @keyup.enter.prevent="addtag($event, $event.target.value)" placeholder="按下enter键添加,点击标签删除">
+                                @keyup.enter.prevent="addtag($event, $event.target.value)"
+                                placeholder="按下enter键添加,点击标签删除                                  标签长度要不大于10个字">
                             <span class="sys">还可以添加{{ config.tags_count - form.tags.length }}个标签</span>
                         </div>
 
@@ -163,7 +164,8 @@ const pageconfigStore = usepageconfigStore()
 const videouploadstore = usevideouploadstore()
 const route = useRoute()
 const router = useRouter()
-import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos,WirteSql } from '@/api/uploadvideo'
+import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos, WirteSql } from '@/api/uploadvideo'
+import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
 // #endregion
 const show4 = ref(false)
 //#region 上传限制
@@ -184,18 +186,12 @@ const mock = (str) => { return Mock.mock(str) }
 //#endregion
 // #region 方便测试
 onMounted(() => {
-videouploadstore.uploadstart('video');
+    videouploadstore.uploadstart('video');
 })
 //endregion
 //计算属性 视频总大小 MB
-const videos_size = computed(() => {
-    let count = 0
-    for (let i = 0; i < upfile.videos.length; i++) {
-        const file = upfile.videos[i]
-        count += parseInt(file.size / (1024 * 1024))
-    }
-    return count
-})
+
+
 const addtag = (e, val) => {
     val = val.trim()
     if (val == '' || form.tags.includes(val) || form.tags.length >= config.tags_count) return
@@ -223,9 +219,9 @@ const upfile = reactive({
     videos: [],
     cover: null
 })
-//上传表单
+// 上传表单
 const form = reactive({
-    title: mock("@cword(3,10)"), //标题
+    title: mock("@cword(3,100)"), //标题
     type: 'zhuanzai', //是否未自制
     zhuanzai: mock('@url()'),//转自
     cid: 0, //类别
@@ -233,7 +229,14 @@ const form = reactive({
     tags: ['csharp', 'netcore', 'vue', 'axios'],
     synopsis: mock('@cword(20,1000)'),//简介
 })
-form.size = videos_size;
+form.size = computed(() => {
+    let count = 0
+    for (let i = 0; i < upfile.videos.length; i++) {
+        const file = upfile.videos[i]
+        count += parseInt(file.size / (1024 * 1024))
+    }
+    return count
+})
 //#endregion
 //#region 添加视频
 /**
@@ -250,8 +253,104 @@ const add = (e) => {
     videouploadstore.uploadstart('video');
 }
 watch(() => upfile.videos.length, () => {
- videouploadstore.changeVideoList(upfile.videos)  
+    videouploadstore.changeVideoList(upfile.videos)
 })
+
+//#endregion
+
+//#region 数据校验
+const ver1 = ref(false)
+const ver2 = ref(false)
+
+watch(() => form, () => {
+    ver1.value = false
+    let errormsg = ''
+    // console.log('文件发生变化'+new Date().toString())
+    //#region  验证表单
+    if (form.title.length < 2 || form.title.length > config.title_count) {
+        errormsg += '标题长度不符合要求(2~100)\n'
+    }
+    if (form.tags.filter(t => t.length > 10) > 0) {
+        errormsg += '某些标签名过长(不超过10个字)\n'
+    }
+    if (form.tags.length > config.tags_count) {
+        errormsg += '标签数量过多(不大于7个)\n'
+    }
+    if (form.cid == 0 || form.sid == 0) {
+        errormsg += '请选择视频分区\n'
+    }
+    if (form.synopsis.length > config.deatils_size) {
+        errormsg += '简介过长(0~1000)\n'
+    }
+   
+    ver1.value= (errormsg=='')
+    //#endregion
+
+}, { deep: true })
+watch(() => upfile, async () => {
+    ver2.value = false
+    let errormsg = ''
+    const cover = upfile.cover
+    if (cover == null) {
+        errormsg += '请上传视频封面图\n'
+    } else {
+        if (!['png', 'jpeg', 'jpg'].includes(cover.name.substring(cover.name.lastIndexOf('.') + 1))) {
+            errormsg += '图片格式不符合要求(jpg,png,jpeg)\n'
+            // console.log(errormsg)
+        } else {
+            await new Promise((res, rej) => {
+                const fileReader = new FileReader();
+
+                fileReader.onloadend = (f) => {
+                    const bytes = new Uint8Array(f.target.result);
+                    const ar = filetypename(bytes)
+                    if (ar == null || ar.length == 0) {
+                        rej()
+                    } else {
+                        res()
+                    }
+                }
+                fileReader.readAsArrayBuffer(cover)
+            }).catch(() => {
+                errormsg += '非法图片格式(其他格式改成图片格式)\n'
+            })
+        }
+
+    }
+    if (upfile.videos.length == 0) {
+        errormsg += '请选择上传的视频\n'
+    }
+    if (upfile.videos.length > config.video_count) {
+        errormsg += '视频数量过多(不大于200集)'
+    }
+    if (form.size > config.videos_size) {
+        errormsg += '视频总大小超出限制(不大于20GB)\n'
+    }
+    if (upfile.videos.filter(v => parseInt(v.size / (1024 * 1024)) > config.videos_size).length > 0) {
+        errormsg += '存在某些视频大于20GB'
+    }
+    for (let video of upfile.videos) {
+        await new Promise((res, rej) => {
+            const fileReader = new FileReader();
+            fileReader.onloadend = (f) => {
+                const bytes = new Uint8Array(f.target.result);
+                const ar = filetypename(bytes)
+                if (ar == null || ar.length == 0||!['mp4','mkv','flv'].includes(ar[0])) {
+                    rej()
+                } else {
+                //    console.log(ar)
+                    res()
+                }
+            }
+            fileReader.readAsArrayBuffer(video)
+        }).catch(() => {
+            errormsg += video.name+'视频格式非法或者被篡改(支持:mp4 mkv flv)\n'
+        //  console.log(errormsg)
+        })
+    }
+    
+  ver2.value=( errormsg=='')
+}, { deep: true })
 //#endregion
 //#region  从后台获取类别和分区
 
@@ -263,6 +362,7 @@ watch(() => form.cid, () => {
 
 
 onMounted(() => {
+    return
     GetCategoryAndSubarea().then(req => {
         // console.log(req)
         if (!req) return
@@ -282,15 +382,22 @@ onMounted(() => {
 //#region 上传
 
 const submit = () => {
-    uploadFrom(form).then(
-        () => uploadCover(upfile.cover, form).then(
-            () => uploadVideos(upfile.videos).then(
-                ()=>{WirteSql() })
+    if (!ver1.value && !ver2.value) {
+        alert("数据校验不正确,无法上传")
+        return
+    } else {
+        console.log('校验成功 上传')
+        //     uploadFrom(form).then(
+        //     () => uploadCover(upfile.cover, form).then(
+        //         () => uploadVideos(upfile.videos).then(
+        //             ()=>{WirteSql() })
 
-        )
-    )
-    // uploadFrom(form)
-    videouploadstore.status = 'ing'
+        //     )
+        // )
+        // uploadFrom(form)
+        videouploadstore.status = 'ing'
+    }
+
 }
 //#endregion
 
