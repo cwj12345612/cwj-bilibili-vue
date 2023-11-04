@@ -1,16 +1,15 @@
 <template>
-   
-        <ul class="header" 
-        v-if="videouploadstore.status=='no'"
-        >
-            <li v-for="(li, index) in list.splice(0,1)">
-                <router-link :to="li.href">
-                    {{ li.title }}</router-link>
-            </li>
-        </ul>
-        <router-view></router-view>
-  
- 
+    <ul class="header" 
+    v-if="!noneArray.includes(uploadstatus)"
+    >
+        <li v-for="(li, index) in list.splice(0, 1)">
+            <router-link :to="li.href">
+                {{ li.title }}</router-link>
+        </li>
+    </ul>
+    <router-view
+    @uping="uping"
+    ></router-view>
 </template>
 <script setup>
 // #region  引入组件
@@ -22,19 +21,17 @@
 
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, shallowRef } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
-import { usevideouploadstore } from '@/pinia/videouploadstore.js'
+
 import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
-const videouploadstore = usevideouploadstore();
+
 const route = useRoute()
 const router = useRouter()
 
 // #endregion
 
 // #region  模拟数据 mockjs
-
 import Mock from 'mockjs'
-
 const mock = (str) => { return Mock.mock(str) }
 const list = [
     { title: '视频投稿', href: '/platform/upload/video' },
@@ -45,8 +42,15 @@ const list = [
 ]
 
 //#endregion
-
-
+//是否正在上传视频中 以及上传文件内容
+const uploadstatus=ref('no')
+//当上传一下文件类型时 标题栏需隐藏
+const noneArray=reactive(
+    ['video','interactive']
+)
+const uping=(type)=>{
+uploadstatus.value=type
+}
 </script>
 <style scoped>
 .header {

@@ -1,37 +1,31 @@
 <template>
  <ul class="videos ing" >
-        <li v-for="(file, index) in videos">
+        <li v-for="( index) in 7">
             <div class="icon">
                 <i class="colourless bofangshu"></i>
             </div>
             <div class="desc">
                 <div class="title">
                     <div style="display: flex;align-items: flex-end;">
-                        <h4 :title="file.name.substring(0, file.name.lastIndexOf('.'))">
+                        <h4 >
                                         <!-- {{ file.name }} -->
-                                    {{ file.name.length <= 20 ? file.name.substring(0, file.name.lastIndexOf('.')) :
-                                        file.name.substring(0, 20)+'...' }} 
-                                        <!-- {{
-                                        file.name.substring(0,file.name.lastIndexOf('.')) }} -->
+                                  {{ "文件.mp4" }}
                                 </h4>
                         <span style="font-size: 13px; color: #99a299;flex-shrink: 0;margin-left: 10px;">类型:
-                            {{ file.name.substring(file.name.lastIndexOf('.') + 1) }}</span>
+                            {{ "mp4"}}</span>
                     </div>
                     <div class="setting">
                         <span style="margin-right: 20px;color: #99a299;font-size: 14px;">
-                        {{(videolist[file.name].nowsize>videolist[file.name].size
-                        ?videolist[file.name].size
-                        :videolist[file.name].nowsize
-                        )+'MB/'+ videolist[file.name].size+'MB'}}</span>
+                        {{"78MB/2000MB"}}</span>
                         <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i>
                                 <i class="colourless shuayishua" title="重新上传"></i>
                                 <i class="colourless guanbi" title="取消上传"></i> -->
                     </div>
                 </div>
                 <el-progress
-      :percentage="videolist[file.name].schedule"
+      :percentage="80"
       :stroke-width="10"
-      :status="videolist[file.name].schedule ==100? 'success':undefined"
+      :status="80"
     
       striped-flow
       :duration="5"
@@ -48,21 +42,16 @@
 // #region 引入vue pinia 路由
 import {computed,ref,reactive,watch,toRef,toRefs,onMounted,onBeforeUnmount,defineProps} from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
-import{ usevideouploadstore} from '@/pinia/videouploadstore'
+
 import {useRoute,useRouter} from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route=useRoute()
 const router=useRouter()
-const videouploadstore=usevideouploadstore()
+
 import { fileSzieToString } from '@/utils/fileUtils'
 // #endregion
-defineProps({
-    videos:Array
-})
-const videolist=computed(()=>{
-   
-    return videouploadstore.videolist;
-})
+
+
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'

@@ -15,7 +15,7 @@ const router=useRouter()
 
 // #region 第三方库
 
-import axios from '@/utils/axios'
+
 
 // #endregion
 

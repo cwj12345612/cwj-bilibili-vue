@@ -1,5 +1,5 @@
 <template>
-    <div class="video_upload" >
+    <div class="video_upload">
 
         <label class="icon" for="upload">
             <i class="colourless tianjia"></i>
@@ -7,9 +7,8 @@
         </label>
         <label class="upload" for="upload">
             <span>上传视频</span>
-            <input 
-            multiple
-            type="file" id="upload" class="input" accept=".mp4 , .flv , .mkv" @change="add">
+            <input multiple type="file" id="upload" class="input" accept=".mp4 , .flv , .mkv"
+                @change="addvideos">
         </label>
         <ul class="desc">
             <a href="https://www.bilibili.com/blackboard/blackroom.html" target="_blank">
@@ -20,17 +19,17 @@
             <li @mouseover="show1 = true" @mouseout="show1 = false">
                 <span>视频大小限制</span>
                 <div class="title-block" v-show="show1">
-                    <span>单个视频不超过2GB</span>
+                    <span>单个视频不超过{{config.video.size}}MB</span>
                     <br>
-                    <span>总的视频不超过20GB且数量不超过200集</span>
+                    <span>总的视频不超过{{config.video.total+'MB且数量不超过'+config.video.count}}集</span>
                 </div>
             </li>
             <li @mouseover="show2 = true" @mouseout="show2 = false">
                 <span>视频格式限制</span>
                 <div class="title-block" v-show="show2">
-                    <span>推荐格式: mp4 flv</span>
-                    <br>
-                    <span>其他格式: mkv</span>
+                    <span>推荐格式:{{ config.video.types.toString() }}</span>
+                    
+                   
                 </div>
             </li>
             <li @mouseover="show3 = true" @mouseout="show3 = false">
@@ -58,18 +57,23 @@ import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmou
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
-const emit=defineEmits(['add'])
+// const emit=defineEmits(['add'])
 // #endregion
 const show4 = ref(false)
 const show1 = ref(false)
 const show2 = ref(false)
 const show3 = ref(false)
-const add=(e)=>{
-emit('add',e)
+//#region  触发父组件改成文件上传begin状态
+const emit = defineEmits(['addvideos'])
+const addvideos = (e) => {
+    emit('addvideos', e)
 }
-// #region 第三方库
-
-import axios from '@/utils/axios'
+//#endregion
+//#region 上传限制
+const {config}= defineProps({
+    config:Object
+})
+//#endregion
 
 // #endregion
 
@@ -154,6 +158,7 @@ const mock = (str) => { return Mock.mock(str) }
 .video_upload .desc li:hover>span {
     color: #0aaee0;
 }
+
 .title-block {
     position: absolute;
     padding: 10px 30px;

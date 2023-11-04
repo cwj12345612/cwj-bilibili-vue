@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ElMessage } from 'element-plus'
+
 import { ElNotification } from 'element-plus'
 /**
  * 存储用户状态

@@ -1,7 +1,7 @@
 import axios from "@/utils/axios";
 import md5 from "js-md5";
 import { useUserStore} from '@/pinia/userStore'
-import {usevideouploadstore} from '@/pinia/videouploadstore'
+import {usevideouploadstore} from '@/pinia/uploadstore'
 export async function GetCategoryAndSubarea() {
     return await axios.get('/api/uploadvideo/CategoryAndSubarea').then(req => {
         return req.data;
