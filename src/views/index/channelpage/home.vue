@@ -29,8 +29,11 @@
                 <h4>热门频道</h4>
                 <span>{{ mock('@integer(20,100)') }}</span>
             </div>
-            <ul class="list" v-for="index in 7">
-                <channelcard></channelcard>
+            <ul class="list" v-for="channel in channels">
+                <channelcard
+                :channel="channel"
+                ></channelcard>
+
             </ul>
         </div>
 
@@ -40,6 +43,10 @@
 // #region  引入组件
 import channelcard from './channelcard/channelcard.vue'
 //  #endregion
+
+//#region  引入axois
+import { GetHotChannels } from '@/api/views/channelpage'
+//#endregion
 
 // #region 引入vue pinia 路由
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
@@ -57,7 +64,15 @@ import Mock from 'mockjs'
 const mock = (str) => { return Mock.mock(str) }
 
 //#endregion
-
+const channels = reactive([])
+onMounted(() => {
+    GetHotChannels(15)
+    .then(list=>{
+        list.forEach(li => {
+            channels.push(li)
+        });
+    })
+})
 </script>
 <style scoped lang="less">
 .home {

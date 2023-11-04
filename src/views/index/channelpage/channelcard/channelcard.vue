@@ -1,15 +1,15 @@
 <template>
     <div class="channelcard">
         <div class="header">
-            <router-link class="left" to="/channel/10086??tab=multiple">
+            <router-link class="left" :to="`/channel/${channel.id}?tab=multiple`">
                 <div class="img">
-                    <img src="@\assets\images\channel2.webp" alt="">
+                    <img :src="channel.cover" alt="">
                 </div>
                 <div class="info">
-                    <h4>{{ mock('@cword(2,5)') }}</h4>
+                    <h4>{{ channel.name}}</h4>
                     <div>
-                        <span>{{ mock('@integer(300,3000000)') + '个视频' }}</span>
-                        <span>{{ mock('@integer(300,3000000)') + '个精选视频' }}</span>
+                        <span>{{ videocount +'个视频'}}</span>
+                        <span>{{ watchcount + '次观看' }}</span>
                     </div>
                 </div>
             </router-link>
@@ -18,9 +18,9 @@
                     <span style="margin-right: 5px;">
                         <i class="colourless tianjia"></i>
                     </span>
-                    <span>订阅{{ mock('@integer(1000,29999)') }}</span>
+                    <span>订阅{{subscribeCount }}</span>
                 </button>
-                <router-link to="/channel/10086??tab=featured">
+                <router-link :to="`/channel/${channel.id}?tab=featured`">
 
                     进入频道
 
@@ -41,9 +41,10 @@ import videpcard from './videocard.vue'
 //  #endregion
 
 // #region 引入vue pinia 路由
-import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
+import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount,defineProps } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
 import { useRoute, useRouter } from 'vue-router'
+import dataUtils from '@/utils/dataUtils'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
@@ -56,7 +57,31 @@ import Mock from 'mockjs'
 const mock = (str) => { return Mock.mock(str) }
 
 //#endregion
+const {channel}= defineProps({
+    channel:Object
+})
+const videocount=computed(()=>{
+    // if()
+    
+   const count= channel.video_Count
 
+   if(count==0) return mock('@integer(1,100)')+'万';
+  
+  
+   return dataUtils.toWan(count )
+    
+})
+const watchcount=computed(()=>{
+    // console.log(channel)
+    const count= channel.watchCount
+    if(count==0)  return mock('@integer(1,1000)')
+    return dataUtils.toWan(count)
+})
+const subscribeCount=computed(()=>{
+    const count= channel.subscribe_Count
+    if(count==0)  return mock('@integer(1,1000)')
+    return dataUtils.toWan(count )
+})
 </script>
 <style scoped lang="less">
 .channelcard {

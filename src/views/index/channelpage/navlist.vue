@@ -19,12 +19,16 @@
                 </span>
             </a>
             <ul class="list" :class="showlist ? undefined : 'sq'">
-                <router-link to="/channel/index">
+                <router-link 
+                
+                to="/channel/index">
                     <span style="color: #222;font-size: 14px;">全部</span>
                     <span style="font-size: 12px;">{{ channel_types.reduce((r, c) => { return r + c.count }, 0) }}</span>
                 </router-link>
-                <router-link :to="`/channel/type/${channel.id}`" v-for="channel in channel_types">
-                    <span style="color: #222;font-size: 16px;">{{ channel.title }}</span>
+                <router-link 
+          
+                :to="`/channel/type/${channel.id}`" v-for="channel in channel_types">
+                    <span style="color: #222;font-size: 16px;">{{ channel.name }}</span>
                     <span style="font-size: 12px;">{{ channel.count }}</span>
                 </router-link>
             </ul>
@@ -35,7 +39,8 @@
                 </span>
             </div>
         </div>
-        <div class="mylist">
+        <!-- 待开发 -->
+        <div class="mylist" v-if="false">
             <div class="header">
                 <h4 style="font-size: 18px;  font-weight: normal;">
                     我的订阅
@@ -69,7 +74,9 @@
 // #region  引入组件
 
 //  #endregion
-
+//#region 导入向后台发送请求的方法
+import {GetAllChannel_types} from '@/api/views/channelpage.js'
+//#endregion
 // #region 引入vue pinia 路由
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
@@ -84,6 +91,10 @@ const router = useRouter()
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
+
+
+
+//#endregion
 const showlist = ref(false)
 const setting = ref(false)
 const text=ref('')
@@ -101,31 +112,17 @@ const search=()=>{
         })        
 }
 const channel_types = reactive([])
-onMounted(() => {
-    const temp = [
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-        { id: mock('@id()'), title: mock('@cword(2,5)'), count: mock('@integer(20,100)') },
-    ]
-    temp.forEach(li => {
+
+onMounted(()=>{
+GetAllChannel_types().then(list=>{
+    // console.log(list)
+    list.sort((a,b)=>b.count - a.count)
+    list.forEach(li => {
         channel_types.push(li)
     })
-})
-//#endregion
 
+})
+})
 </script>
 <style scoped lang="less">
 .navlist {

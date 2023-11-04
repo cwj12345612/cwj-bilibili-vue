@@ -5,16 +5,18 @@
             <span>{{ mock('@integer(200,2000)') }}</span>
         </div>
         <channelcard
-        v-for="index in parseInt(mock('@integer(5,20)'))"
-        style="margin-bottom: 40px;"
-        ></channelcard>
+        :channel="channel"
+        :key="channel.id"
+        v-for="channel in channels" style="margin-bottom: 40px;"></channelcard>
     </div>
 </template>
 <script setup>
 // #region  引入组件
 import channelcard from './channelcard/channelcard.vue'
 //  #endregion
-
+//#region  引入发送后台请求的方法
+import { GetChannelsByChannel_typesId } from '@/api/views/channelpage'
+//#endregion
 // #region 引入vue pinia 路由
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
@@ -29,11 +31,20 @@ const router = useRouter()
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
-onMounted(() => {
-    console.log('频道' + route.params.id)
-})
-//#endregion
 
+//#endregion
+const channels = reactive([])
+watch(() => route.params.id, () => {
+    //   console.log('频道' + route.params.id)
+    if (!route.params.id || !Number(route.params.id)) return
+    GetChannelsByChannel_typesId(route.params.id, 5)
+    .then(list=>{
+       channels.length=0
+       list.forEach(li => {
+        channels.push(li)
+       });
+    })
+}, { immediate: true })
 </script>
 <style scoped lang="less">
 .channel_type {
@@ -62,4 +73,5 @@ onMounted(() => {
             margin-left: 10px;
         }
     }
-}</style>
+}
+</style>

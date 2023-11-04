@@ -261,7 +261,10 @@ watch(() => upfile.videos.length, () => {
 //#region 数据校验
 const ver1 = ref(false)
 const ver2 = ref(false)
-
+const msg=reactive({
+    formmsg:null,
+    upfilemsg:null
+})
 watch(() => form, () => {
     ver1.value = false
     let errormsg = ''
@@ -283,7 +286,8 @@ watch(() => form, () => {
         errormsg += '简介过长(0~1000)\n'
     }
    
-    ver1.value= (errormsg=='')
+   ver1.value =(errormsg=='')
+   msg.formmsg=(errormsg!=''?errormsg :null)
     //#endregion
 
 }, { deep: true })
@@ -350,6 +354,9 @@ watch(() => upfile, async () => {
     }
     
   ver2.value=( errormsg=='')
+ 
+   msg.upfilemsg=(errormsg!=''?errormsg :null)
+ 
 }, { deep: true })
 //#endregion
 //#region  从后台获取类别和分区
@@ -384,6 +391,7 @@ onMounted(() => {
 const submit = () => {
     if (!ver1.value && !ver2.value) {
         alert("数据校验不正确,无法上传")
+        
         return
     } else {
         console.log('校验成功 上传')
