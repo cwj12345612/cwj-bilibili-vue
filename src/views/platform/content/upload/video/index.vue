@@ -1,15 +1,7 @@
 <template>
-    <uploadvideo_no
-    :config="config"
-    @addvideos="addvideos"
-     v-if="status == 'no'"></uploadvideo_no>
-    <uploadvideo_begin 
-    :config="config"
-    :videos="videos"
-    :cover="cover"
-    :form="form"
-    @addvideos="addvideos"
-    v-if="status == 'begin'"></uploadvideo_begin>
+    <uploadvideo_no :config="config" @addvideos="addvideos" v-if="status == 'no'"></uploadvideo_no>
+    <uploadvideo_begin :config="config" :upfile="upfile"  @addvideos="addvideos" @delvideo="delvideo"
+        @changeCover="changeCover" v-if="status == 'begin'"></uploadvideo_begin>
     <uploadvideo_ing v-if="status == 'ing'"></uploadvideo_ing>
     <uploadvideo_succeed v-if="status == 'succeed'"></uploadvideo_succeed>
     <uploadvideo_fail v-if="status == 'fail'"></uploadvideo_fail>
@@ -54,19 +46,19 @@ watch(() => status.value, () => {
 const config = reactive({
     //视频文件限制
     video: {
-        //最大200*1024MB
+        //最大200*1024*1024MB
         total: 200 * 1024,
         count: 200,
         size: 20 * 1024,
         namelength: 100,
         //正则表达式校验文件名
         namereg: new RegExp('[\\\\/:*?\"<>|]'),
-        types: ['mp4', 'flv', 'mkv']
+        types: ['.mp4', '.flv', '.mkv']
     },
     cover: {
         //图片大小不能超过50Mb
         size: 50,
-        types: ['png', 'jpeg', 'jpg'],
+        types: ['.png', '.jpeg', '.jpg'],
         //正则表达式校验图片名
         namereg: new RegExp('[\\\\/:*?\"<>|]')
     },
@@ -79,19 +71,14 @@ const config = reactive({
     }
 })
 //#endregion
-
 //#region  需要上传的全部数据
-const videos = reactive([])
-const cover = reactive({})
-const form = reactive({
-    title: mock("@cword(3,100)"), //标题
-    type: 'zhuanzai', //是否未自制
-    zhuanzai: mock('@url()'),//转自
-    cid: 0, //类别
-    sid: 0, //分区
-    tags: ['csharp', 'netcore', 'vue', 'axios'],
-    synopsis: mock('@cword(20,1000)'),//简介
+const upfile = reactive({
+    videos: [],
+    cover: null
 })
+
+
+
 //#endregion
 //#region 添加删除视频文件
 const addvideos = async (el) => {
@@ -99,14 +86,14 @@ const addvideos = async (el) => {
     openFullScreen('正在校验上传的视频文件')
     const videolist = el.target.files;
     for (let video of videolist) {
-        let videostaus=false
+        let videostaus = false
         await new Promise(
             (resolve, reject) => {
                 // console.log(video)
                 if (
                     parseInt(video.size / (1024 * 1024)) > config.video.size
                     || video.name.substring(0, video.name.lastIndexOf('.')).length > config.video.namelength
-                    || !config.video.types.includes(video.name.substring(video.name.lastIndexOf('.') + 1))
+
                     || config.video.namereg.test(video.name)
                 ) {
                     reject()
@@ -116,7 +103,7 @@ const addvideos = async (el) => {
                 fileReader.onloadend = (f) => {
                     const bytes = new Uint8Array(f.target.result);
                     const ar = filetypename(bytes)
-                    if (ar == null || ar.length == 0 || !config.video.types.includes(ar[0])) {
+                    if (ar == null || ar.length == 0 || !config.video.types.includes('.' + ar[0])) {
                         reject()
                     } else {
                         resolve()
@@ -124,27 +111,52 @@ const addvideos = async (el) => {
                 }
                 fileReader.readAsArrayBuffer(video)
             }).then(res => {
-              videostaus=true
+                videostaus = true
             },
                 req => {
-                   videostaus=false
+                    videostaus = false
                 }
             )
-        if(!videostaus){
+        if (!videostaus) {
             loading.close()
-            alert('视频文件异常 请重新上传')      
-           return
+            alert('视频文件异常 请重新上传')
+            return
+        }
+    }
+    for (let video of videolist) {
+        const name = video.name
+        if (upfile.videos.filter(v => v.name == name).length > 0) {
+            loading.close()
+            alert("该视频已存在")
+            return
         }
     }
     loading.close()
-    status.value='begin'
-   for(let video of videolist){
-    videos.push(video)
-   }
+    status.value = 'begin'
+    for (let video of videolist) {
+        upfile.videos.push(video)
+    }
 }
-
+const delvideo = (name) => {
+    const list = upfile.videos.filter(v => v.name != name)
+    upfile.videos.length = 0;
+    list.forEach(li => {
+        upfile.videos.push(li)
+    })
+}
 //#endregion
 
+//#region 添加或修改封面
+const changeCover = (cover) => {
+    if(cover==null){
+        alert('更换封面失败 请检查图片文件')
+    }else{
+        upfile.cover = cover
+    }
+   
+    // console.log(cover)
+}
+//#endregion
 //#region  等待动画
 
 let loading = null

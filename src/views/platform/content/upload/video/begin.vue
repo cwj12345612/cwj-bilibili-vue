@@ -1,15 +1,27 @@
 <template>
-  <form>
+    <form>
         <div class="header">
-            <h3>{{ 0}} 个视频 共 {{ 0 }} MB
+            <h3>{{ videos.length }} 个视频 共 {{ parseInt(videos.reduce((p, c) => {
+                return p + c.size
+            }, 0) / (1024 * 1024)) }} MB
                 <span>
-                    剩余{{ 0 }}集 且容量{{ 0
+                    剩余{{ config.video.count - videos.length }}集 且容量{{
+                        parseInt(
+                            (config.video.total
+                                - (videos.length == 0 ? 0 : (
+
+                                    parseInt(videos.reduce((p, c) => {
+                                        return p + c.size
+                                    }, 0) / (1024 * 1024))
+                                ))
+
+                            )
+                        )
                     }}MB</span>
             </h3>
             <label class="add" for="add">添加视频</label>
-            <input id="add" multiple 
-            @change="addvideos"
-             type="file" accept=".mp4 , .flv , .mkv" style="display: none;">
+            <input id="add" multiple @change="addvideos" type="file" :accept="config.video.types.join()"
+                style="display: none;">
         </div>
         <div class="form">
             <ul class="videos">
@@ -20,21 +32,19 @@
                     <div class="desc">
                         <div class="title">
                             <div style="display: flex;align-items: flex-end;">
-                                <h4 >
+                                <h4 :title="video.name.substring(0, video.name.lastIndexOf('.'))">
                                     <!-- {{ file.name }} -->
-                                    视频{{ index }}
-                                       </h4>
-                                <span style="font-size: 13px; color: #99a299;flex-shrink: 0;margin-left: 10px;">类型:
-                                    mp4</span>
+                                    {{ video.name.length <= 30 ? video.name.substring(0, video.name.lastIndexOf('.')) :
+                                        video.name.substring(0, 30) + '...' }} </h4>
+                                        <span style="font-size: 13px; color: #99a299;flex-shrink: 0;margin-left: 10px;">类型:
+                                            {{ video.name.substring(video.name.lastIndexOf('.') + 1) }}</span>
                             </div>
                             <div class="setting">
                                 <span style="margin-right: 20px;color: #99a299;font-size: 14px;">{{
-                                 "80MB"}}</span>
+                                    parseInt(video.size / (1024 * 1024)) + 'MB' }}</span>
                                 <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i> -->
                                 <!-- <i class="colourless shuayishua" title="重新上传"></i> -->
-                                <i class="colourless guanbi"
-                                   
-                                    title="取消上传"></i>
+                                <i class="colourless guanbi" @click.prevent="delvideo(video.name)" title="取消上传"></i>
                             </div>
                         </div>
                         <!-- <div class="jindu"></div> -->
@@ -47,32 +57,30 @@
                     <div class="content img">
 
                         <img class="videoupload_img" src="@\assets\images\初夏之星.png" alt="">
-                        <input accept=".jpg , .jpeg , .png" type="file" id="videoupload_img" 
+                        <input @change="changeCover" :accept="config.cover.types.join()" type="file" id="videoupload_img"
                             style="display: none;">
                         <label for="videoupload_img">点击更换封面</label>
                     </div>
                 </li>
                 <li>
 
-                    <label class="title" for="title" >标题</label>
+                    <label class="title" for="title">标题</label>
                     <div class="content c1">
-                        <input id="title" type="text" maxlength="100"
+                        <input v-model="form.title" id="title" type="text" :maxlength="config.form.titlelength"
                             placeholder="请输入标题">
-                        <span>{{ '8/100'}}</span>
+                        <span>{{ `${form.title.length}/${config.form.titlelength}` }}</span>
                     </div>
                 </li>
                 <li>
                     <div class="title">类型</div>
                     <div class="content c2">
                         <div>
-                            <input type="radio" value="zizhi"
-                                name="type"><span>自制</span>
+                            <input v-model="form.type" type="radio" value="zizhi" name="type"><span>自制</span>
                         </div>
                         <div class="zz">
-                            <input type="radio"  value="zhuanzai" name="type"><span
+                            <input v-model="form.type" type="radio" value="zhuanzai" name="type"><span
                                 style="margin-right: 10px;">转载</span>
-                            <input type="text" 
-                                placeholder="转载请注明出处">
+                            <input v-if="form.type == 'zhuanzai'" v-model="form.zhuanzai" type="text" placeholder="转载请注明出处">
                         </div>
 
                     </div>
@@ -80,23 +88,25 @@
                 <li>
                     <div class="title">分区</div>
                     <div class="content c3">
-                        <span class="now" >
+                        <span class="now" @click="isshowcs = !isshowcs">
                             {{
-                            "影视"
-                            }}
+                                cs[form.cid]?.cname
+                            }} · {{
+    cs[form.cid] ?
+    cs[form.cid]?.children?.filter(s => s.sid == form.sid)[0]?.sname
+    : undefined }}
                         </span>
-                        <div class="list" >
+                        <div class="list" v-if="isshowcs">
                             <ul class="category">
 
-                                <li 
-                                   v-for="( index) in 7">{{ '影视杂谈' }}</li>
+                                <li @click.prevent="clickca(cid)" :class="`${form.cid == cid ? 'active' : undefined}`"
+                                    v-for="(cid, index) in Object.keys(cs)">{{ cs[cid]?.cname }}</li>
                             </ul>
                             <ul class="content">
-                                <li 
-                                   
-                                    v-for="li in 7 ">
-                                    <h3>{{"你好"}}</h3>
-                                    <p >{{'暂无简介' }}</p>
+                                <li @click.prevent="clicksu(su.sid)" :class="`${form.sid == su.sid ? 'active' : undefined}`"
+                                    v-for="su in cs[form.cid].children">
+                                    <h3>{{ su.sname }}</h3>
+                                    <p>{{ '暂无简介' }}</p>
                                 </li>
                             </ul>
                         </div>
@@ -107,21 +117,21 @@
                     <div class="content c4">
                         <div class="input">
                             <ul class="tags">
-                                <span title="点击删除"
-                                  v-for="tag in 7" class="tag">{{ '标签'
+                                <span title="点击删除" @click.prevent="form.tags = form.tags.filter(t => t != tag)"
+                                    v-for="tag in form.tags" class="tag">{{ tag
                                     }}</span>
                             </ul>
                             <input type="text" id="tags" ref="videoupload_tags"
-                                placeholder="按下enter键添加,点击标签删除                                  标签长度要不大于10个字">
-                            <span class="sys">还可以添加{{ 6 }}个标签</span>
+                                v-if="config.form.tagscount > form.tags.length" :maxlength="config.form.taglength"
+                                @keyup.enter.prevent="addtag($event, $event.target.value)" placeholder="按下enter键添加,点击标签删除">
+                            <span class="sys">还可以添加{{ config.form.tagscount - form.tags.length }}个标签</span>
                         </div>
-
                     </div>
                 </li>
                 <li>
                     <label for="deatils" class="title" style="align-self: flex-start;">简介</label>
                     <div class="content c5">
-                        <textarea id="deatils" maxlength="1000" cols="30" rows="10"
+                        <textarea id="deatils" v-model="form.synopsis" :maxlength="config.form.synopsis" cols="30" rows="10"
                             placeholder="输入视频简介"></textarea>
                     </div>
                 </li>
@@ -138,39 +148,121 @@
 //  #endregion
 
 // #region 引入vue pinia 路由
-import {computed,ref,reactive,watch,toRef,toRefs,onMounted,onBeforeUnmount,defineEmits} from 'vue'
-import {useRoute,useRouter} from 'vue-router'
-const route=useRoute()
-const router=useRouter()
+import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, defineEmits } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
+import { GetCategoryAndSubarea } from '@/api/uploadvideo'
+const route = useRoute()
+const router = useRouter()
 // #endregion
-//#region  接收父组件传过来的数据 只读
-const {config,
-    cover,videos,form}=defineProps({
-    config:Object,
-    cover:Object,
-    videos:Array,
-    form:Object
-})
-//#endregion
-//#region 子组件给父组件传值
-const emit=defineEmits(['addvideos'])
-const addvideos=(el)=>{
- 
-emit('addvideos',el)
-}
-//#endregion
-// #endregion
-
-
-
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
 
-const mock=(str)=>{return Mock.mock(str)}
+
+const mock = (str) => { return Mock.mock(str) }
 
 //#endregion
+//#region  接收父组件传过来的数据 只读
+const { config,
+    upfile } = defineProps({
+        config: Object,
+        upfile: Object,
 
+    })
+const videos = computed(() => {
+    return upfile.videos
+})
+//#endregion
+//#region 子组件给父组件传值
+const emit = defineEmits(['addvideos', 'delvideo', 'changeCover'])
+const addvideos = (el) => {
+
+    emit('addvideos', el)
+}
+const delvideo = (name) => {
+    emit('delvideo', name)
+}
+const changeCover = async (e) => {
+    let files = e.target.files
+    if (!files?.length) return
+    await new Promise((res, rej) => {
+        const fileReader = new FileReader();
+        fileReader.onloadend = (f) => {
+            const bytes = new Uint8Array(f.target.result);
+            const ar = filetypename(bytes)
+            if (ar == null || ar.length == 0 || !config.cover.types.includes('.' + ar[0])) {
+                rej()
+            } else {
+                let fr = new FileReader();
+                fr.readAsDataURL(files[0])
+                fr.onload = (e) => {
+                    document.querySelector('.videoupload_img').src = e.target.result
+                    res()
+                    // console.log(form.cover)
+                }
+            }
+        }
+        fileReader.readAsArrayBuffer(files[0])
+
+    }).then(res => { emit('changeCover', files[0]) }, rej => { emit('changeCover', null) })
+
+
+}
+//#endregion
+
+//#region 上传表单
+const form = reactive({
+    title: mock("@cword(3,100)"), //标题
+    type: 'zhuanzai', //是否未自制
+    zhuanzai: mock('@url()'),//转自
+    cid: 0, //类别
+    sid: 0, //分区
+    tags: ['csharp', 'efcore', 'sqlserver', 'netcore', 'vue', 'axios'],
+    synopsis: mock('@cword(20,1000)'),//简介
+})
+//#endregion
+
+//#region 添加标签
+const addtag = (e, val) => {
+    val = val.trim()
+    if (val == '' || form.tags.includes(val)) return
+    form.tags.push(val)
+    e.target.value = ''
+}
+//#endregion
+//#region  向后台请求分区和修改分区
+const isshowcs = ref(false)
+const cs = reactive({})
+onMounted(() => {
+    GetCategoryAndSubarea()
+        .then(list => {
+
+            for (let ca of list) {
+                const key = ca[0]
+
+                cs[key.cid] = { cid: key.cid, cname: key.cname, children: [] }
+
+                for (let su of ca) {
+                    cs[key.cid].children.push(su)
+                }
+
+            }
+            form.cid = list[0][0].cid
+            form.sid = list[0][0].sid
+            console.log(cs)
+        })
+})
+const clickca = (cid) => {
+    if (cid == form.cid) return
+    form.cid = cid
+    form.sid = cs[cid].children[0].sid
+}
+const clicksu = (sid) => {
+    isshowcs.value = false
+    form.sid = sid
+}
+//#endregion
 </script>
 <style scoped lang="less">
 form {
@@ -370,6 +462,7 @@ form .header .add {
     position: relative;
 
     .now {
+        transition: all 0.5s;
         border: #61666d 1px solid;
         padding: 3px 10px;
         border-radius: 6px;
@@ -407,7 +500,7 @@ form .header .add {
                 cursor: pointer;
                 text-overflow: ellipsis;
 
-                &:hover {
+                &:where(:hover, .active) {
                     color: #0aaee0;
                 }
             }
@@ -415,7 +508,6 @@ form .header .add {
 
         .content {
             overflow: auto;
-
             display: flex;
             flex-direction: column;
             // background-color: orange;
@@ -423,7 +515,7 @@ form .header .add {
             padding-right: 100px;
 
             li {
-                &:hover {
+                &:where(:hover, .active) {
                     color: #0aaee0;
                 }
 

@@ -1,7 +1,7 @@
 import axios from "@/utils/axios";
 import md5 from "js-md5";
 import { useUserStore} from '@/pinia/userStore'
-import {usevideouploadstore} from '@/pinia/uploadstore'
+
 export async function GetCategoryAndSubarea() {
     return await axios.get('/api/uploadvideo/CategoryAndSubarea').then(req => {
         return req.data;
@@ -124,8 +124,7 @@ export async function uploadvideo(video) {
                 }
             }
         ).then(req=>{
-            const videoStore=usevideouploadstore()
-            videoStore.uploadvideo(video.name)
+           
         })
         )
       
@@ -174,7 +173,7 @@ export async function WirteSql() {
     .then(req=>{
        sessionStorage.removeItem("videolist")
        sessionStorage.setItem('uploadsucceed',JSON.stringify({size:req.data.size,count:req.data.count}))
-       usevideouploadstore().uploadend()
+     
     })
 }
 //#endregion
