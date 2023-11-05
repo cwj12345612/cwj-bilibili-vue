@@ -1,5 +1,7 @@
 <template>
-    <el-button @click.prevent="channge" :type="status ? 'success' : 'warning'">{{ status ? '恢复上传' : '暂停上传' }}</el-button>
+    <el-button
+     @click.prevent="channge"
+      :type="status ? 'success' : 'warning'">{{ status ? '恢复上传' : '暂停上传' }}</el-button>
     <ul class="videos ing">
         <li v-for="video in videolist">
             <div class="icon">
@@ -8,7 +10,9 @@
             <div class="desc">
                 <div class="title">
                     <div style="display: flex;align-items: flex-end;">
-                        <h4>
+                        <h4 
+                        :title="video.name.substring(0,video.name.lastIndexOf('.'))"
+                        >
 
                             {{ video.name.length <= 30 ? video.name.substring(0, video.name.lastIndexOf('.')) :
                                 video.name.substring(0, 30) + '...' }} </h4>

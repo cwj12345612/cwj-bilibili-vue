@@ -82,8 +82,8 @@ export async function uploadvideo(video) {
     //每一集的每一分片的MD5都是相同的
     const videoMd5 = md5(JSON.parse(sessionStorage.getItem('upvideolist'))?.md5 + video.name + video.size)
     while (fileStreamPos < video.size) {
-        const chunk = {
-            file: video.slice(fileStreamPos, endPos),
+        const chunk = {   
+           
             start: fileStreamPos,
             end: endPos,
             PartNumber: i,
@@ -104,7 +104,6 @@ export async function uploadvideo(video) {
     let ii = 0
     const axioslist = []
     for (let chunk of fileChunks) {
-
         let pro = new Promise((res) => {
             let stt = setInterval(() => {
                 const status = window.getschedulestatus()
@@ -115,10 +114,11 @@ export async function uploadvideo(video) {
             }, 100);
         })
         await pro.then(() => {
-            const form = new FormData()
+            let form = new FormData()
             chunk.chunks = fileChunks.length
-            form.append("file", chunk.file)
-            delete chunk.file
+            form.append("file", video.slice(chunk.start, chunk.end))
+           
+           
             //   console.log(chunk)
             let querystring = '?'
             Object.keys(chunk).forEach(key => {
@@ -135,6 +135,7 @@ export async function uploadvideo(video) {
                         }
                     }
                 ).then(req => {
+                    form=null;
                     //修改视频上传进度
                     window.uploadchunk(chunk)
                 })
