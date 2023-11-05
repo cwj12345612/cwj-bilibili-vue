@@ -6,7 +6,11 @@
         </div>
         <button @click.prevent="t5">测试jwt1</button>
         <primiseall></primiseall>
+        <h3>实时{{ re }}</h3>
+        <hr>
+        <button @click="changere">改变re</button>
     </div>
+    
 </template>
 <script setup>
 // #region  引入组件
@@ -23,7 +27,7 @@ const router = useRouter()
 import axios from '@/utils/axios';
 import { readBuffer, isPNG } from '@/utils/fileUtils'
 // #endregion
-
+import{getre2} from './aa'
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
@@ -40,7 +44,23 @@ const t5=()=>{
         console.log(req.data)
     })
 }
-
+const re= reactive({
+    name:'js实时读取',
+    size:10
+})
+const changere=()=>{
+    re.size=mock('@integer(10,1000)')
+}
+const getre=()=>{
+    return re;
+}
+onMounted(()=>{
+    window.getre=getre
+    
+})
+onMounted(()=>{
+    getre2()
+})
 //#endregion
 
 </script>

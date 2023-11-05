@@ -246,6 +246,7 @@ const addtag = (e, val) => {
 const isshowcs = ref(false)
 const cs = reactive({})
 onMounted(() => {
+    // return
     GetCategoryAndSubarea()
         .then(list => {
             for (let ca of list) {

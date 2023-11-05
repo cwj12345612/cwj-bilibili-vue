@@ -1,12 +1,9 @@
 <template>
-  
     <uploadvideo_no :config="config" @addvideos="addvideos" v-if="status == 'no'"></uploadvideo_no>
     <uploadvideo_begin :config="config" :upfile="upfile" @addvideos="addvideos" @delvideo="delvideo"
-    
-    
-    @changeCover="changeCover" @clearupfile="clearupfile" @changestatus="changestatus" v-if="status == 'begin'">
+        @changeCover="changeCover" @clearupfile="clearupfile" @changestatus="changestatus" v-if="status == 'begin'">
     </uploadvideo_begin>
-    <uploadvideo_ing   v-if="status == 'ing'"></uploadvideo_ing>
+    <uploadvideo_ing :schedule="schedule" v-if="status == 'ing'"></uploadvideo_ing>
     <uploadvideo_succeed v-if="status == 'succeed'"></uploadvideo_succeed>
     <uploadvideo_fail v-if="status == 'fail'"></uploadvideo_fail>
 </template>
@@ -51,22 +48,59 @@ const changestatus = (st) => {
 //#endregion
 
 //#region 上传进度
-
-
+const schedule = reactive({
+    issuspend: false,//是否在暂停,
+    isover: false, //是否上传完成
+    /**
+     * 不是数组 而是对象
+     */
+    videolist: {}
+})
+watch(() => upfile.videos.length, () => {
+    const videos = upfile.videos
+    for (let video of videos) {
+        schedule.videolist[video.name] = {
+            name: video.name,
+            size: parseInt(video.size / (1024 * 1024)),
+            //上传进度 0-100
+            schedule: 0,
+            //已上传大小
+            nowsize: 0
+        }
+    }
+    // console.log(schedule.videolist)
+},{immediate:true})
+//获取上传进度
+const getschedule = () => {
+    return schedule
+}
+const getschedulestatus=()=>{
+    return schedule.issuspend
+}
+const getschedulebyvideo = (videoname) => {
+    return schedule.videolist[videoname]
+}
 //上传视频分片成功后 改变进度
-const uploadchunk = () => {
- 
+const uploadchunk = (chunk) => {
+    schedule.videolist[chunk.FileName].nowsize += 1
 }
-const uploadsuspend=()=>{
+const uploadsuspend = (video, chunk) => {
     //暂停上传
- 
+    schedule.issuspend = true
 }
-const uploadrecover=()=>{
+const uploadrecover = () => {
     //恢复上传
- 
+    schedule.issuspend = false
 }
-
-
+onMounted(() => {
+    //全部挂在window上
+    window.getschedule = getschedule
+    window.getschedulebyvideo = getschedulebyvideo
+    window.uploadchunk = uploadchunk
+    window.uploadsuspend = uploadsuspend
+    window.uploadrecover = uploadrecover
+    window.getschedulestatus=getschedulestatus
+})
 //#endregion
 
 

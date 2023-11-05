@@ -1,6 +1,9 @@
 <template>
+    <el-button 
+    @click.prevent="channge"
+    :type="status?'warning':'success'">{{ status?'暂停上传' :'恢复上传'}}</el-button>
     <ul class="videos ing">
-        <li v-for="(video) in videolist">
+        <li v-for="video in videolist">
             <div class="icon">
                 <i class="colourless bofangshu"></i>
             </div>
@@ -8,35 +11,34 @@
                 <div class="title">
                     <div style="display: flex;align-items: flex-end;">
                         <h4>
-                            <!-- {{ file.name }} -->
+                        
                             {{ video.name.length <= 30 ? video.name.substring(0, video.name.lastIndexOf('.')) :
-                                video.name.substring(0, 30) + '...' }} </h4>
+                                video.name.substring(0, 30) + '...' }} 
+                                </h4>
                                 <span style="font-size: 13px; color: #99a299;flex-shrink: 0;margin-left: 10px;">类型:
-                                    {{  video.name.substring(video.name.lastIndexOf('.') + 1) }}</span>
+                                    {{ video.name.substring(video.name.lastIndexOf('.') + 1) }}
+                                </span>
                     </div>
                     <div class="setting">
                         <span style="margin-right: 20px;color: #99a299;font-size: 14px;">
-                            {{ `${video.nowsize<=video.size ?video.nowsize :video.size}MB/${video.size}MB` }}</span>
-                        <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i>
+                            {{ `${video.nowsize <= video.size ? video.nowsize : video.size}MB/${video.size}MB` }}</span>
+                                <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i>
                                 <i class="colourless shuayishua" title="重新上传"></i>
                                 <i class="colourless guanbi" title="取消上传"></i> -->
-                                <el-button type="warning" 
-                                @click.prevent="issuspend(video)"
-                                >{{ !video.issuspend ?'暂停上传':'恢复上传' }}</el-button>
+
                     </div>
                 </div>
-                <el-progress 
-                :percentage="video.nowsize>=video.size?100 :
-                (video.nowsize / video.size *100)
-                " 
-                :stroke-width="13"
-                 :status="`${video.nowsize>=video.size?'success':
-                video.issuspend ? 'warning':'exception'
-                }`"
-              
-                  :duration="10" />
+                <el-progress :percentage="video.nowsize >= video.size ? 100 :
+                    Number((video.nowsize / video.size * 100).toFixed(1))
+                    " :stroke-width="13"
+                     :status="video.nowsize >= video.size ? 'success' :
+        schedule.issuspend ? 'warning' : null
+        " 
+        striped 
+        :duration="10" />
             </div>
         </li>
+
     </ul>
 </template>
 <script setup>
@@ -59,17 +61,14 @@ const { schedule } = defineProps({
     schedule: Object
 })
 const videolist = computed(() => {
-
     const list = []
-    for(let  i=0;i<10;i++){
-        list.push({
-            name:'r4t5ghyrngfedc.mp4',
-            size:1024,
-            nowsize:100,
-            issuspend:false  
-        })
-    }
-    // console.log(list)
+    console.log(schedule.videolist)
+  
+const videos=schedule.videolist
+
+for(let vv of Object.keys(videos)){
+  list.push(videos[vv])
+}
     return list
 })
 
@@ -83,12 +82,16 @@ const mock = (str) => { return Mock.mock(str) }
 
 //#endregion
 //#region 暂停上传 恢复上传
-const issuspend=(video)=>{
-    if(video.issuspend){
-        window.uploadrecover(video)
-    }else{
-        window.uploadsuspend(video)
-    }
+//是否正在上传
+const status=ref(false)
+const channge = () => {
+    console.log(status.value)
+  status.value=!status.value
+  if(status){
+    window.uploadrecover()
+  }else{
+    window.uploadsuspend()
+  }
 }
 
 //#endregion

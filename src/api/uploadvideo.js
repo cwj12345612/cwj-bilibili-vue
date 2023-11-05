@@ -103,7 +103,14 @@ export async function uploadvideo(video) {
     let ii = 0
     const axioslist = []
     for (let chunk of fileChunks) {
-
+      
+        while(true){
+            // console.log(window.getschedulestatus())
+            if(window.getschedulestatus()){
+                
+                break
+            }
+        }
         const form = new FormData()
         chunk.chunks = fileChunks.length
         form.append("file", chunk.file)
@@ -124,7 +131,7 @@ export async function uploadvideo(video) {
             }
         ).then(req => {
             //修改视频上传进度
-
+                window.uploadchunk(chunk)
         })
         )
 
