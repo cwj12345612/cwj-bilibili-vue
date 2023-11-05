@@ -1,8 +1,12 @@
 <template>
+  
     <uploadvideo_no :config="config" @addvideos="addvideos" v-if="status == 'no'"></uploadvideo_no>
-    <uploadvideo_begin :config="config" :upfile="upfile"  @addvideos="addvideos" @delvideo="delvideo"
-        @changeCover="changeCover" v-if="status == 'begin'"></uploadvideo_begin>
-    <uploadvideo_ing v-if="status == 'ing'"></uploadvideo_ing>
+    <uploadvideo_begin :config="config" :upfile="upfile" @addvideos="addvideos" @delvideo="delvideo"
+    
+    
+    @changeCover="changeCover" @clearupfile="clearupfile" @changestatus="changestatus" v-if="status == 'begin'">
+    </uploadvideo_begin>
+    <uploadvideo_ing   v-if="status == 'ing'"></uploadvideo_ing>
     <uploadvideo_succeed v-if="status == 'succeed'"></uploadvideo_succeed>
     <uploadvideo_fail v-if="status == 'fail'"></uploadvideo_fail>
 </template>
@@ -22,7 +26,7 @@ import { ElLoading } from 'element-plus'
 import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
 const route = useRoute()
 const router = useRouter()
-
+import md5 from "js-md5";
 // #endregion
 // #region  模拟数据 mockjs
 
@@ -31,9 +35,44 @@ import Mock from 'mockjs'
 const mock = (str) => { return Mock.mock(str) }
 
 //#endregion
+//#region  需要上传的视频 封面1
+const upfile = reactive({
+    videos: [],
+    cover: null
+})
+//#endregion
 
 //视频上传状态
 const status = ref('begin')
+//#region  修改status的值
+const changestatus = (st) => {
+    status.value = 'ing'
+}
+//#endregion
+
+//#region 上传进度
+
+
+//上传视频分片成功后 改变进度
+const uploadchunk = () => {
+ 
+}
+const uploadsuspend=()=>{
+    //暂停上传
+ 
+}
+const uploadrecover=()=>{
+    //恢复上传
+ 
+}
+
+
+//#endregion
+
+
+
+
+
 //#region  触发父组件的上传状态
 const emit = defineEmits(['uping'])
 watch(() => status.value, () => {
@@ -71,14 +110,13 @@ const config = reactive({
     }
 })
 //#endregion
-//#region  需要上传的全部数据
-const upfile = reactive({
-    videos: [],
-    cover: null
-})
 
-
-
+//#region  清除文件
+const clearupfile = () => {
+    upfile.cover = null
+    upfile.videos.length = 0
+}
+//#endregion
 //#endregion
 //#region 添加删除视频文件
 const addvideos = async (el) => {
@@ -148,12 +186,12 @@ const delvideo = (name) => {
 
 //#region 添加或修改封面
 const changeCover = (cover) => {
-    if(cover==null){
+    if (cover == null) {
         alert('更换封面失败 请检查图片文件')
-    }else{
+    } else {
         upfile.cover = cover
     }
-   
+
     // console.log(cover)
 }
 //#endregion

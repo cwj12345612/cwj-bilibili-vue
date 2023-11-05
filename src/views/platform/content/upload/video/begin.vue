@@ -1,5 +1,6 @@
 <template>
     <form>
+
         <div class="header">
             <h3>{{ videos.length }} 个视频 共 {{ parseInt(videos.reduce((p, c) => {
                 return p + c.size
@@ -23,6 +24,7 @@
             <input id="add" multiple @change="addvideos" type="file" :accept="config.video.types.join()"
                 style="display: none;">
         </div>
+
         <div class="form">
             <ul class="videos">
                 <li v-for="(video, index) in videos">
@@ -44,7 +46,8 @@
                                     parseInt(video.size / (1024 * 1024)) + 'MB' }}</span>
                                 <!-- <i class="colourless bofangqi-zanting" title="暂停上传"></i> -->
                                 <!-- <i class="colourless shuayishua" title="重新上传"></i> -->
-                                <i class="colourless guanbi" @click.prevent="delvideo(video.name)" title="取消上传"></i>
+                                <el-button type="danger" @click.prevent="delvideo(video.name)">取消上传</el-button>
+
                             </div>
                         </div>
                         <!-- <div class="jindu"></div> -->
@@ -56,7 +59,7 @@
                     <div class="title">封面</div>
                     <div class="content img">
 
-                        <img class="videoupload_img" src="@\assets\images\初夏之星.png" alt="">
+                        <img class="videoupload_img" alt="">
                         <input @change="changeCover" :accept="config.cover.types.join()" type="file" id="videoupload_img"
                             style="display: none;">
                         <label for="videoupload_img">点击更换封面</label>
@@ -136,7 +139,7 @@
                     </div>
                 </li>
                 <div class="submit">
-                    <input type="button" @click.prevent="" value="立即投稿">
+                    <input type="button" :disabled="isloading" @click.prevent="submit" value="立即投稿">
                 </div>
             </ul>
         </div>
@@ -151,7 +154,11 @@
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, defineEmits } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
-import { GetCategoryAndSubarea } from '@/api/uploadvideo'
+import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos } from '@/api/uploadvideo'
+import { ElMessage, ElMessageBox } from 'element-plus'
+
+
+
 const route = useRoute()
 const router = useRouter()
 // #endregion
@@ -168,14 +175,14 @@ const { config,
     upfile } = defineProps({
         config: Object,
         upfile: Object,
-
     })
 const videos = computed(() => {
     return upfile.videos
 })
+
 //#endregion
 //#region 子组件给父组件传值
-const emit = defineEmits(['addvideos', 'delvideo', 'changeCover'])
+const emit = defineEmits(['addvideos', 'delvideo', 'changeCover', 'clearupfile', 'changestatus'])
 const addvideos = (el) => {
 
     emit('addvideos', el)
@@ -183,6 +190,10 @@ const addvideos = (el) => {
 const delvideo = (name) => {
     emit('delvideo', name)
 }
+
+//#endregion
+//#region 上传或更换封面
+
 const changeCover = async (e) => {
     let files = e.target.files
     if (!files?.length) return
@@ -237,7 +248,6 @@ const cs = reactive({})
 onMounted(() => {
     GetCategoryAndSubarea()
         .then(list => {
-
             for (let ca of list) {
                 const key = ca[0]
 
@@ -248,10 +258,13 @@ onMounted(() => {
                 }
 
             }
-            form.cid = list[0][0].cid
-            form.sid = list[0][0].sid
-            console.log(cs)
+            if (list.length > 0) {
+                form.cid = list[0][0].cid
+                form.sid = list[0][0].sid
+            }
+            // console.log(cs)
         })
+
 })
 const clickca = (cid) => {
     if (cid == form.cid) return
@@ -261,6 +274,58 @@ const clickca = (cid) => {
 const clicksu = (sid) => {
     isshowcs.value = false
     form.sid = sid
+}
+//#endregion
+
+//#region  上传表单 封面 视频文件
+const isloading = ref(false)
+const submit = () => {
+    // if (upfile.videos.length == 0 || upfile.cover == null) {
+    //     const aa = errormsg()
+    //     return
+    // }
+    if (form.type != 'zhuanzai') { delete form.zhuanzai }
+    // console.log(form)
+    // uploadFrom(form).then(
+    //     ()=>{
+    //            uploadCover(upfile.cover,form).then(
+    //             ()=>{
+    //                 emit('changestatus','ing')
+    //                 // uploadVideos(upfile.videos)
+    //            })
+
+    //     }
+
+    //     )
+    emit('changestatus', 'ing')
+    uploadVideos(upfile.videos)
+}
+
+const errormsg = () => {
+    ElMessageBox.confirm(
+        '视频和封面都需要上传!是否清除文件重新上传?',
+        '上传失败',
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'error',
+        }
+    )
+        .then(() => {
+            emit('clearupfile')
+            document.querySelector('.videoupload_img').removeAttribute('src')
+            ElMessage({
+                type: 'success',
+                message: '清除成功',
+            })
+        })
+        .catch(() => {
+
+            ElMessage({
+                type: 'error',
+                message: '请上传文件',
+            })
+        })
 }
 //#endregion
 </script>
@@ -655,6 +720,11 @@ form .header .add {
     color: #fff;
     border: none;
     border-radius: 6px;
+    cursor: pointer;
+
+    &[disabled] {
+        cursor: not-allowed;
+    }
 }
 
 .text .img {
