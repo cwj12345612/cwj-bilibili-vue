@@ -1,5 +1,5 @@
 <template>
-    <el-button  @click.prevent="channge" :type="status ? 'success' : 'warning'">{{ status ? '恢复上传' : '暂停上传' }}</el-button>
+    <el-button @click.prevent="channge" :type="status ? 'success' : 'warning'">{{ status ? '恢复上传' : '暂停上传' }}</el-button>
     <ul class="videos ing">
         <li v-for="video in videolist">
             <div class="icon">
@@ -79,7 +79,7 @@ const mock = (str) => { return Mock.mock(str) }
 //是否正在上传
 const status = ref(false)
 const channge = () => {
-    console.log(window.getschedulestatus())
+    // console.log(window.getschedulestatus())
     status.value = !status.value
     if (!status.value) {
         window.uploadrecover()

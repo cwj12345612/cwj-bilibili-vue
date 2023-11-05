@@ -30,13 +30,13 @@ const succeed = reactive({
 })
 // #region  发送请求 正常情况应该放入onMounted
 onMounted(() => {
-    setTimeout(() => {
+  
         const uploadsucceed = JSON.parse(sessionStorage.getItem('uploadsucceed'))
         // console.log(uploadsucceed)
         succeed.count = uploadsucceed.count
         succeed.size = uploadsucceed.size
         sessionStorage.removeItem('uploadsucceed')
-    }, 1000);
+  
 })
 
 const returnIndex = () => {

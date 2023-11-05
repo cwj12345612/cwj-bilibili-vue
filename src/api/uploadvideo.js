@@ -184,7 +184,7 @@ export async function WirteSql() {
     // console.log(JSON.parse(sessionStorage.getItem('upvideolist'))?.md5)
     const md5 = JSON.parse(sessionStorage.getItem('upvideolist'))?.md5
 
-    axios.post('/api/uploadvideo/WirteSql?formmd5=' + md5)
+await    axios.post('/api/uploadvideo/WirteSql?formmd5=' + md5)
         .then(req => {
             sessionStorage.removeItem("videolist")
             sessionStorage.setItem('uploadsucceed', JSON.stringify({ size: req.data.size, count: req.data.count }))
