@@ -66,10 +66,11 @@ export async function uploadVideos(videos) {
     //   console.log(videolist)
     for (let video of videos) {
         await uploadvideo(video)
+        // console.log('上传完成'+video.FileName)
     }
 }
 export async function uploadvideo(video) {
-
+    // console.log(video.FileName)
     const fileChunks = []
     //每个分片文件大小
     const blockSize = 1024 * 1024
@@ -103,72 +104,78 @@ export async function uploadvideo(video) {
     let ii = 0
     const axioslist = []
     for (let chunk of fileChunks) {
-      
-        while(true){
-            // console.log(window.getschedulestatus())
-            if(window.getschedulestatus()){
-                
-                break
-            }
-        }
-        const form = new FormData()
-        chunk.chunks = fileChunks.length
-        form.append("file", chunk.file)
-        delete chunk.file
-        //   console.log(chunk)
-        let querystring = '?'
-        Object.keys(chunk).forEach(key => {
-            querystring += key + '=' + chunk[key]
-            querystring += "&"
-        })
 
-        axioslist.push(axios.post('/api/uploadvideo/Chunk' + querystring,
-            form,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+        let pro = new Promise((res) => {
+            let stt = setInterval(() => {
+                const status = window.getschedulestatus()
+                if (!status) {
+                    clearInterval(stt)
+                    res()
                 }
-            }
-        ).then(req => {
-            //修改视频上传进度
-                window.uploadchunk(chunk)
+            }, 100);
         })
-        )
+        await pro.then(() => {
+            const form = new FormData()
+            chunk.chunks = fileChunks.length
+            form.append("file", chunk.file)
+            delete chunk.file
+            //   console.log(chunk)
+            let querystring = '?'
+            Object.keys(chunk).forEach(key => {
+                querystring += key + '=' + chunk[key]
+                querystring += "&"
+            })
+
+            axioslist.push(
+                axios.post('/api/uploadvideo/Chunk' + querystring,
+                    form,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    }
+                ).then(req => {
+                    //修改视频上传进度
+                    window.uploadchunk(chunk)
+                })
+            )
+        })
 
 
 
 
     }
 
-    //  return   await axios.all(axioslist).then(async() => {
-    //   const du=  new Promise((resolve)=>{
-    //         const videoElement = document.createElement('video');
-    //         videoElement.src = URL.createObjectURL(video);
-    //         videoElement.addEventListener('loadedmetadata', function() {
-    //           resolve(
-    //            videoElement.duration,
-    //           );
-    //         });
-    //     })
-    //    const duration= parseInt(await du)
-    //         //每一集的全部分片上传成功后 发出合并请求
-    //         const mergeform = {
-    //             FileName: video.name,
-    //             VideoMd5:videoMd5,
-    //             size: parseInt(video.size /(1024*1024)),
-    //             duration:duration,
-    //             chunks: fileChunks.length,
-    //             Type:video.name.substring(video.name.lastIndexOf("."))
-    //         }       
-    //         // console.log(mergeform)
-    //       await  axios.post('/api/uploadvideo/mergeform?formMd5='+JSON.parse(sessionStorage.getItem('upvideolist'))?.md5,   
-    //         mergeform,
-    //         ).then(req=>{  
+    return await axios.all(axioslist).then(async () => {
+        const du = new Promise((resolve) => {
+            const videoElement = document.createElement('video');
+            videoElement.src = URL.createObjectURL(video);
+            videoElement.addEventListener('loadedmetadata', function () {
+                resolve(
+                    videoElement.duration,
+                );
+            });
+        })
+        const duration = parseInt(await du)
+        //每一集的全部分片上传成功后 发出合并请求
+        const mergeform = {
+            FileName: video.name,
+            VideoMd5: videoMd5,
+            size: parseInt(video.size / (1024 * 1024)),
+            duration: duration,
+            chunks: fileChunks.length,
+            Type: video.name.substring(video.name.lastIndexOf("."))
+        }
+        // console.log(mergeform)
+        await axios.post('/api/uploadvideo/mergeform?formMd5=' + JSON.parse(sessionStorage.getItem('upvideolist'))?.md5,
+            mergeform,
+        )
+        // .then(req=>{  
 
-    //             // console.log('成功上传'+video.name)
-    //         //    console.log(req.data)
-    //         })
-    //     })
+        //     // console.log('成功上传'+video.name)
+        // //    console.log(req.data)
+        // })
+    })
 }
 //#endregion
 //#region 写入数据库
@@ -181,7 +188,6 @@ export async function WirteSql() {
         .then(req => {
             sessionStorage.removeItem("videolist")
             sessionStorage.setItem('uploadsucceed', JSON.stringify({ size: req.data.size, count: req.data.count }))
-
         })
 }
 //#endregion

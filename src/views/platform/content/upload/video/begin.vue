@@ -154,7 +154,7 @@
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, defineEmits } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
-import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos } from '@/api/uploadvideo'
+import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos,WirteSql } from '@/api/uploadvideo'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 
@@ -281,25 +281,32 @@ const clicksu = (sid) => {
 //#region  上传表单 封面 视频文件
 const isloading = ref(false)
 const submit = () => {
-    // if (upfile.videos.length == 0 || upfile.cover == null) {
-    //     const aa = errormsg()
-    //     return
-    // }
+    if (upfile.videos.length == 0 || upfile.cover == null) {
+        errormsg()
+        return
+    }
     if (form.type != 'zhuanzai') { delete form.zhuanzai }
     // console.log(form)
-    // uploadFrom(form).then(
-    //     ()=>{
-    //            uploadCover(upfile.cover,form).then(
-    //             ()=>{
-    //                 emit('changestatus','ing')
-    //                 // uploadVideos(upfile.videos)
-    //            })
+    uploadFrom(form).then(
+        ()=>{
+               uploadCover(upfile.cover,form).then(
+                ()=>{
+                    emit('changestatus','ing')
+                    uploadVideos(upfile.videos)
+                    .then(()=>{
+                        WirteSql().then(()=>{
+                            window.uploadover('succeed')
+                        })
+                        //已经销毁 所以不能使用
+                        // emit('changestatus','succeed')
+                    })
+               })
 
-    //     }
+        }
 
-    //     )
-    emit('changestatus', 'ing')
-    uploadVideos(upfile.videos)
+        )
+    // emit('changestatus', 'ing')
+    // uploadVideos(upfile.videos)
 }
 
 const errormsg = () => {

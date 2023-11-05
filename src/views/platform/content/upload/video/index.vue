@@ -1,5 +1,6 @@
 <template>
     <uploadvideo_no :config="config" @addvideos="addvideos" v-if="status == 'no'"></uploadvideo_no>
+    <!-- 此组件不能被销毁 销毁会存在问题 -->
     <uploadvideo_begin :config="config" :upfile="upfile" @addvideos="addvideos" @delvideo="delvideo"
         @changeCover="changeCover" @clearupfile="clearupfile" @changestatus="changestatus" v-if="status == 'begin'">
     </uploadvideo_begin>
@@ -40,10 +41,11 @@ const upfile = reactive({
 //#endregion
 
 //视频上传状态
-const status = ref('begin')
+const status = ref('no')
 //#region  修改status的值
 const changestatus = (st) => {
-    status.value = 'ing'
+    // console.log('修改值'+st)
+    status.value = st
 }
 //#endregion
 
@@ -69,12 +71,17 @@ watch(() => upfile.videos.length, () => {
         }
     }
     // console.log(schedule.videolist)
-},{immediate:true})
+}, { immediate: true })
+watch(() => schedule.isover, () => {
+    if (schedule.isover == 'succeed') {
+        status.value = 'succeed'
+    }
+})
 //获取上传进度
 const getschedule = () => {
     return schedule
 }
-const getschedulestatus=()=>{
+const getschedulestatus = () => {
     return schedule.issuspend
 }
 const getschedulebyvideo = (videoname) => {
@@ -84,13 +91,18 @@ const getschedulebyvideo = (videoname) => {
 const uploadchunk = (chunk) => {
     schedule.videolist[chunk.FileName].nowsize += 1
 }
-const uploadsuspend = (video, chunk) => {
+const uploadsuspend = () => {
     //暂停上传
+    // console.log('暂停上传')
     schedule.issuspend = true
 }
 const uploadrecover = () => {
     //恢复上传
+    // console.log('恢复上传')
     schedule.issuspend = false
+}
+const uploadover = (st) => {
+    schedule.isover = st
 }
 onMounted(() => {
     //全部挂在window上
@@ -99,7 +111,8 @@ onMounted(() => {
     window.uploadchunk = uploadchunk
     window.uploadsuspend = uploadsuspend
     window.uploadrecover = uploadrecover
-    window.getschedulestatus=getschedulestatus
+    window.getschedulestatus = getschedulestatus
+    window.uploadover = uploadover
 })
 //#endregion
 

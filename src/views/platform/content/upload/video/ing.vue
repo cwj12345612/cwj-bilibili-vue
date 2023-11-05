@@ -1,7 +1,5 @@
 <template>
-    <el-button 
-    @click.prevent="channge"
-    :type="status?'warning':'success'">{{ status?'暂停上传' :'恢复上传'}}</el-button>
+    <el-button  @click.prevent="channge" :type="status ? 'success' : 'warning'">{{ status ? '恢复上传' : '暂停上传' }}</el-button>
     <ul class="videos ing">
         <li v-for="video in videolist">
             <div class="icon">
@@ -11,10 +9,9 @@
                 <div class="title">
                     <div style="display: flex;align-items: flex-end;">
                         <h4>
-                        
+
                             {{ video.name.length <= 30 ? video.name.substring(0, video.name.lastIndexOf('.')) :
-                                video.name.substring(0, 30) + '...' }} 
-                                </h4>
+                                video.name.substring(0, 30) + '...' }} </h4>
                                 <span style="font-size: 13px; color: #99a299;flex-shrink: 0;margin-left: 10px;">类型:
                                     {{ video.name.substring(video.name.lastIndexOf('.') + 1) }}
                                 </span>
@@ -30,12 +27,9 @@
                 </div>
                 <el-progress :percentage="video.nowsize >= video.size ? 100 :
                     Number((video.nowsize / video.size * 100).toFixed(1))
-                    " :stroke-width="13"
-                     :status="video.nowsize >= video.size ? 'success' :
+                    " :stroke-width="13" :status="video.nowsize >= video.size ? 'success' :
         schedule.issuspend ? 'warning' : null
-        " 
-        striped 
-        :duration="10" />
+        " striped :duration="10" />
             </div>
         </li>
 
@@ -62,13 +56,13 @@ const { schedule } = defineProps({
 })
 const videolist = computed(() => {
     const list = []
-    console.log(schedule.videolist)
-  
-const videos=schedule.videolist
+    // console.log(schedule.videolist)
 
-for(let vv of Object.keys(videos)){
-  list.push(videos[vv])
-}
+    const videos = schedule.videolist
+
+    for (let vv of Object.keys(videos)) {
+        list.push(videos[vv])
+    }
     return list
 })
 
@@ -83,15 +77,15 @@ const mock = (str) => { return Mock.mock(str) }
 //#endregion
 //#region 暂停上传 恢复上传
 //是否正在上传
-const status=ref(false)
+const status = ref(false)
 const channge = () => {
-    console.log(status.value)
-  status.value=!status.value
-  if(status){
-    window.uploadrecover()
-  }else{
-    window.uploadsuspend()
-  }
+    console.log(window.getschedulestatus())
+    status.value = !status.value
+    if (!status.value) {
+        window.uploadrecover()
+    } else {
+        window.uploadsuspend()
+    }
 }
 
 //#endregion

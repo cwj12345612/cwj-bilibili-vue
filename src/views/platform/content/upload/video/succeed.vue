@@ -1,7 +1,5 @@
 <template>
-    <el-result icon="success" title="上传成功"
-    
-    :sub-title="`本次共上传14个视频,总计2000MB(待审核)`">
+    <el-result icon="success" title="上传成功" :sub-title="`本次共上传${succeed.count}个视频,总计${succeed.size}MB(待审核)`">
         <template #extra>
             <el-button type="primary" @click.prevent="returnIndex">点击返回主页</el-button>
         </template>
@@ -26,20 +24,26 @@ const router = useRouter()
 import axios from '@/utils/axios'
 
 // #endregion
-const succeed=reactive({
-    size:0,
-    count:0
+const succeed = reactive({
+    size: 0,
+    count: 0
 })
 // #region  发送请求 正常情况应该放入onMounted
-
+onMounted(() => {
+    setTimeout(() => {
+        const uploadsucceed = JSON.parse(sessionStorage.getItem('uploadsucceed'))
+        // console.log(uploadsucceed)
+        succeed.count = uploadsucceed.count
+        succeed.size = uploadsucceed.size
+        sessionStorage.removeItem('uploadsucceed')
+    }, 1000);
+})
 
 const returnIndex = () => {
-    setTimeout(() => {
-  
-    }, 1000);
+
     router.push("/")
 
- 
+
     // console.log('成功')
 }
 // #endregion
