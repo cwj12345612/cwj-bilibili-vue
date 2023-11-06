@@ -6,28 +6,44 @@
                 <span>投稿</span>
             </router-link>
         </li>
-        <li :class="li.show ? 'show' : undefined" class="item " v-for="li in list">
+        <el-menu router default-active="/platform/home" class="el-menu-vertical-demo" @open="handleOpen"
+            @close="handleClose">
 
 
-            <router-link :to="li.href" @click.prevent="show(li.id)">
-                <div class="li">
-                    <div>
-                        <i class="icon" :class="li.icon"></i>
+
+
+            <template v-for="li in list">
+                <template v-if="li.chidren && li.chidren.length > 0">
+                    <el-sub-menu :index="li.href">
+                        <template #title>
+                            <el-icon>
+                                <location />
+                            </el-icon>
+                            <span>{{ li.title }}</span>
+                        </template>
+                        <el-menu-item :index="lli.href" v-for="lli in li.chidren">
+
+                            <el-icon>
+                                <setting />
+                            </el-icon>
+                            <span>{{ lli.title }}</span>
+                        </el-menu-item>
+
+                    </el-sub-menu>
+                </template>
+                <template v-else>
+                    <el-menu-item :index="li.href">
+                        <el-icon>
+                            <setting />
+                        </el-icon>
                         <span>{{ li.title }}</span>
-                    </div>
-                    <i v-if="li.chidren" class="colourless xialada"></i>
-                </div>
-            </router-link>
-            <ul class="chidren">
-                <li v-for="cd in  li.chidren">
-                    <router-link :to="cd.href">
-                        {{ cd.title }}
-                    </router-link>
-                </li>
-            </ul>
+                    </el-menu-item>
+                </template>
+            </template>
 
 
-        </li>
+        </el-menu>
+
     </ul>
 </template>
 <script setup>
@@ -45,6 +61,19 @@ const router = useRouter()
 // #endregion
 
 // #region  模拟数据 mockjs
+import {
+    Document,
+    Menu as IconMenu,
+    Location,
+    Setting,
+} from '@element-plus/icons-vue'
+const handleOpen = (key, keyPath) => {
+    // console.log(key, keyPath)
+}
+const handleClose = (key, keyPath) => {
+    // console.log(key, keyPath)
+}
+
 import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
@@ -54,11 +83,11 @@ const list = reactive([
         id: 1, title: '首页', icon: 'colourless shouyeweixuanzhong', href: '/platform/home'
     },
     {
-        id: 2, title: '内容管理', icon: 'colourless guanlishipin', href: mock('/platform/upload-manager'), show: false,
+        id: 2, title: '内容管理', icon: 'colourless guanlishipin', href: '/platform/upload-manager', show: false,
         chidren: [
-            { id: mock('@id()'), title: '稿件管理', href: mock('/platform/upload-manager/article') },
-            { id: mock('@id()'), title: '申诉管理', href: mock('/platform/upload-manager/appeal') },
-            { id: mock('@id()'), title: '字幕管理', href: mock('/platform/upload-manager/audience-zimu') },
+            { id: mock('@id()'), title: '稿件管理', href: '/platform/upload-manager/article' },
+            { id: mock('@id()'), title: '申诉管理', href: '/platform/upload-manager/appeal' },
+            { id: mock('@id()'), title: '字幕管理', href: '/platform/upload-manager/audience-zimu' },
         ],
 
     },
@@ -66,10 +95,10 @@ const list = reactive([
         id: 3, title: '数据中心', icon: 'colourless _ico_backtokb', href: ('/platform/data-up'),
     },
     {
-        id: 4, title: '粉丝管理', icon: 'colourless wodeweixuanzhong', href: mock('/platform/fans'),
+        id: 4, title: '粉丝管理', icon: 'colourless wodeweixuanzhong', href: '/platform/fans',
     },
     {
-        id: 5, title: '互动管理', icon: 'colourless _ico_reply', href: mock('/platform/interact-manager'),
+        id: 5, title: '互动管理', icon: 'colourless _ico_reply', href: '/platform/interact-manager',
         chidren: [
             { id: mock('@id()'), title: '评论管理', href: '/platform/interact-manager/comment' },
             { id: mock('@id()'), title: '弹幕管理', href: '/platform/interact-manager/danmu' },
@@ -95,6 +124,7 @@ const show = (id) => {
     li.show = !li.show
     // li.show=true
 }
+
 </script>
 <style scoped>
 .navlist {

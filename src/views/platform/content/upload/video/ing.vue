@@ -98,12 +98,14 @@ const channge = () => {
 .videos {
     max-height: calc(60px * 10);
     overflow: auto;
+    flex-shrink: 0;
 }
 
 .videos li {
     border-bottom: 2px solid #e6e7e8;
     display: flex;
     width: 100%;
+    flex-shrink: 0;
     /* background-color: darkgoldenrod; */
     height: 60px;
     align-items: center;
