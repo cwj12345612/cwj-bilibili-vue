@@ -154,7 +154,7 @@
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, defineEmits } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
-import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos,WirteSql } from '@/api/uploadvideo'
+import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos, WirteSql } from '@/api/uploadvideo'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 
@@ -221,7 +221,6 @@ const changeCover = async (e) => {
 
 }
 //#endregion
-
 //#region 上传表单
 const form = reactive({
     title: mock("@cword(3,100)"), //标题
@@ -280,31 +279,39 @@ const clicksu = (sid) => {
 
 //#region  上传表单 封面 视频文件
 const isloading = ref(false)
-const submit = () => {
+const submit = async () => {
     if (upfile.videos.length == 0 || upfile.cover == null) {
         errormsg()
         return
     }
     if (form.type != 'zhuanzai') { delete form.zhuanzai }
     // console.log(form)
-    uploadFrom(form).then(
-        ()=>{
-               uploadCover(upfile.cover,form).then(
-                ()=>{
-                    emit('changestatus','ing')
+    const pro= uploadFrom(form).then(
+        () => {
+            uploadCover(upfile.cover, form).then(
+                () => {
+                    emit('changestatus', 'ing')
                     uploadVideos(upfile.videos)
-                    .then(()=>{
-                        WirteSql().then(()=>{
-                            window.uploadover('succeed')
+                        .then(() => {
+                            WirteSql().then(() => {
+                                window.uploadover('succeed')
+                            })
+                            //已经销毁 所以不能使用
+                            // emit('changestatus','succeed')
                         })
-                        //已经销毁 所以不能使用
-                        // emit('changestatus','succeed')
-                    })
-               })
+                })
 
         }
+    ).catch(e => {
+        // console.log(e)
+        const code = e.response.status
 
-        )
+        sessionStorage.setItem('errorcode', code)
+
+        //改变状态
+        window.uploadover('fail')
+    })
+   
     // emit('changestatus', 'ing')
     // uploadVideos(upfile.videos)
 }

@@ -6,7 +6,7 @@ import axios from "@/utils/axios";
  * @param {*} loginuser 
  */
 export async function login(loginuser) {
-  await axios.post('/api/user/login',
+   axios.post('/api/user/login',
     loginuser
   ).then(req => {
     const user = req.data
@@ -15,7 +15,7 @@ export async function login(loginuser) {
     useUserStore().login(user)
 
   }).catch(e => {
-    console.log(e);
+    // console.log(e);
     alert("用户名或密码错误")
   })
 

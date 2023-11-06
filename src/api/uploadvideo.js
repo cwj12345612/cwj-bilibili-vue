@@ -19,7 +19,7 @@ export async function uploadFrom(form) {
 
     form.md5 = md5(JSON.stringify(form))
     // console.log(form.md5)
-    await axios.post('/api/uploadvideo/UploadFrom',
+    return await axios.post('/api/uploadvideo/UploadFrom',
         form
     ).then(req => {
         // console.log(req.data)
@@ -43,7 +43,7 @@ export async function uploadCover(cover, form) {
     }
     const formData = new FormData();
     formData.append("cover", cover);
-    await axios.post('/api/uploadvideo/Cover/' + form.md5,
+    return await axios.post('/api/uploadvideo/Cover/' + form.md5,
         formData,
         {
             headers: {
@@ -82,8 +82,8 @@ export async function uploadvideo(video) {
     //每一集的每一分片的MD5都是相同的
     const videoMd5 = md5(JSON.parse(sessionStorage.getItem('upvideolist'))?.md5 + video.name + video.size)
     while (fileStreamPos < video.size) {
-        const chunk = {   
-           
+        const chunk = {
+
             start: fileStreamPos,
             end: endPos,
             PartNumber: i,
@@ -117,8 +117,8 @@ export async function uploadvideo(video) {
             let form = new FormData()
             chunk.chunks = fileChunks.length
             form.append("file", video.slice(chunk.start, chunk.end))
-           
-           
+
+
             //   console.log(chunk)
             let querystring = '?'
             Object.keys(chunk).forEach(key => {
@@ -135,7 +135,7 @@ export async function uploadvideo(video) {
                         }
                     }
                 ).then(req => {
-                    form=null;
+                    form = null;
                     //修改视频上传进度
                     window.uploadchunk(chunk)
                 })
@@ -185,7 +185,7 @@ export async function WirteSql() {
     // console.log(JSON.parse(sessionStorage.getItem('upvideolist'))?.md5)
     const md5 = JSON.parse(sessionStorage.getItem('upvideolist'))?.md5
 
-await    axios.post('/api/uploadvideo/WirteSql?formmd5=' + md5)
+    await axios.post('/api/uploadvideo/WirteSql?formmd5=' + md5)
         .then(req => {
             sessionStorage.removeItem("videolist")
             sessionStorage.setItem('uploadsucceed', JSON.stringify({ size: req.data.size, count: req.data.count }))

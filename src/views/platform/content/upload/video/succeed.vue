@@ -1,7 +1,7 @@
 <template>
     <el-result icon="success" title="上传成功" :sub-title="`本次共上传${succeed.count}个视频,总计${succeed.size}MB(待审核)`">
         <template #extra>
-            <el-button type="primary" @click.prevent="returnIndex">点击返回主页</el-button>
+            <el-button type="primary" @click.prevent=" router.push('/')">点击返回主页</el-button>
         </template>
     </el-result>
 </template>
@@ -39,13 +39,7 @@ onMounted(() => {
   
 })
 
-const returnIndex = () => {
 
-    router.push("/")
-
-
-    // console.log('成功')
-}
 // #endregion
 
 // #region  模拟数据 mockjs

@@ -1,6 +1,6 @@
 <template>
     <uploadvideo_no :config="config" @addvideos="addvideos" v-if="status == 'no'"></uploadvideo_no>
-    <!-- 此组件不能被销毁 销毁会存在问题 -->
+   
     <uploadvideo_begin :config="config" :upfile="upfile" @addvideos="addvideos" @delvideo="delvideo"
         @changeCover="changeCover" @clearupfile="clearupfile" @changestatus="changestatus" v-if="status == 'begin'">
     </uploadvideo_begin>
@@ -75,7 +75,10 @@ watch(() => upfile.videos.length, () => {
 watch(() => schedule.isover, () => {
     if (schedule.isover == 'succeed') {
         status.value = 'succeed'
+    }else if(schedule.isover=='fail'){
+        status.value='fail'
     }
+
 })
 //获取上传进度
 const getschedule = () => {

@@ -1,5 +1,13 @@
 <template>
-
+  <el-result
+        icon="error"
+        title="上传失败"
+        :sub-title="msg"
+      >
+        <template #extra>
+          <el-button type="primary" @click="router.push('/')">点击返回主页</el-button>
+        </template>
+      </el-result>
 </template>
 <script setup>
 // #region  引入组件
@@ -15,14 +23,16 @@ const router=useRouter()
 
 // #region 第三方库
 
-
-
 // #endregion
 
 // #region  发送请求 正常情况应该放入onMounted
-
+const msg=ref('出现异常')
     onMounted(() => {
-
+   const code= sessionStorage.getItem('errorcode')  
+   sessionStorage.removeItem('errorcode')  
+  
+    msg.value='出现异常 请联系开发者'
+  
 })
 
 // #endregion
