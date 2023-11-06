@@ -6,12 +6,8 @@
                 <span>投稿</span>
             </router-link>
         </li>
-        <el-menu router default-active="/platform/home" class="el-menu-vertical-demo" @open="handleOpen"
+        <el-menu router :default-active="route.fullPath" class="el-menu-vertical-demo" @open="handleOpen"
             @close="handleClose">
-
-
-
-
             <template v-for="li in list">
                 <template v-if="li.chidren && li.chidren.length > 0">
                     <el-sub-menu :index="li.href">
@@ -85,7 +81,7 @@ const list = reactive([
     {
         id: 2, title: '内容管理', icon: 'colourless guanlishipin', href: '/platform/upload-manager', show: false,
         chidren: [
-            { id: mock('@id()'), title: '稿件管理', href: '/platform/upload-manager/article' },
+            { id: mock('@id()'), title: '稿件管理', href: '/platform/upload-manager/article/video' },
             { id: mock('@id()'), title: '申诉管理', href: '/platform/upload-manager/appeal' },
             { id: mock('@id()'), title: '字幕管理', href: '/platform/upload-manager/audience-zimu' },
         ],
