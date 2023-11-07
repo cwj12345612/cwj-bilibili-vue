@@ -23,14 +23,19 @@
                 <div class="send">
                     <span class="zi">A</span>
                     <div class="input">
-                        <input :disabled="!userStore.isLogin" type="text"
+                        <input
+                        v-model="danmutext"
+                        :disabled="!userStore.isLogin" type="text"
                             :placeholder="userStore.isLogin ? '发个友善的弹幕见证当下' : '需要登录才能发送弹幕'">
                         <div class="liyi">
-                            弹幕礼仪
+                            <a href="https://www.bilibili.com/blackboard/help.html#/?qid=f80ff5461cc94a53a24fd1a42ce90fe0"
+                                target="_blank">
+                                弹幕礼仪
+                            </a>
                             <i class="colourless gengduo"></i>
                         </div>
                     </div>
-                    <button :disabled="!userStore.isLogin" class="submit" @click.prevent="change">
+                    <button :disabled="!userStore.isLogin" class="submit" @click.prevent="sendDanmu">
                         {{ userStore.isLogin ? '发送' : '请登录' }}
                     </button>
                 </div>
@@ -55,7 +60,7 @@ const pageconfigStore = usepageconfigStore()
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
-
+import { GetVideoPath,createVideoRedis } from '@/api/danmu'
 // #endregion
 
 // #region  模拟数据 mockjs
@@ -64,78 +69,49 @@ import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
 //#endregion
-let player = null
-onMounted(() => {
-    //#region 
-    let comments = []
- 
-    // console.log(comments.length)
-    // comments.forEach(c=>{
-    //     console.log(c)
-    // })
-    //#endregion
-    player = new Player({
-        id: 'playpage_bofanqi',
-        height: '100%',
-        width: '100%',
-        plugins: [Danmu],
-        url: 'http://s2.pstatp.com/cdn/expire-1-M/byted-player-videos/1.0.0/xgplayer-demo.mp4',
 
-        danmu: {
-
-            comments
-        },
-        pip: true,
-        mini: true,
-        screenShot: true
-    })
+let play = reactive({
+    player: null,
+    lineusercount: 0,
 
 })
-const change = () => {
+onMounted( async()=>{
+    await  GetVideoPath(route.params.id, route.query.index ?? 1)
+        .then(video => {
+            //   console.log(doc)
+            play.player = new Player({
+                id: 'playpage_bofanqi',
+                height: '100%',
+                width: '100%',
+                plugins: [Danmu],
+                url: video.path,
+                pip: true,
+                mini: true,
+                screenShot: true
+            })
+            delete video.path
+            for (let key of Object.keys(video)) {
+                play[key] = video[key]
+            }
+        })
+        console.log(play)
+      await  createVideoRedis(play.id)
+})
+const danmutext=ref('')
+const sendDanmu = () => {
     // console.log('发送弹幕')
-    console.log(player)
-    player.config.url=''
-    let index = parseInt((Math.random() * 10))
-    index = index < 4 ? index : 3;
- 
-    player.plugins.danmu.sendComment(
-        {
-            duration: parseInt(mock({ 'num|5000-30000': 30000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
-            id: mock('@word(10)'),               //弹幕id，需唯一
-            // start: parseInt(mock({ 'num|300-70000': 700000 }).num),           //弹幕出现时间, 单位：ms 毫秒
-            prior: true,          //该条弹幕优先显示，默认false
-            color: true,          //该条弹幕为彩色弹幕，默认false
-            txt: mock('@cword(5,10)'),              //弹幕文字内容
-            style: {                 //弹幕自定义样式
-                color: mock('@color()'),         //例：'#ff9500',
-                fontSize: mock({ 'num|15-27': 27 }).num + 'px',      // 例：'20px',
-                padding: '2px 11px'        //例： 2px 11px',
-            },
-            // mode: 'top',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
-        }
-    );
+if(danmutext.value!='') console.log(danmutext.value)
+const obj={
+   currentTime: play.player.currentTime,
+   buffered:play.player.buffered,
+   cumulateTime:play.player.cumulateTime,
 }
-watch(()=>route.params,()=>{
-   const id= route.params.id
-//    console.log(id)
-      let comments = []
-  
-   player = new Player({
-        id: 'playpage_bofanqi',
-        height: '100%',
-        width: '100%',
-        plugins: [Danmu],
-        url: 'http://s2.pstatp.com/cdn/expire-1-M/byted-player-videos/1.0.0/xgplayer-demo.mp4',
+console.log(obj)
+}
 
-        danmu: {
-
-            comments
-        },
-        pip: true,
-        mini: true,
-        screenShot: true
-    })
-},{deep:true})
+watch(() => route.params,async () => {
+    //    console.log(route.params.id+'#'+route.query.index)
+})
 </script>
 <style scoped>
 @import 'xgplayer/dist/index.min.css';
@@ -258,7 +234,7 @@ watch(()=>route.params,()=>{
 
 }
 
-.input .liyi:hover {
+.input .liyi:hover> {
     color: #00aeec;
 }
 
