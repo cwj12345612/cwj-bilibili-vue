@@ -260,7 +260,7 @@ const main = [
                 component: () => import('@/views/index/searchpage')
             },
             {
-                path: 'play/:id?',
+                path: 'play/:id',
                 name: 'playpage',
                 component: () => import('@/views/index/playpage')
             },

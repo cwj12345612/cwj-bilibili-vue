@@ -147,7 +147,7 @@ const config = reactive({
     cover: {
         //图片大小不能超过50Mb
         size: 50,
-        types: ['.png', '.jpeg', '.jpg'],
+        types: ['.png', '.jpeg', '.jpg','.webp'],
         //正则表达式校验图片名
         namereg: new RegExp('[\\\\/:*?\"<>|]')
     },

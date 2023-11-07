@@ -68,25 +68,7 @@ let player = null
 onMounted(() => {
     //#region 
     let comments = []
-    for (let i = 0; i < 30000; i++) {
-        comments.push(
-            {
-                duration: parseInt(mock({ 'num|5000-30000': 30000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
-                id: mock('@word(10)'),               //弹幕id，需唯一
-                start: parseInt(mock({ 'num|300-70000': 700000 }).num),           //弹幕出现时间, 单位：ms 毫秒
-                // prior: true,          //该条弹幕优先显示，默认false
-                // color: true,          //该条弹幕为彩色弹幕，默认false
-                txt: mock('@cword(5,10)'),              //弹幕文字内容
-                style: {                 //弹幕自定义样式
-                    color: mock('@color()'),         //例：'#ff9500',
-                    fontSize: mock({ 'num|15-27': 27 }).num + 'px',      // 例：'20px',
-                    padding: '2px 11px'        //例： 2px 11px',
-                },
-                // mode: 'top',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
-
-            }
-        )
-    }
+ 
     // console.log(comments.length)
     // comments.forEach(c=>{
     //     console.log(c)
@@ -137,25 +119,7 @@ watch(()=>route.params,()=>{
    const id= route.params.id
    console.log(id)
       let comments = []
-    for (let i = 0; i < 30000; i++) {
-        comments.push(
-            {
-                duration: parseInt(mock({ 'num|5000-30000': 30000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
-                id: mock('@word(10)'),               //弹幕id，需唯一
-                start: parseInt(mock({ 'num|300-70000': 700000 }).num),           //弹幕出现时间, 单位：ms 毫秒
-                // prior: true,          //该条弹幕优先显示，默认false
-                // color: true,          //该条弹幕为彩色弹幕，默认false
-                txt: mock('@cword(5,10)'),              //弹幕文字内容
-                style: {                 //弹幕自定义样式
-                    color: mock('@color()'),         //例：'#ff9500',
-                    fontSize: mock({ 'num|15-27': 27 }).num + 'px',      // 例：'20px',
-                    padding: '2px 11px'        //例： 2px 11px',
-                },
-                // mode: 'top',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
-
-            }
-        )
-    }
+  
    player = new Player({
         id: 'playpage_bofanqi',
         height: '100%',

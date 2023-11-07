@@ -139,7 +139,7 @@
                     </div>
                 </li>
                 <div class="submit">
-                    <input type="button" :disabled="isloading" @click.prevent="submit" value="立即投稿">
+                    <input type="button" :disabled="isdis" @click.prevent="submit" value="立即投稿">
                 </div>
             </ul>
         </div>
@@ -278,10 +278,14 @@ const clicksu = (sid) => {
 //#endregion
 
 //#region  上传表单 封面 视频文件
-const isloading = ref(false)
+
+//禁用按钮
+const isdis = ref(false)
 const submit = async () => {
+    isdis.value=true
     if (upfile.videos.length == 0 || upfile.cover == null) {
         errormsg()
+        isdis.value=false
         return
     }
     if (form.type != 'zhuanzai') { delete form.zhuanzai }
@@ -291,6 +295,7 @@ const submit = async () => {
             uploadCover(upfile.cover, form).then(
                 () => {
                     emit('changestatus', 'ing')
+                    isdis.value=false
                     uploadVideos(upfile.videos)
                         .then(() => {
                             WirteSql().then(() => {

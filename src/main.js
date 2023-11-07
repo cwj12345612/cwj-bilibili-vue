@@ -17,6 +17,7 @@ const app=createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }
+  // import VueLazyComponent from 'xunlei/vue-lazy-component'
 app.use(createPinia())
     .use(router)
     .use(ElementPlus)

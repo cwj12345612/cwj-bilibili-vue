@@ -1,8 +1,12 @@
 <template>
     <ul class="leftmain_tags sq">
-        <li v-for="index in mock({ 'num|20': 7 }).num" class="tag">
-            <i class="colourless fenquxuanzhong"></i>
-            <span>{{ mock('@cword(3,7)') }}</span>
+        <li v-for="tag in tags" class="tag">
+            <router-link rel="opener" :to="tag.route" target="_blank">
+                <i :class="!tag.type ? null :
+                    tag.type != 'channel' ? null :
+                        'colourless fenquxuanzhong'"></i>
+                <span>{{ tag.name }}</span>
+            </router-link>
         </li>
         <li class="more" @click="changeHeight">
             <i class="colourless xialaxiao"></i>
@@ -22,6 +26,9 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
+import { GetVideolistTagsType } from '@/api/views/playpage'
+
+
 // #endregion
 
 // #region  模拟数据 mockjs
@@ -43,6 +50,55 @@ const changeHeight = (e) => {
         ul.classList.remove('zk')
     }
 }
+//#region  tags
+const tags = reactive([
+    // {
+    //     name:'游戏',
+    //     // 频道 分区 类别 普通(null)
+    //     type:null,
+    //     route:'/search?text='+'游戏',
+    // },
+])
+const props = defineProps({
+    channels: String
+})
+watch(() => props.channels, () => {
+    tags.length = 0
+    const cha = props.channels.split('#')
+
+    if (cha == null || cha.length == 0) {
+
+        return
+    }
+    let cs = cha.filter(name => name != '')
+    //模拟数据用
+    //    cs=['王者荣耀','英雄联盟','我的世界','游戏集锦','玩游戏']
+    //
+    cs.forEach(name => {
+        tags.push({
+            name: name,
+            route: '/search?text=' + name,
+        })
+    });
+    //获取标签
+    GetVideolistTagsType(route.params.id, cs)
+        .then(list => {
+            list.reverse()
+            list.forEach(li => {
+                const name = li.name
+                const tag = tags.find(t => t.name == name)
+                if (tag) {
+                    tag.route = li.route
+                    tag.type = li.type
+                } else {
+                    tags.unshift(li)
+                }
+            })
+
+        })
+})
+
+//#endregion
 </script>
 <style scoped>
 .leftmain_tags {
@@ -93,4 +149,5 @@ li.more {
     width: 30px;
     border-radius: 50%;
 
-}</style>
+}
+</style>

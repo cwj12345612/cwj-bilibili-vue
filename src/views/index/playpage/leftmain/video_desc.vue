@@ -4,7 +4,7 @@
  id="content"
  :class="!isshow ? 'sl':undefined"
  >
-    {{ mock('@cword(300)') }}
+    {{props.synopsis}}
 </div>
 <button class="more" @click="isshow=!isshow">{{ isshow? '收起简介':'展开简介' }}</button>
     </div>
@@ -21,6 +21,9 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
+
+
+
 // #endregion
 
 // #region  模拟数据 mockjs
@@ -33,7 +36,16 @@ const mock = (str) => {
 
 //#endregion
 const isshow=ref(false)
+//#region 数据
 
+const props=defineProps({
+    synopsis:String
+})
+onMounted(()=>{
+    
+})
+
+//#endregion
 
 
 </script>

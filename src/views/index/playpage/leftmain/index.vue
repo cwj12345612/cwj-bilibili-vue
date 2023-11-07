@@ -1,3 +1,41 @@
+<template>
+    <div class="playpage_leftmain">
+        <div class="title">
+            <h1>
+                {{ videolist.title }}
+            </h1>
+            <div class="detail">
+                <span>
+                    <i class="colourless bofangshu"></i>
+                    {{ dataUtils.toWan(videolist.wacthCount) }}
+                </span>
+                <span>
+                    <i class="colourless danmushu"></i>
+                    {{ dataUtils.toWan(videolist.danmuCount) }}
+                </span>
+
+                <span>{{ videolist.uptime }}</span>
+
+                <span v-if="videolist.type == 0">
+                    <i class="colourless guanbi" style="color: rgb(253, 103, 111);"></i>
+                    未经作者授权，禁止转载
+                </span>
+                <el-popover v-else title="转载来源" :width="200" trigger="hover" :content="videolist.zhuanzai">
+                    <template #reference>
+                        <span class="m-2">转载</span>
+                    </template>
+                </el-popover>
+            </div>
+        </div>
+
+        <left_main_playwarp></left_main_playwarp>
+        <left_main_toolbar></left_main_toolbar>
+        <leftmain_videodesc :synopsis="videolist.synopsis"></leftmain_videodesc>
+        <leftmain_tags :channels="videolist.tags"></leftmain_tags>
+        <leftmain_comment></leftmain_comment>
+    </div>
+</template>
+
 <script setup>
 // #region  引入组件
 import left_main_playwarp from './playwarp.vue'
@@ -6,7 +44,6 @@ import leftmain_videodesc from './video_desc.vue'
 import leftmain_tags from './tags.vue'
 import leftmain_comment from './comment'
 //  #endregion
-
 // #region 引入vue pinia 路由
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, } from 'vue'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
@@ -14,6 +51,9 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
+
+import { GetvideoListTileAndData } from '@/api/views/playpage'
+import dataUtils from '@/utils/dataUtils.js'
 // #endregion
 
 // #region  模拟数据 mockjs
@@ -23,40 +63,17 @@ import Mock from 'mockjs'
 const mock = (str) => { return Mock.mock(str) }
 
 //#endregion
-
+const videolist = reactive({})
+onMounted(() => {
+    const id = route.params.id
+    GetvideoListTileAndData(id)
+        .then(videos => {
+            for (let key of Object.keys(videos)) {
+                videolist[key] = videos[key]
+            }
+        })
+})
 </script>
-<template>
-    <div class="playpage_leftmain">
-        <div class="title">
-            <h1>
-                {{ mock('@cword(5,100)') }}
-            </h1>
-            <div class="detail">
-                <span>
-                    <i class="colourless bofangshu"></i>
-                    {{ mock({ 'num|4-100': 100 }).num + '万' }}
-                </span>
-                <span>
-                    <i class="colourless danmushu"></i>
-                    {{ mock({ 'num|4-100': 100 }).num + '万' }}
-                </span>
-
-                <span>{{ mock('@datetime("yyyy-MM-dd HH:mm:ss")') }}</span>
-
-                <span>
-                    <i class="colourless guanbi" style="color: rgb(253, 103, 111);"></i>
-                    未经作者授权，禁止转载
-                </span>
-            </div>
-        </div>
-
-        <left_main_playwarp></left_main_playwarp>
-        <left_main_toolbar></left_main_toolbar>
-        <leftmain_videodesc></leftmain_videodesc>
-        <leftmain_tags></leftmain_tags>
-        <leftmain_comment></leftmain_comment>
-    </div>
-</template>
 
 <style scoped>
 .playpage_leftmain {
@@ -91,7 +108,7 @@ const mock = (str) => { return Mock.mock(str) }
 .playpage_leftmain .title h1 {
     font-size: 16px;
     font-weight: normal;
-  
+
     color: #18191c;
     font-size: 20px;
     display: flex;
@@ -104,8 +121,8 @@ const mock = (str) => { return Mock.mock(str) }
     font-size: 13px;
     color: #9499a0;
 
-   /* background-color: aqua; */
-  
+    /* background-color: aqua; */
+
     display: flex;
     align-items: center;
 

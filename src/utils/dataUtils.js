@@ -21,7 +21,7 @@ export default    {
 
         if(count<=10*10*10*10) return count
         if(count<1000*10000) {
-           return Number(count.toFixed(2))+'万'
+           return Number((count /(10*10*10*10)).toFixed(2))+'万'
         }
         return ''
     }

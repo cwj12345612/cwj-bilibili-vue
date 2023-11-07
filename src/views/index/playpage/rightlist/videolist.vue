@@ -3,7 +3,7 @@
         <div class="header">
             <div class="videos">
                 <span>视频选集</span>
-                <span>(23/33)</span>
+                <span>({{ videos.find(v => v.index == nowplayvideoindex)?.index + '/' + videos.length }})</span>
 
             </div>
             <div class="playauto">
@@ -13,11 +13,11 @@
 
         </div>
         <ul class="list">
-            <li v-for="(li, index) in list">
-                <router-link :to="li.href">
-                    <span class="index">P{{ li.index }}</span>
-                    <span class="title">{{ li.title }}</span>
-                    <span class="duration">{{ li.duration }}</span>
+            <li :title="video.title" v-for="(video, index) in videos">
+                <router-link :class="nowplayvideoindex == video.index ? 'now' : undefined" :to="video.href">
+                    <span class="index">P{{ video.index }}</span>
+                    <span class="title">{{ video.title }}</span>
+                    <span class="duration">{{ (parseInt(video.duration / 60) !=0 ?(parseInt(video.duration / 60) + ':'): null) + parseInt(video.duration % 60) }}</span>
                 </router-link>
             </li>
         </ul>
@@ -35,37 +35,38 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
+
+import { GetVideosByVideolistId } from '@/api/views/playpage'
+
 // #endregion
 
 // #region  模拟数据 mockjs
 const value3 = ref(true)
 import Mock from 'mockjs'
-
 const mock = (str) => { return Mock.mock(str) }
-const list = reactive([])
-//#endregion
+//#region  向后台获取视频分集
+const videos = reactive([])
 onMounted(() => {
-    const id = route.params.id
-    console.log(id)
-    list.length = 0;
-    list.push({
-        id: mock('@id'),
-        index: 1,
-        title: mock('@cword(4,50)'),
-        duration: parseInt(mock('@integer(3,30)')) + ':' + parseInt(mock('@integer(1,59)')),
-        href: `/play/${id}`
-    })
-    for (let i = 1; i < parseInt(mock('@integer(2,30)')); i++) {
-        const video = {
-            id: mock('@id'),
-            index: i + 1,
-            title: mock('@cword(4,50)'),
-            duration: parseInt(mock('@integer(3,30)')) + ':' + parseInt(mock('@integer(1,59)')),
-            href: `/play/${mock('@id()')}`
-        }
-        list.push(video);
-    }
+
+    GetVideosByVideolistId(route.params.id)
+        .then(list => {
+            // console.log(list)
+            list.forEach(li => {
+                videos.push(li)
+            });
+        })
 })
+//#endregion
+//#region  视频分集
+const nowplayvideoindex = computed(() => {
+    const index = route.query.index
+    return index ?? 1
+})
+
+//#endregion
+//#region 切换分集
+
+//#endregion
 </script>
 <style scoped lang="less">
 .rightlist_videolist {
@@ -155,7 +156,7 @@ onMounted(() => {
     display: grid;
     grid-template-columns: 0.6fr 4fr 1fr;
 
-    &.router-link-exact-active {
+    &.now {
         color: #0aaee0;
     }
 }
