@@ -117,7 +117,7 @@ const change = () => {
 }
 watch(()=>route.params,()=>{
    const id= route.params.id
-   console.log(id)
+//    console.log(id)
       let comments = []
   
    player = new Player({

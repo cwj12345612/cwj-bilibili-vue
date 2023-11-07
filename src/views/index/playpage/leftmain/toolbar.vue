@@ -1,21 +1,21 @@
 <template>
     <div class="toolbar">
         <ul class="sanlian">
-            <li class="yes">
+            <li :class="status.zan?'yes':undefined">
                 <i class="colourless zan"></i>
-                <span>{{ mock({ 'num|10-33': 33 }).num + '万' }}</span>
+                <span>{{ dataUtils.toWan(toolbar.zanSize) }}</span>
             </li>
-            <li class="yes">
+            <li :class="status.bi? 'yes':undefined">
                 <i class="colourless Bbi"></i>
-                <span>{{ mock({ 'num|10-33': 33 }).num + '万' }}</span>
+                <span>{{ dataUtils.toWan(toolbar.toubiCount) }}</span>
             </li>
-            <li>
+            <li :class="status.fav? 'yes':undefined">
                 <i class="colourless shoucang"></i>
-                <span>{{ mock({ 'num|10-33': 33 }).num + '万' }}</span>
+                <span>{{ dataUtils.toWan(toolbar.favCount) }}</span>
             </li>
             <li>
                 <i class="colourless fenxiang"></i>
-                <span>{{ mock({ 'num|10-33': 33 }).num + '万' }}</span>
+
             </li>
 
         </ul>
@@ -50,14 +50,40 @@ import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
 const router = useRouter()
+import { GetToolbar } from '@/api/views/playpage'
+import dataUtils from '@/utils/dataUtils';
 // #endregion
 
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
 
+
 const mock = (str) => { return Mock.mock(str) }
 
+//#endregion
+
+//#region 点赞数 投币数 收藏数
+const toolbar = reactive({})
+watch(() => route.params, () => {
+    // console.log(route.params.id,route.query.index)
+    if (!route.params.id) return
+    GetToolbar(route.params.id, route.query.index ?? 1)
+        .then(li => {
+            // console.log(li)
+            for (let key of Object.keys(li)) {
+                toolbar[key] = li[key]
+            }
+        })
+}, { immediate: true })
+//#endregion
+
+//#region  查询该用户是否投币点赞收藏
+const status=reactive({
+    zan:true,
+    fav:false,
+    bi:false
+})
 //#endregion
 
 </script>
