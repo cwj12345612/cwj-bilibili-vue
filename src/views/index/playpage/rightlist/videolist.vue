@@ -1,5 +1,7 @@
 <template>
-    <div class="rightlist_videolist">
+    <div 
+    v-if="videos.length>1"
+    class="rightlist_videolist">
         <div class="header">
             <div class="videos">
                 <span>视频选集</span>
@@ -47,13 +49,14 @@ const mock = (str) => { return Mock.mock(str) }
 //#region  向后台获取视频分集
 const videos = reactive([])
 onMounted(() => {
-
     GetVideosByVideolistId(route.params.id)
         .then(list => {
             // console.log(list)
+          list.sort((a,b)=>a.index-b.index)
             list.forEach(li => {
                 videos.push(li)
             });
+            
         })
 })
 //#endregion

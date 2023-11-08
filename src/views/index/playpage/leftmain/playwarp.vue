@@ -54,7 +54,7 @@ import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmou
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
 import { useUserStore } from '@/pinia/userStore.js'
 import { useRoute, useRouter } from 'vue-router'
-import Player from 'xgplayer';
+import Player,{Events} from 'xgplayer';
 import Danmu from 'xgplayer/es/plugins/danmu'
 const pageconfigStore = usepageconfigStore()
 const userStore = useUserStore()
@@ -69,15 +69,37 @@ import Mock from 'mockjs'
 
 const mock = (str) => { return Mock.mock(str) }
 //#endregion
-
-let play = reactive({
+//#region  数据
+const play = reactive({
     player: null,
+    //正在播放的分集的信息
+   meta:{
     lineusercount: 0,
-
+   },
+   //本视频相关弹幕
+   danmu:{
+    Interval:null
+   }
 })
+//#endregion
+//#region  视频播放
+//播放下一集
+const onplaynext=()=>{
+  const index= parseInt(route.query.index ?? 1)+1
+  if(!play.videolist.find(v=>v.index==index)){
+    // alert('已经是最后一集')
+    router.push('/play/'+route.params.id)
+    return
+  }
+router.push(`/play/${route.params.id}?index=${index}`)
+}
 onMounted( async()=>{
     await  GetVideoPath(route.params.id, route.query.index ?? 1)
-        .then(video => {
+        .then(videolist => {
+           const video= videolist.find(v=>v.index==(route.query.index ??1))
+           
+          const sortvideolist=videolist.length>1? videolist.sort((a,b)=> a.index-b.index) :[video]         
+        //   console.log(sortvideolist)
             //   console.log(doc)
             play.player = new Player({
                 id: 'playpage_bofanqi',
@@ -86,17 +108,50 @@ onMounted( async()=>{
                 plugins: [Danmu],
                 url: video.path,
                 pip: true,
+                playnext:{
+                  urlList:[video.path]
+                },
                 mini: true,
-                screenShot: true
+                // screenShot: true
             })
-            delete video.path
             for (let key of Object.keys(video)) {
-                play[key] = video[key]
+                play.meta[key] = video[key]
             }
+            //播放列表
+            play.videolist=sortvideolist 
         })
-        console.log(play)
-      await  createVideoRedis(play.id)
+        // console.log(play)
+        play.player.on(Events.PLAYNEXT,onplaynext)
 })
+//#endregion
+//#region 切换分集
+watch(()=>route.query.index,()=>{
+    // console.log("w")
+    const index=route.query.index ?? 1
+   const video= play.videolist.find(v=>v.index==index)
+   if(!video){
+    alert(`分集${index}不存在`)
+    router.push(`/play/${route.params.id}`)
+    return
+   }
+
+   for(let key in Object.keys(video)){
+    play.meta[key]=video[key]
+   }
+   //观看人数重置为0
+   play.meta.lineusercount=0
+//切换视频源
+play.player.switchURL(video.path)
+
+})
+//#endregion
+//#region  弹幕相关
+  //给视频装上弹幕
+const createDanmu=()=>{
+  const vlid=route.params.id
+  const vid=play.meta.id
+  const index=play.meta.index
+}
 const danmutext=ref('')
 const sendDanmu = () => {
     // console.log('发送弹幕')
@@ -105,13 +160,13 @@ const obj={
    currentTime: play.player.currentTime,
    buffered:play.player.buffered,
    cumulateTime:play.player.cumulateTime,
+   currentSrc:play.player.currentSrc
 }
+console.log(play.player.plugins.playnext)
 console.log(obj)
 }
+//#endregion
 
-watch(() => route.params,async () => {
-    //    console.log(route.params.id+'#'+route.query.index)
-})
 </script>
 <style scoped>
 @import 'xgplayer/dist/index.min.css';

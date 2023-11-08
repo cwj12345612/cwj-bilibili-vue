@@ -65,17 +65,17 @@ const mock = (str) => { return Mock.mock(str) }
 
 //#region 点赞数 投币数 收藏数
 const toolbar = reactive({})
-watch(() => route.params, () => {
-    // console.log(route.params.id,route.query.index)
-    if (!route.params.id) return
-    GetToolbar(route.params.id, route.query.index ?? 1)
-        .then(li => {
-            // console.log(li)
-            for (let key of Object.keys(li)) {
-                toolbar[key] = li[key]
-            }
-        })
-}, { immediate: true })
+// watch(() => route.params, () => {
+//     // console.log(route.params.id,route.query.index)
+//     if (!route.params.id) return
+//     GetToolbar(route.params.id, route.query.index ?? 1)
+//         .then(li => {
+//             // console.log(li)
+//             for (let key of Object.keys(li)) {
+//                 toolbar[key] = li[key]
+//             }
+//         })
+// }, { immediate: true })
 //#endregion
 
 //#region  查询该用户是否投币点赞收藏

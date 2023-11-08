@@ -64,12 +64,15 @@ export async function uploadVideos(videos) {
         return
     }
     //   console.log(videolist)
-    for (let video of videos) {
-        await uploadvideo(video)
-        // console.log('上传完成'+video.FileName)
+    for (let index = 1; index <=videos.length; index++) {
+        await uploadvideo(videos[index-1],index)
+        
     }
+       
+         
+    
 }
-export async function uploadvideo(video) {
+export async function uploadvideo(video,index) {
     // console.log(video.FileName)
     const fileChunks = []
     //每个分片文件大小
@@ -160,6 +163,7 @@ export async function uploadvideo(video) {
         const duration = parseInt(await du)
         //每一集的全部分片上传成功后 发出合并请求
         const mergeform = {
+            index:index,
             FileName: video.name,
             VideoMd5: videoMd5,
             size: parseInt(video.size / (1024 * 1024)),

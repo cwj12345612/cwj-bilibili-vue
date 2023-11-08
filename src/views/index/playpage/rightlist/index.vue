@@ -5,7 +5,7 @@
 <rightlist_upZhu></rightlist_upZhu>
 <rightlist_danmulist></rightlist_danmulist>
 <rightlist_videolist></rightlist_videolist>
-<rightlist_recommend></rightlist_recommend>
+<!-- <rightlist_recommend></rightlist_recommend> -->
 </div>
 </template>
 <script setup>
