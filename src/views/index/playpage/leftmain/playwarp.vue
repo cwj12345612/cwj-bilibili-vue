@@ -23,9 +23,7 @@
                 <div class="send">
                     <span class="zi">A</span>
                     <div class="input">
-                        <input
-                        v-model="danmutext"
-                        :disabled="!userStore.isLogin" type="text"
+                        <input v-model="danmutext" :disabled="!userStore.isLogin" type="text"
                             :placeholder="userStore.isLogin ? '发个友善的弹幕见证当下' : '需要登录才能发送弹幕'">
                         <div class="liyi">
                             <a href="https://www.bilibili.com/blackboard/help.html#/?qid=f80ff5461cc94a53a24fd1a42ce90fe0"
@@ -54,13 +52,13 @@ import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmou
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
 import { useUserStore } from '@/pinia/userStore.js'
 import { useRoute, useRouter } from 'vue-router'
-import Player,{Events} from 'xgplayer';
+import Player, { Events } from 'xgplayer';
 import Danmu from 'xgplayer/es/plugins/danmu'
 const pageconfigStore = usepageconfigStore()
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
-import { GetVideoPath,createVideoRedis } from '@/api/danmu'
+import { GetVideoPath, createVideoRedis,GetDanmu } from '@/api/danmu'
 // #endregion
 
 // #region  模拟数据 mockjs
@@ -73,97 +71,130 @@ const mock = (str) => { return Mock.mock(str) }
 const play = reactive({
     player: null,
     //正在播放的分集的信息
-   meta:{
-    lineusercount: 0,
-   },
-   //本视频相关弹幕
-   danmu:{
-    Interval:null
-   }
+    meta: {
+        lineusercount: 0,
+    },
+    //本视频相关弹幕
+    danmu: {
+        Interval: null,
+           //向后台获取弹幕的时间间隔
+     Getsection:5000,
+     //每次获取弹幕的时间跨度
+     Danmusection:10000
+    }
 })
 //#endregion
 //#region  视频播放
 //播放下一集
-const onplaynext=()=>{
-  const index= parseInt(route.query.index ?? 1)+1
-  if(!play.videolist.find(v=>v.index==index)){
-    // alert('已经是最后一集')
-    router.push('/play/'+route.params.id)
-    return
-  }
-router.push(`/play/${route.params.id}?index=${index}`)
+const onplaynext = () => {
+    const index = parseInt(route.query.index ?? 1) + 1
+    if (!play.videolist.find(v => v.index == index)) {
+        // alert('已经是最后一集')
+        router.push('/play/' + route.params.id)
+        return
+    }
+    router.push(`/play/${route.params.id}?index=${index}`)
 }
-onMounted( async()=>{
-    await  GetVideoPath(route.params.id, route.query.index ?? 1)
+onMounted(async () => {
+   
+    await GetVideoPath(route.params.id, route.query.index ?? 1)
         .then(videolist => {
-           const video= videolist.find(v=>v.index==(route.query.index ??1))
-           
-          const sortvideolist=videolist.length>1? videolist.sort((a,b)=> a.index-b.index) :[video]         
-        //   console.log(sortvideolist)
+            const video = videolist.find(v => v.index == (route.query.index ?? 1))
+
+            const sortvideolist = videolist.length > 1 ? videolist.sort((a, b) => a.index - b.index) : [video]
+            //   console.log(sortvideolist)
             //   console.log(doc)
-            play.player = new Player({
-                id: 'playpage_bofanqi',
-                height: '100%',
-                width: '100%',
-                plugins: [Danmu],
-                url: video.path,
-                pip: true,
-                playnext:{
-                  urlList:[video.path]
-                },
-                mini: true,
-                // screenShot: true
+            //#region  初始化弹幕 测试
+            let comments = []
+        
+            comments=[]
+                //#endregion
+                play.player = new Player({
+                    danmu:{
+                        comments:comments
+                    },
+                    id: 'playpage_bofanqi',
+                    height: '100%',
+                    width: '100%',
+                    plugins: [Danmu],
+                    url: video.path,
+                    pip: true,
+                    playnext: {
+                        urlList: true
+                    },
+                    mini: true,
+                    // screenShot: true
+                })
+                for (let key of Object.keys(video)) {
+                    play.meta[key] = video[key]
+                }
+                //播放列表
+                play.videolist = sortvideolist
             })
-            for (let key of Object.keys(video)) {
-                play.meta[key] = video[key]
-            }
-            //播放列表
-            play.videolist=sortvideolist 
-        })
-        // console.log(play)
-        play.player.on(Events.PLAYNEXT,onplaynext)
+    console.log(play.meta)
+    play.player.on(Events.PLAYNEXT, onplaynext)
+
+    await createVideoRedis(play.meta.id)
+    createGetDanmu()
 })
 //#endregion
 //#region 切换分集
-watch(()=>route.query.index,()=>{
+watch(() => route.query.index, () => {
     // console.log("w")
-    const index=route.query.index ?? 1
-   const video= play.videolist.find(v=>v.index==index)
-   if(!video){
-    alert(`分集${index}不存在`)
-    router.push(`/play/${route.params.id}`)
-    return
-   }
+    const index = route.query.index ?? 1
+    const video = play.videolist.find(v => v.index == index)
+    if (!video) {
+        alert(`分集${index}不存在`)
+        router.push(`/play/${route.params.id}`)
+        return
+    }
 
-   for(let key in Object.keys(video)){
-    play.meta[key]=video[key]
-   }
-   //观看人数重置为0
-   play.meta.lineusercount=0
-//切换视频源
-play.player.switchURL(video.path)
-
+    for (let key of Object.keys(video)) {
+        play.meta[key] = video[key]
+    }
+    
+    //观看人数重置为0
+    play.meta.lineusercount = 0
+    //切换视频源
+    play.player.switchURL(video.path)
+    //清除弹幕池
+    play.player.plugins.danmu.clear()
+   clearInterval( play.danmu.Interval)
+   play.danmu.Interval=null
 })
 //#endregion
 //#region  弹幕相关
-  //给视频装上弹幕
-const createDanmu=()=>{
-  const vlid=route.params.id
-  const vid=play.meta.id
-  const index=play.meta.index
+//给视频装上弹幕
+const createGetDanmu = () => {
+   GetDamus(0,play.danmu.Danmusection) 
 }
-const danmutext=ref('')
+const GetDamus=(start,end,Danmusection = 10000)=>{
+    GetDanmu(play.meta.id,start,end,Danmusection)
+    .then(list=>{
+        // console.log('请求弹幕数'+list.length+' #'+start)
+        list.forEach(comment => {
+          play.player.danmu.sendComment(comment)
+        });
+        
+    })
+}
+
+
+const danmutext = ref('')
+
+
 const sendDanmu = () => {
     // console.log('发送弹幕')
-if(danmutext.value!='') console.log(danmutext.value)
-const obj={
-   currentTime: play.player.currentTime,
-   buffered:play.player.buffered,
-   cumulateTime:play.player.cumulateTime,
-   currentSrc:play.player.currentSrc
-}
-console.log(play.player.plugins.playnext)
-console.log(obj)
+    if (danmutext.value != '') console.log(danmutext.value)
+    const obj = {
+        currentTime: play.player.currentTime,
+        buffered: play.player.buffered,
+        cumulateTime: play.player.cumulateTime,
+        currentSrc: play.player.currentSrc
+    }  
+   console.log(play.player.plugins.danmu.danmujs.state.comments.length)
+   
+    // console.log(obj)
 }
 //#endregion
 
