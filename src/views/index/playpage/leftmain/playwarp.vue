@@ -58,7 +58,7 @@ const pageconfigStore = usepageconfigStore()
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
-import { GetVideoPath, createVideoRedis,GetDanmu } from '@/api/danmu'
+import { GetVideoPath, createVideoRedis } from '@/api/danmu'
 // #endregion
 
 // #region  模拟数据 mockjs
@@ -86,7 +86,7 @@ const play = reactive({
 //#endregion
 //#region  视频播放
 //播放下一集
-const onplaynext = () => {
+const playnext = () => {
     const index = parseInt(route.query.index ?? 1) + 1
     if (!play.videolist.find(v => v.index == index)) {
         // alert('已经是最后一集')
@@ -132,10 +132,13 @@ onMounted(async () => {
                 play.videolist = sortvideolist
             })
     console.log(play.meta)
-    play.player.on(Events.PLAYNEXT, onplaynext)
+    play.player.on(Events.PLAYNEXT, playnext)
+    play.player.on(Events.PLAY,()=>{
+        console.log('开始播放'+play.meta.id)
+    })
 
     await createVideoRedis(play.meta.id)
-    createGetDanmu()
+  
 })
 //#endregion
 //#region 切换分集
@@ -156,7 +159,9 @@ watch(() => route.query.index, () => {
     //观看人数重置为0
     play.meta.lineusercount = 0
     //切换视频源
+     play.player.replay()
     play.player.switchURL(video.path)
+   
     //清除弹幕池
     play.player.plugins.danmu.clear()
    clearInterval( play.danmu.Interval)
@@ -165,19 +170,7 @@ watch(() => route.query.index, () => {
 //#endregion
 //#region  弹幕相关
 //给视频装上弹幕
-const createGetDanmu = () => {
-   GetDamus(0,play.danmu.Danmusection) 
-}
-const GetDamus=(start,end,Danmusection = 10000)=>{
-    GetDanmu(play.meta.id,start,end,Danmusection)
-    .then(list=>{
-        // console.log('请求弹幕数'+list.length+' #'+start)
-        list.forEach(comment => {
-          play.player.danmu.sendComment(comment)
-        });
-        
-    })
-}
+
 
 
 const danmutext = ref('')
