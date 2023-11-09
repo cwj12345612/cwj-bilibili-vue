@@ -1,8 +1,6 @@
 <template>
     <div class="left_main_playwarp">
-        <div id="playpage_bofanqi"></div>
-
-
+        <div ref="playpage_bofanqi" class="playpage_bofanqi"></div>
 
         <div class="bottom">
             <div class="videoinfo">
@@ -58,136 +56,165 @@ const pageconfigStore = usepageconfigStore()
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
-import { GetVideoPath, createVideoRedis } from '@/api/danmu'
+import { GetVideoListvideos, createVideoRedis, GetDanmuBymoment } from '@/api/danmu'
 // #endregion
 
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
+import { PLAY } from 'xgplayer/es/events';
 
 const mock = (str) => { return Mock.mock(str) }
 //#endregion
+
+//#region 视频列表分集
+const videolist = reactive([])
+//#endregion
 //#region  数据
-const play = reactive({
-    player: null,
-    //正在播放的分集的信息
-    meta: {
-        lineusercount: 0,
-    },
-    //本视频相关弹幕
-    danmu: {
-        Interval: null,
-           //向后台获取弹幕的时间间隔
-     Getsection:5000,
-     //每次获取弹幕的时间跨度
-     Danmusection:10000
-    }
-})
+//请求弹幕的定时器 不用vue管理
+let danmuIn = null
+//上次请求时刻 毫秒
+const moment = ref(0)
 //#endregion
-//#region  视频播放
-//播放下一集
-const playnext = () => {
-    const index = parseInt(route.query.index ?? 1) + 1
-    if (!play.videolist.find(v => v.index == index)) {
-        // alert('已经是最后一集')
-        router.push('/play/' + route.params.id)
-        return
-    }
-    router.push(`/play/${route.params.id}?index=${index}`)
-}
-onMounted(async () => {
-   
-    await GetVideoPath(route.params.id, route.query.index ?? 1)
-        .then(videolist => {
+//#region 监听开始播放
+const Ajaxdanmu = () => {
+    clearInterval(danmuIn)
+    const fu = () => {
+        const currentTime = player.currentTime
+        const abs = Math.abs(currentTime * 1000 - moment.value)
+        //如果间隔大于5s
+        if (abs >= 5000 || moment.value == 0) {
             const video = videolist.find(v => v.index == (route.query.index ?? 1))
-
-            const sortvideolist = videolist.length > 1 ? videolist.sort((a, b) => a.index - b.index) : [video]
-            //   console.log(sortvideolist)
-            //   console.log(doc)
-            //#region  初始化弹幕 测试
-            let comments = []
-        
-            comments=[]
-                //#endregion
-                play.player = new Player({
-                    danmu:{
-                        comments:comments
-                    },
-                    id: 'playpage_bofanqi',
-                    height: '100%',
-                    width: '100%',
-                    plugins: [Danmu],
-                    url: video.path,
-                    pip: true,
-                    playnext: {
-                        urlList: true
-                    },
-                    mini: true,
-                    // screenShot: true
+            if (moment.value >= video.duration * 1000 && parseInt(currentTime - video.duration) < 1) {
+                clearInterval(danmuIn)
+                return
+            }
+            moment.value = parseInt(currentTime * 1000)
+            GetDanmuBymoment(video.id, moment.value < 1000 ? 0 : moment.value, (moment.value + 10000) > video.duration ? (moment.value + 10000) : video.duration)
+                .then(list => {
+                    // console.log(list)
+                    player.plugins.danmu.updateComments(list)
                 })
-                for (let key of Object.keys(video)) {
-                    play.meta[key] = video[key]
-                }
-                //播放列表
-                play.videolist = sortvideolist
+        }
+        return fu
+    }
+    danmuIn = setInterval(() => {
+        fu()
+    }, 1000);
+}
+//#endregion
+//#region 监听视频接收
+const pause = () => {
+
+    clearInterval(danmuIn)
+}
+//#endregion
+//#region 播放器  不用交给vue管理
+let player = null
+const playpage_bofanqi = ref()
+//#endregion
+//#region 页面初始化
+onMounted(async () => {
+    //#region 从后台获取视频列表 并初始化播放器
+    const exsits = await GetVideoListvideos(route.params.id)
+        .then(list => {
+            player = new Player({
+                el: playpage_bofanqi.value,
+                url: list.find(v => v.index == (route.query.index ?? 1)).path,
+                height: '100%',
+                width: '100%',
+                plugins: [Danmu],
+                pip: true,
+                playnext: {
+                    urlList: true
+                },
+                mini: true,
             })
-    console.log(play.meta)
-    play.player.on(Events.PLAYNEXT, playnext)
-    play.player.on(Events.PLAY,()=>{
-        console.log('开始播放'+play.meta.id)
+            list.forEach(video => {
+                videolist.push(video)
+            });
+            return true
+        }).catch(e => {
+            alert('视频不存在')
+            router.push('/')
+            return false
+        })
+    //#endregion
+    if (exsits) await initother()
+
+})
+//#region 其他初始化工作
+const initother = async () => {
+    //
+    //#region 监听播放下一个按钮
+    player.on(Events.PLAYNEXT, () => {
+        const index = route.query.index ?? 1
+        if (!videolist.find(v => v.index > index)) {
+            router.push(`/play/${route.params.id}?index=1`)
+            return
+        }
+        router.push(`/play/${route.params.id}?index=${parseInt(index) + 1}`)
     })
+    //#endregion
+    // 监听开始播放 弹幕请求
+    // player.on(Events.PLAY, Ajaxdanmu)
+    //监听暂停播放
+    player.on(Events.PAUSE, pause)
+    //监听视频结束
 
-    await createVideoRedis(play.meta.id)
-  
-})
+    //监听弹幕开关
+    player.on(Events.USER_ACTION, (data) => {
+        if (data.action === "switch_danmu" && data.pluginName === "danmu") {
+            if (!data.to) clearInterval(danmuIn)
+            if (data.to) Ajaxdanmu()
+        }
+    })
+    //把视频弹幕全部加载到redis中
+    createVideoRedis(videolist.find(v => v.index == (route.query.index ?? 1))?.id)
+}
 //#endregion
-//#region 切换分集
+
+//#endregion
+
+
+
+//#region 监听index变化 播放指定分集
 watch(() => route.query.index, () => {
-    // console.log("w")
     const index = route.query.index ?? 1
-    const video = play.videolist.find(v => v.index == index)
-    if (!video) {
-        alert(`分集${index}不存在`)
-        router.push(`/play/${route.params.id}`)
-        return
-    }
-
-    for (let key of Object.keys(video)) {
-        play.meta[key] = video[key]
-    }
-    
-    //观看人数重置为0
-    play.meta.lineusercount = 0
+    const video = videolist.find(v => v.index == index)
+    // console.log(video)
     //切换视频源
-     play.player.replay()
-    play.player.switchURL(video.path)
-   
+    player.replay()
+    player.switchURL(video.path)
     //清除弹幕池
-    play.player.plugins.danmu.clear()
-   clearInterval( play.danmu.Interval)
-   play.danmu.Interval=null
+    player.plugins.danmu.clear()
+    //清除定时器
+    //    clearInterval()
 })
 //#endregion
-//#region  弹幕相关
-//给视频装上弹幕
-
-
-
+//#region 发送弹幕
 const danmutext = ref('')
-
-
 const sendDanmu = () => {
     // console.log('发送弹幕')
     if (danmutext.value != '') console.log(danmutext.value)
-    const obj = {
-        currentTime: play.player.currentTime,
-        buffered: play.player.buffered,
-        cumulateTime: play.player.cumulateTime,
-        currentSrc: play.player.currentSrc
-    }  
-   console.log(play.player.plugins.danmu.danmujs.state.comments.length)
-   
-    // console.log(obj)
+    const comment = {
+        duration: parseInt(mock({ 'num|5000-30000': 30000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
+        id: mock('@word(10)'),               //弹幕id，需唯一
+        // start: parseInt(mock({ 'num|300-70000': 700000 }).num),           //弹幕出现时间, 单位：ms 毫秒
+        prior: true,          //该条弹幕优先显示，默认false
+        color: true,          //该条弹幕为彩色弹幕，默认false
+        txt: mock('@cword(5,10)'),              //弹幕文字内容
+        style: {                 //弹幕自定义样式
+            color: mock('@color()'),         //例：'#ff9500',
+            fontSize: mock({ 'num|15-27': 27 }).num + 'px',      // 例：'20px',
+            padding: '2px 11px'        //例： 2px 11px',
+        },
+        // mode: 'top',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+    }
+    //内部会帮忙设置好默认属性
+    player.plugins.danmu.sendComment(comment)
+    console.log(player.plugins.danmu)
+
 }
 //#endregion
 
@@ -209,7 +236,7 @@ const sendDanmu = () => {
     height: 55vh;
 }
 
-#playpage_bofanqi {
+.playpage_bofanqi {
     background-color: black;
     width: 100%;
     height: 100%;
