@@ -34,8 +34,7 @@ onMounted(() => {
 })
 //解决刷新页面状态丢失
 onMounted(() => {
-    refresh()
-  
+    // refresh()
 })
 
 </script>

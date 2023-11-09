@@ -8,7 +8,8 @@ export const useUserStore = defineStore('useUserStore', {
   state: () => ({
     user: {
       Authorization: sessionStorage.getItem('Authorization'),
-      id: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo'))?.id : null,
+      id: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo'))?.id : 1,
+      
       email: sessionStorage.getItem('userInfo') ? JSON.parse(sessionStorage.getItem('userInfo'))?.email : null
     }
   }),
@@ -52,8 +53,11 @@ export const useUserStore = defineStore('useUserStore', {
      * @returns 是否已经登录
      */
     isLogin() {
-      // if (!this.user || !this.user.Authorization || !this.user.id || !this.user.email) return false
+      if (!this.user || !this.user.Authorization || !this.user.id || !this.user.email) return false
       return true;
     }
   }
 })
+
+// const aa= {"duration":9857,"id":444496,"prior":true,"color":true,"txt":"安织叫龙器重际天","style":{"color":"#f1f279","fontSize":"14px","padding":"2px 11px"}}
+// const bb= {"duration":9857,"id":444496,"prior":true,"color":true,"txt":"安织叫龙器重际天","style":{"color":"#f1f279","fontSize":"14px","padding":"2px 11px"}}1px"}}

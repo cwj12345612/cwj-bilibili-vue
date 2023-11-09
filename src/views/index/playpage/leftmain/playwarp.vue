@@ -75,10 +75,15 @@ const videolist = reactive([])
 let danmuIn = null
 //上次请求时刻 毫秒
 const moment = ref(0)
+//弹幕开关
+const danmuswitch = ref(true)
+//websocket实时获取弹幕
+let socket=null
 //#endregion
 //#region 监听开始播放
 const Ajaxdanmu = () => {
     clearInterval(danmuIn)
+    if (!danmuswitch.value) return
     const fu = () => {
         const currentTime = player.currentTime
         const abs = Math.abs(currentTime * 1000 - moment.value)
@@ -157,7 +162,7 @@ const initother = async () => {
     })
     //#endregion
     // 监听开始播放 弹幕请求
-    // player.on(Events.PLAY, Ajaxdanmu)
+    player.on(Events.PLAY, Ajaxdanmu)
     //监听暂停播放
     player.on(Events.PAUSE, pause)
     //监听视频结束
@@ -165,12 +170,22 @@ const initother = async () => {
     //监听弹幕开关
     player.on(Events.USER_ACTION, (data) => {
         if (data.action === "switch_danmu" && data.pluginName === "danmu") {
-            if (!data.to) clearInterval(danmuIn)
-            if (data.to) Ajaxdanmu()
+            danmuswitch.value = data.to
+            if (!data.to) {
+
+                clearInterval(danmuIn)
+            } else if (data.to) {
+
+                Ajaxdanmu()
+            }
         }
     })
     //把视频弹幕全部加载到redis中
     createVideoRedis(videolist.find(v => v.index == (route.query.index ?? 1))?.id)
+
+    //#region 建立websocket
+        initwebsocket()
+    //#endregion
 }
 //#endregion
 
@@ -183,13 +198,24 @@ watch(() => route.query.index, () => {
     const index = route.query.index ?? 1
     const video = videolist.find(v => v.index == index)
     // console.log(video)
-    //切换视频源
-    player.replay()
-    player.switchURL(video.path)
+    
     //清除弹幕池
     player.plugins.danmu.clear()
-    //清除定时器
-    //    clearInterval()
+      //把视频弹幕全部加载到redis中
+      createVideoRedis(videolist.find(v => v.index == (route.query.index ?? 1))?.id)
+
+      //重置定时器
+      moment.value=0
+      clearInterval(danmuIn)
+
+//更换websocket
+// initwebsocket()
+
+      //切换视频源
+    player.replay()
+    player.switchURL(video.path)
+
+    
 })
 //#endregion
 //#region 发送弹幕
@@ -198,7 +224,7 @@ const sendDanmu = () => {
     // console.log('发送弹幕')
     if (danmutext.value != '') console.log(danmutext.value)
     const comment = {
-        duration: parseInt(mock({ 'num|5000-30000': 30000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
+        duration: parseInt(mock({ 'num|2000-10000': 2000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
         id: mock('@word(10)'),               //弹幕id，需唯一
         // start: parseInt(mock({ 'num|300-70000': 700000 }).num),           //弹幕出现时间, 单位：ms 毫秒
         prior: true,          //该条弹幕优先显示，默认false
@@ -208,16 +234,44 @@ const sendDanmu = () => {
             color: mock('@color()'),         //例：'#ff9500',
             fontSize: mock({ 'num|15-27': 27 }).num + 'px',      // 例：'20px',
             padding: '2px 11px'        //例： 2px 11px',
-        },
+        }
         // mode: 'top',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
     }
     //内部会帮忙设置好默认属性
     player.plugins.danmu.sendComment(comment)
-    console.log(player.plugins.danmu)
+    // console.log(comment)
+    //要把id删除
+    // delete comment.id
+    comment.id=mock('@integer(1000,1000000)')
+    console.log(JSON.stringify(comment))
+   socket.send(JSON.stringify(comment))
 
 }
 //#endregion
 
+    
+//#region websocket相关
+const initwebsocket=async()=>{
+   
+    const ws=`ws://localhost:8081/danmu/ws/${!userStore.isLogin ? 0 : userStore.user.id}/${
+        videolist.find(v => v.index == (route.query.index ?? 1)).id
+    }`
+   console.log(ws)
+    socket= new WebSocket(ws)
+    
+// socket.binaryType='arraybuffer'
+   socket.onmessage=(event)=>{
+    console.log(event.data)
+   }
+socket.onopen=()=>{
+    console.log('连接打开')
+}
+socket.onclose=()=>{
+    console.log('连接关闭')
+}
+}
+
+//#endregion
 </script>
 <style scoped>
 @import 'xgplayer/dist/index.min.css';

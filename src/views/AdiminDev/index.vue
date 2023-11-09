@@ -1,20 +1,16 @@
 <template>
     <div class="admindev">
         开发文档
-        <div class="c">
-            你好
-        </div>
-        <button @click.prevent="t5">测试jwt1</button>
-        <primiseall></primiseall>
-        <h3>实时{{ re }}</h3>
-        <hr>
-        <button @click="changere">改变re</button>
+     <button @click="newwebsocket">测试websocket</button>
+     <button @click="send">发送信息</button>
+     <button @click="close">关闭</button>
+     <span>后台信息:{{ msg }}</span>
     </div>
     
 </template>
 <script setup>
 // #region  引入组件
-import primiseall from './promiseall.vue'
+
 //  #endregion
 
 // #region 引入vue pinia 路由
@@ -27,42 +23,53 @@ const router = useRouter()
 import axios from '@/utils/axios';
 import { readBuffer, isPNG } from '@/utils/fileUtils'
 // #endregion
-import{getre2} from './aa'
+
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
 
+
 const mock = (str) => { return Mock.mock(str) }
-const type = ref('空')
-function change(e) {
-console.log('此处需要检查文件类型');
 
-}
-const t5=()=>{
-    axios.get('/api/test2/t5')
-    .then(req=>{
-        console.log(req.data)
-    })
-}
-const re= reactive({
-    name:'js实时读取',
-    size:10
-})
-const changere=()=>{
-    re.size=mock('@integer(10,1000)')
-}
-const getre=()=>{
-    return re;
-}
-onMounted(()=>{
-    window.getre=getre
-    
-})
-onMounted(()=>{
-    getre2()
-})
 //#endregion
+let socket=null;
+const newwebsocket=()=>{
 
+   socket= new WebSocket("ws://localhost:8081/danmu/ws/1/12")
+
+   socket.onopen=()=>{
+    console.log('打开连接')
+   }
+
+}
+const send=()=>{
+    const msg=mock('@cword(10)')
+    socket.send(JSON.stringify({
+        Txt:msg,
+        Moment:0,
+        Vid:12
+    }))
+    socket.onclose=()=>{
+        console.log('连接关闭')
+    }
+}
+const close=()=>{
+    socket.close()
+}
+const msg=ref('')
+onMounted(()=>{
+setTimeout(() => {
+    const ket= new WebSocket('ws://localhost:8081/danmu/ws/12/12')
+   ket.onopen=()=>{
+    console.log('初始化打开')
+
+   }
+   ket.onmessage=(event)=>{
+    console.log('接收大信息#'+event.data)
+    msg.value=event.data
+   }
+}, 2000);
+})
 </script>
 <style scoped lang="less">
 .admindev {
