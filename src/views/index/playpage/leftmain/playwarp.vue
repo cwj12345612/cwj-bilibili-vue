@@ -86,6 +86,7 @@ const Ajaxdanmu = () => {
     clearInterval(danmuIn)
     if (!danmuswitch.value) return
     const fu = () => {
+        // console.log('发送')
         const currentTime = player.currentTime
         const abs = Math.abs(currentTime * 1000 - moment.value)
         //如果间隔大于5s
@@ -97,9 +98,9 @@ const Ajaxdanmu = () => {
             }
             moment.value = parseInt(currentTime * 1000)
             GetDanmuBymoment(video.id,
-             moment.value < 1000 ? 0 : moment.value, 
-             (moment.value + 10000) > video.duration ? (moment.value + 10000) : video.duration,
-             websocketuuid.value)
+                moment.value < 1000 ? 0 : moment.value,
+                (moment.value + 10000) > video.duration ? (moment.value + 10000) : video.duration,
+                websocketuuid.value)
                 .then(list => {
                     // console.log(list)
                     // player.plugins.danmu.updateComments(list.map((li) => {
@@ -111,8 +112,8 @@ const Ajaxdanmu = () => {
 
                     //批量导入弹幕 颜色会消失 所以要循环导入
                     list.forEach(li => {
-                       
-                        player.plugins.danmu.sendComment(toComment(li))
+                        // console.log(li)
+                        player.plugins.danmu.sendComment(toCommentAJax(li))
                     })
                 })
         }
@@ -256,23 +257,22 @@ const sendDanmu = () => {
         }
         // mode: 'top',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
     }
-    danmutext.value=''
+    danmutext.value = ''
     player.plugins.danmu.sendComment(comment)
 
     // console.log(JSON.stringify(comment))
     const currentTime = parseInt(player.currentTime * 1000)
-
+    console.log(currentTime)
     const danmu = toDanmuEntity(comment)
-    
     danmu.start = currentTime
     //  console.log(JSON.stringify(danmu.start))
     socket.send(JSON.stringify(danmu))
 }
 //#endregion
 //#region 前后端弹幕格式转换
-//前端向后端发送弹幕 弹幕进行格式化
+//处理前端向后端发送弹幕 弹幕进行格式化
 const toDanmuEntity = (comment) => {
-   
+
     const danmu = {}
     for (let key of Object.keys(comment)) {
         const type = typeof comment[key]
@@ -285,46 +285,28 @@ const toDanmuEntity = (comment) => {
             }
         }
     }
-delete danmu.id
+    delete danmu.id
     return danmu
 }
-// 后端向前端发送弹幕 弹幕格式化
-const toComment = (danmuEntity) => {
-    const comment = {
-        duration: null,         //弹幕持续显示时间,毫秒(最低为5000毫秒)
-        id: null,               //弹幕id，需唯一
-        // start: parseInt(player.currentTime*1000),           //弹幕出现时间, 单位：ms 毫秒
-        prior: true,          //该条弹幕优先显示，默认false
-        color: true,          //该条弹幕为彩色弹幕，默认false
-        txt: null,              //弹幕文字内容
-        style: {                 //弹幕自定义样式
-            color: null,         //例：'#ff9500',
-            fontSize: null,      // 例：'20px',
-            padding: null      //例： 2px 11px',
-        },
-        mode: 'top',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
-    }
-    const keyscomment = Object.keys(comment)
-    //    console.log(keyscomment)
-    for (let key of Object.keys(danmuEntity)) {
-        if(!danmuEntity[key]) continue
-        //    console.log(key)
-        if (!key.includes('_')) {
-            const kk = keyscomment.find(k => k.toLocaleUpperCase() == key.toLocaleUpperCase())
-            if (kk) comment[kk] = danmuEntity[key]
-        } else {
-            const kk = key.substring(0, key.indexOf("_"))
-            const val = key.substring(key.indexOf("_") + 1)
-            // console.log(Object.keys(comment[kk]))
-            // console.log(val)
-            if(!comment[kk]) continue
-            const kv = Object.keys(comment[kk]).find(k => k.toLocaleUpperCase() == val.toLocaleUpperCase())
-            // console.log(kv)
-            if (kv) comment[kk][kv] = danmuEntity[key]
-        }
-    }
+// 前端轮询 向后端请求弹幕
+const toCommentAJax = (danmuEntity) => {
 
-    switch (comment.mode) {
+    const comment = {
+        duration: danmuEntity.duration,         //弹幕持续显示时间,毫秒(最低为5000毫秒)
+        id: JSON.stringify(danmuEntity),               //弹幕id，需唯一
+        // start: parseInt(player.currentTime*1000),           //弹幕出现时间, 单位：ms 毫秒
+        start: danmuEntity.start,
+        prior: danmuEntity.prior,          //该条弹幕优先显示，默认false
+        color: danmuEntity.color,          //该条弹幕为彩色弹幕，默认false
+        txt: danmuEntity.txt,              //弹幕文字内容
+        style: {                 //弹幕自定义样式
+            color: danmuEntity.style_Color,         //例：'#ff9500',
+            fontSize: danmuEntity.style_Fontsize,      // 例：'20px',
+            padding: danmuEntity.style_Padding      //例： 2px 11px',
+        },
+        mode: null,           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+    }
+    switch (danmuEntity.mode) {
         case 0:
             comment.mode = 'scroll'
             break;
@@ -341,17 +323,51 @@ const toComment = (danmuEntity) => {
             comment.mode = 'scroll'
             break;
     }
-    // console.log(JSON.stringify(comment))
-
-comment.id=dataUtils.uuid()
     return comment
 }
+// websocket接收后端主动发过来的弹幕
+const toCommentWebsocket = (danmuEntity) => {
+    const comment = {
+        duration: danmuEntity.Duration,         //弹幕持续显示时间,毫秒(最低为5000毫秒)
+        id: JSON.stringify(danmuEntity),               //弹幕id，需唯一
+        // start: parseInt(player.currentTime*1000),           //弹幕出现时间, 单位：ms 毫秒
+        start: danmuEntity.Start,
+        prior: danmuEntity.Prior,          //该条弹幕优先显示，默认false
+        color: danmuEntity.Color,          //该条弹幕为彩色弹幕，默认false
+        txt: danmuEntity.Txt,              //弹幕文字内容
+        style: {                 //弹幕自定义样式
+            color: danmuEntity.Style_Color,         //例：'#ff9500',
+            fontSize: danmuEntity.Style_Fontsize,      // 例：'20px',
+            padding: danmuEntity.Style_Padding      //例： 2px 11px',
+        },
+        mode: null,           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+    }
+    switch (danmuEntity.Mode) {
+        case 0:
+            comment.mode = 'scroll'
+            break;
+        case 1:
+            comment.mode = 'bottom'
+            break;
+        case 2:
+            comment.mode = 'center'
+            break;
+        case 3:
+            comment.mode = 'top'
+            break;
+        default:
+            comment.mode = 'scroll'
+            break;
+    }
+    return comment
+}
+
 //#endregion
 
 //#region websocket相关
-const websocketuuid=ref('')
+const websocketuuid = ref('')
 const initwebsocket = async () => {
-    websocketuuid.value=dataUtils.uuid()
+    websocketuuid.value = dataUtils.uuid()
     const ws = `ws://localhost:8081/danmu/ws/${!userStore.isLogin ? 0 : userStore.user.id}/${videolist.find(v => v.index == (route.query.index ?? 1)).id
         }/${websocketuuid.value}`
 
@@ -360,14 +376,13 @@ const initwebsocket = async () => {
 
     // socket.binaryType='arraybuffer'
     socket.onmessage = (event) => {
-        console.log('消息过来了')
+        // console.log('消息过来了')
         // console.log(JSON.parse(event.data))
-        if(!event|| !event.data||event.data=='') return  
-    const comment=    toComment(JSON.parse(event.data))
-    console.log(comment)
-    player.plugins.danmu.sendComment(comment)
+        if (!event || !event.data || event.data == '') return
+        const comment = toCommentWebsocket(JSON.parse(event.data))
+        //    console.log(JSON.stringify(comment))
+        player.plugins.danmu.sendComment(comment)
     }
-   
 
 }
 
