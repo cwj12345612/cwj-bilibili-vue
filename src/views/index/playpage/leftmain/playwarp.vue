@@ -3,14 +3,14 @@
         <div ref="playpage_bofanqi" class="playpage_bofanqi"></div>
 
         <div class="bottom">
-            <div class="videoinfo">
+            <div class="videoinfo" >
                 <div class="line">
-                    <span style="color: #0aaee0;">{{ mock({ 'num|100000-450006': 456 }).num }}&nbsp;</span>
+                    <span style="color: #0aaee0;">{{ '???' }}&nbsp;</span>
                     <span>用户正在观看</span>
                 </div>
                 <span>&nbsp;,&nbsp;</span>
                 <div class="danmucount">
-                    <span>已装填<span style="color: #0aaee0;">{{ mock({ 'num|10000-134552': 34552 }).num }}</span>条弹幕</span>
+                    <span>已装填<span style="color: #0aaee0;">{{ "???" }}</span>条弹幕</span>
                 </div>
             </div>
 
@@ -262,7 +262,7 @@ const sendDanmu = () => {
 
     // console.log(JSON.stringify(comment))
     const currentTime = parseInt(player.currentTime * 1000)
-    console.log(currentTime)
+    // console.log(currentTime)
     const danmu = toDanmuEntity(comment)
     danmu.start = currentTime
     //  console.log(JSON.stringify(danmu.start))
@@ -373,7 +373,9 @@ const initwebsocket = async () => {
 
     // console.log(ws)
     socket = new WebSocket(ws)
-
+    socket.onopen=()=>{
+        // console.log('打开websocket')
+    }
     // socket.binaryType='arraybuffer'
     socket.onmessage = (event) => {
         // console.log('消息过来了')
@@ -383,7 +385,9 @@ const initwebsocket = async () => {
         //    console.log(JSON.stringify(comment))
         player.plugins.danmu.sendComment(comment)
     }
-
+    socket.onclose=()=>{
+        // console.log('连接销毁')
+    }
 }
 
 //#endregion
