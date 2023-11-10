@@ -111,7 +111,7 @@ const Ajaxdanmu = () => {
 
                     //批量导入弹幕 颜色会消失 所以要循环导入
                     list.forEach(li => {
-                        li.id = mock('@id()')
+                       
                         player.plugins.danmu.sendComment(toComment(li))
                     })
                 })
@@ -237,14 +237,16 @@ watch(() => route.query.index, () => {
 const danmutext = ref('')
 const sendDanmu = () => {
     // console.log('发送弹幕')
-    // if (danmutext.value != '') console.log(danmutext.value)
+    if (danmutext.value == '') {
+        return
+    }
     let comment = {
         duration: parseInt(mock({ 'num|2000-10000': 2000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
-        id: mock('@id()'),               //弹幕id，需唯一
+        id: dataUtils.uuid(),               //弹幕id，需唯一
         // start: parseInt(player.currentTime*1000),           //弹幕出现时间, 单位：ms 毫秒
         prior: true,          //该条弹幕优先显示，默认false
         color: true,          //该条弹幕为彩色弹幕，默认false
-        txt: danmutext.value != '' ? danmutext.value : mock('@cword(10)'),              //弹幕文字内容
+        txt: danmutext.value,              //弹幕文字内容
         style: {                 //弹幕自定义样式
             color: mock('@color()'),         //例：'#ff9500',
             fontSize: '30px',      // 例：'20px',
@@ -252,6 +254,7 @@ const sendDanmu = () => {
         }
         // mode: 'top',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
     }
+    danmutext.value=''
     player.plugins.danmu.sendComment(comment)
 
     // console.log(JSON.stringify(comment))
@@ -336,7 +339,7 @@ const toComment = (danmuEntity) => {
     }
     // console.log(JSON.stringify(comment))
 
-
+comment.id=dataUtils.uuid()
     return comment
 }
 //#endregion
@@ -357,12 +360,7 @@ const initwebsocket = async () => {
     const comment=    toComment(event.data)
     player.plugins.danmu.sendComment(comment)
     }
-    socket.onopen = () => {
-        console.log('连接打开')
-    }
-    socket.onclose = () => {
-        console.log('连接关闭')
-    }
+   
 
 }
 
