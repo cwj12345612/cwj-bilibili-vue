@@ -62,7 +62,7 @@ import { GetVideoListvideos, createVideoRedis, GetDanmuBymoment } from '@/api/da
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
-import { PLAY } from 'xgplayer/es/events';
+
 
 const mock = (str) => { return Mock.mock(str) }
 //#endregion
@@ -78,7 +78,7 @@ const moment = ref(0)
 //弹幕开关
 const danmuswitch = ref(true)
 //websocket实时获取弹幕
-let socket=null
+let socket = null
 //#endregion
 //#region 监听开始播放
 const Ajaxdanmu = () => {
@@ -98,7 +98,12 @@ const Ajaxdanmu = () => {
             GetDanmuBymoment(video.id, moment.value < 1000 ? 0 : moment.value, (moment.value + 10000) > video.duration ? (moment.value + 10000) : video.duration)
                 .then(list => {
                     // console.log(list)
-                    player.plugins.danmu.updateComments(list)
+                    player.plugins.danmu.updateComments(list.map((li) => {
+                        li.id = mock('@id()')
+                     
+                        toComment(li)
+                        return li
+                    }))
                 })
         }
         return fu
@@ -172,7 +177,6 @@ const initother = async () => {
         if (data.action === "switch_danmu" && data.pluginName === "danmu") {
             danmuswitch.value = data.to
             if (!data.to) {
-
                 clearInterval(danmuIn)
             } else if (data.to) {
 
@@ -184,7 +188,7 @@ const initother = async () => {
     createVideoRedis(videolist.find(v => v.index == (route.query.index ?? 1))?.id)
 
     //#region 建立websocket
-        initwebsocket()
+    initwebsocket()
     //#endregion
 }
 //#endregion
@@ -198,38 +202,38 @@ watch(() => route.query.index, () => {
     const index = route.query.index ?? 1
     const video = videolist.find(v => v.index == index)
     // console.log(video)
-    
+
     //清除弹幕池
     player.plugins.danmu.clear()
-      //把视频弹幕全部加载到redis中
-      createVideoRedis(videolist.find(v => v.index == (route.query.index ?? 1))?.id)
+    //把视频弹幕全部加载到redis中
+    createVideoRedis(videolist.find(v => v.index == (route.query.index ?? 1))?.id)
 
-      //重置定时器
-      moment.value=0
-      clearInterval(danmuIn)
+    //重置定时器
+    moment.value = 0
+    clearInterval(danmuIn)
 
-//更换websocket
-// initwebsocket()
+    //更换websocket
+    // initwebsocket()
 
-      //切换视频源
+    //切换视频源
     player.replay()
     player.switchURL(video.path)
 
-    
+
 })
 //#endregion
 //#region 发送弹幕
 const danmutext = ref('')
 const sendDanmu = () => {
     // console.log('发送弹幕')
-    if (danmutext.value != '') console.log(danmutext.value)
-    const comment = {
+    // if (danmutext.value != '') console.log(danmutext.value)
+    let comment = {
         duration: parseInt(mock({ 'num|2000-10000': 2000 }).num),         //弹幕持续显示时间,毫秒(最低为5000毫秒)
-        id: mock('@word(10)'),               //弹幕id，需唯一
-        // start: parseInt(mock({ 'num|300-70000': 700000 }).num),           //弹幕出现时间, 单位：ms 毫秒
+        id: mock('@id()'),               //弹幕id，需唯一
+        // start: parseInt(player.currentTime*1000),           //弹幕出现时间, 单位：ms 毫秒
         prior: true,          //该条弹幕优先显示，默认false
         color: true,          //该条弹幕为彩色弹幕，默认false
-        txt: mock('@cword(5,10)'),              //弹幕文字内容
+        txt: danmutext.value != '' ? danmutext.value : mock('@cword(10)'),              //弹幕文字内容
         style: {                 //弹幕自定义样式
             color: mock('@color()'),         //例：'#ff9500',
             fontSize: mock({ 'num|15-27': 27 }).num + 'px',      // 例：'20px',
@@ -237,38 +241,78 @@ const sendDanmu = () => {
         }
         // mode: 'top',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
     }
-    //内部会帮忙设置好默认属性
-    player.plugins.danmu.sendComment(comment)
-    // console.log(comment)
-    //要把id删除
-    // delete comment.id
-    comment.id=mock('@integer(1000,1000000)')
-    console.log(JSON.stringify(comment))
-   socket.send(JSON.stringify(comment))
 
+
+    player.plugins.danmu.sendComment(comment)
+    console.log(JSON.stringify(comment))
+    const currentTime = parseInt(player.currentTime * 1000)
+
+    const danmu = toDanmuEntity(comment)
+    delete danmu.id
+    danmu.start = currentTime
+    //  console.log(JSON.stringify(danmu.start))
+    socket.send(JSON.stringify(danmu))
+}
+//#endregion
+//#region 前后端弹幕格式转换
+const toDanmuEntity = (comment) => {
+    const danmu = {}
+    for (let key of Object.keys(comment)) {
+        const type = typeof comment[key]
+        if (type != 'object') {
+            danmu[key] = comment[key]
+        } else {
+            const f = comment[key]
+            for (let kk of Object.keys(f)) {
+                danmu[key + '_' + kk] = f[kk]
+            }
+        }
+    }
+
+    return danmu
+}
+const toComment = (danmuEntity) => {
+    // console.log(JSON.stringify(danmuEntity))
+    const comment = {}
+    for (let key of Object.keys(danmuEntity)) {
+        console.log(key)
+        if (!key.includes('_')) {
+            comment[key] = danmuEntity[key]
+        } else {
+            const kk = key.substring(0, key.indexOf("_"))
+            const val = key.substring(key.indexOf("_") + 1)
+          
+            if (comment[kk]) {
+                comment[kk][val] = danmuEntity[key]
+            } else {
+                comment[kk] = {}
+            }
+
+        }
+        // console.log(JSON.stringify(comment))
+        return comment
+    }
 }
 //#endregion
 
-    
 //#region websocket相关
-const initwebsocket=async()=>{
-   
-    const ws=`ws://localhost:8081/danmu/ws/${!userStore.isLogin ? 0 : userStore.user.id}/${
-        videolist.find(v => v.index == (route.query.index ?? 1)).id
-    }`
-   console.log(ws)
-    socket= new WebSocket(ws)
-    
-// socket.binaryType='arraybuffer'
-   socket.onmessage=(event)=>{
-    console.log(event.data)
-   }
-socket.onopen=()=>{
-    console.log('连接打开')
-}
-socket.onclose=()=>{
-    console.log('连接关闭')
-}
+const initwebsocket = async () => {
+
+    const ws = `ws://localhost:8081/danmu/ws/${!userStore.isLogin ? 0 : userStore.user.id}/${videolist.find(v => v.index == (route.query.index ?? 1)).id
+        }`
+    console.log(ws)
+    socket = new WebSocket(ws)
+
+    // socket.binaryType='arraybuffer'
+    socket.onmessage = (event) => {
+        console.log(event.data)
+    }
+    socket.onopen = () => {
+        console.log('连接打开')
+    }
+    socket.onclose = () => {
+        console.log('连接关闭')
+    }
 }
 
 //#endregion
