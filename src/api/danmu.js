@@ -10,8 +10,8 @@ export async function createVideoRedis(id) {
     return await axios.get(prevurl + '/createVideoRedis/' + id)
 }
 
-export async function GetDanmuBymoment(id, start, end) {
+export async function GetDanmuBymoment(id, start, end,uuid) {
     // return []
-    return await axios.get(prevurl + `/DanmuBymoment/${id}/${start}/${end}`)
+    return await axios.get(prevurl + `/DanmuBymoment/${id}/${start}/${end}/${uuid}`)
         .then(req => req.data)
 }

@@ -56,6 +56,7 @@ const pageconfigStore = usepageconfigStore()
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
+import dataUtils from '@/utils/dataUtils'
 import { GetVideoListvideos, createVideoRedis, GetDanmuBymoment } from '@/api/danmu'
 // #endregion
 
@@ -95,7 +96,10 @@ const Ajaxdanmu = () => {
                 return
             }
             moment.value = parseInt(currentTime * 1000)
-            GetDanmuBymoment(video.id, moment.value < 1000 ? 0 : moment.value, (moment.value + 10000) > video.duration ? (moment.value + 10000) : video.duration)
+            GetDanmuBymoment(video.id,
+             moment.value < 1000 ? 0 : moment.value, 
+             (moment.value + 10000) > video.duration ? (moment.value + 10000) : video.duration,
+             websocketuuid.value)
                 .then(list => {
                     // console.log(list)
                     // player.plugins.danmu.updateComments(list.map((li) => {
@@ -338,17 +342,20 @@ const toComment = (danmuEntity) => {
 //#endregion
 
 //#region websocket相关
+const websocketuuid=ref('')
 const initwebsocket = async () => {
-
+    websocketuuid.value=dataUtils.uuid()
     const ws = `ws://localhost:8081/danmu/ws/${!userStore.isLogin ? 0 : userStore.user.id}/${videolist.find(v => v.index == (route.query.index ?? 1)).id
-        }`
-    console.log(ws)
+        }/${websocketuuid.value}`
+
+    // console.log(ws)
     socket = new WebSocket(ws)
 
     // socket.binaryType='arraybuffer'
     socket.onmessage = (event) => {
         console.log('消息过来了')
-        console.log(event.data)
+    const comment=    toComment(event.data)
+    player.plugins.danmu.sendComment(comment)
     }
     socket.onopen = () => {
         console.log('连接打开')

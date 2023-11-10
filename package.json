@@ -22,6 +22,7 @@
     "magic-bytes.js": "^1.5.0",
     "mockjs": "^1.1.0",
     "pinia": "^2.1.6",
+    "uuid": "^9.0.1",
     "vue": "^3.2.13",
     "vue-router": "^4.2.4",
     "xgplayer": "^3.0.7"
