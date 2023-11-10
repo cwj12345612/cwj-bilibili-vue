@@ -293,7 +293,7 @@ const toCommentAJax = (danmuEntity) => {
 
     const comment = {
         duration: danmuEntity.duration,         //弹幕持续显示时间,毫秒(最低为5000毫秒)
-        id: JSON.stringify(danmuEntity),               //弹幕id，需唯一
+        id: JSON.stringify(danmuEntity.duration+'#'+danmuEntity.start+'#'+danmuEntity.txt),               //弹幕id，需唯一
         // start: parseInt(player.currentTime*1000),           //弹幕出现时间, 单位：ms 毫秒
         start: danmuEntity.start,
         prior: danmuEntity.prior,          //该条弹幕优先显示，默认false
@@ -323,13 +323,15 @@ const toCommentAJax = (danmuEntity) => {
             comment.mode = 'scroll'
             break;
     }
+    console.log('轮询#'+comment.txt+'#'+JSON.stringify(Object.values(danmuEntity)));
     return comment
 }
 // websocket接收后端主动发过来的弹幕
 const toCommentWebsocket = (danmuEntity) => {
+   
     const comment = {
         duration: danmuEntity.Duration,         //弹幕持续显示时间,毫秒(最低为5000毫秒)
-        id: JSON.stringify(danmuEntity),               //弹幕id，需唯一
+        id: JSON.stringify(danmuEntity.Duration+'#'+danmuEntity.Start+'#'+danmuEntity.Txt),               //弹幕id，需唯一
         // start: parseInt(player.currentTime*1000),           //弹幕出现时间, 单位：ms 毫秒
         start: danmuEntity.Start,
         prior: danmuEntity.Prior,          //该条弹幕优先显示，默认false
@@ -359,6 +361,7 @@ const toCommentWebsocket = (danmuEntity) => {
             comment.mode = 'scroll'
             break;
     }
+    console.log('web发送#'+comment.txt+'#'+JSON.stringify(Object.values(danmuEntity)))
     return comment
 }
 
@@ -378,7 +381,7 @@ const initwebsocket = async () => {
     }
     // socket.binaryType='arraybuffer'
     socket.onmessage = (event) => {
-        // console.log('消息过来了')
+        console.log('消息过来了')
         // console.log(JSON.parse(event.data))
         if (!event || !event.data || event.data == '') return
         const comment = toCommentWebsocket(JSON.parse(event.data))
