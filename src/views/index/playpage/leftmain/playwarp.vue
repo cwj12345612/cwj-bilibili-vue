@@ -230,6 +230,8 @@ watch(() => route.query.index, () => {
     player.replay()
     player.switchURL(video.path)
 
+    //建立新的websocket
+    initwebsocket()
 
 })
 //#endregion
@@ -305,6 +307,7 @@ const toComment = (danmuEntity) => {
     const keyscomment = Object.keys(comment)
     //    console.log(keyscomment)
     for (let key of Object.keys(danmuEntity)) {
+        if(!danmuEntity[key]) continue
         //    console.log(key)
         if (!key.includes('_')) {
             const kk = keyscomment.find(k => k.toLocaleUpperCase() == key.toLocaleUpperCase())
@@ -314,6 +317,7 @@ const toComment = (danmuEntity) => {
             const val = key.substring(key.indexOf("_") + 1)
             // console.log(Object.keys(comment[kk]))
             // console.log(val)
+            if(!comment[kk]) continue
             const kv = Object.keys(comment[kk]).find(k => k.toLocaleUpperCase() == val.toLocaleUpperCase())
             // console.log(kv)
             if (kv) comment[kk][kv] = danmuEntity[key]
@@ -357,7 +361,10 @@ const initwebsocket = async () => {
     // socket.binaryType='arraybuffer'
     socket.onmessage = (event) => {
         console.log('消息过来了')
-    const comment=    toComment(event.data)
+        // console.log(JSON.parse(event.data))
+        if(!event|| !event.data||event.data=='') return  
+    const comment=    toComment(JSON.parse(event.data))
+    console.log(comment)
     player.plugins.danmu.sendComment(comment)
     }
    
