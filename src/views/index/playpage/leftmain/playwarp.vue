@@ -1,9 +1,9 @@
 <template>
     <div class="left_main_playwarp">
-        <div ref="playpage_bofanqi" class="playpage_bofanqi"></div>
+        <div id="playpage_bofanqi" class="playpage_bofanqi"></div>
 
         <div class="bottom">
-            <div class="videoinfo" >
+            <div class="videoinfo">
                 <div class="line">
                     <span style="color: #0aaee0;">{{ '???' }}&nbsp;</span>
                     <span>用户正在观看</span>
@@ -21,7 +21,7 @@
                 <div class="send">
                     <span class="zi">A</span>
                     <div class="input">
-                        <input  :disabled="!userStore.isLogin" type="text"
+                        <input v-model="danmutxt" :disabled="!userStore.isLogin" type="text"
                             :placeholder="userStore.isLogin ? '发个友善的弹幕见证当下' : '需要登录才能发送弹幕'">
                         <div class="liyi">
                             <a href="https://www.bilibili.com/blackboard/help.html#/?qid=f80ff5461cc94a53a24fd1a42ce90fe0"
@@ -53,8 +53,9 @@ const pageconfigStore = usepageconfigStore()
 const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
+import { ElNotification } from 'element-plus'
 import dataUtils from '@/utils/dataUtils'
-import { GetVideoListvideos, createVideoRedis, GetDanmuBymoment } from '@/api/danmu'
+import { GetVideoListvideos, CreateVideoDanmuRedis, GetVideoDanmuAll ,GetVideoDanmuByMoment} from '@/api/danmu'
 // #endregion
 
 // #region  模拟数据 mockjs
@@ -63,6 +64,215 @@ import Mock from 'mockjs'
 
 
 const mock = (str) => { return Mock.mock(str) }
+//#endregion
+
+//#region 配置参数 
+const playerconfig = {
+    height: '100%',
+    width: '100%',
+    plugins: [Danmu],
+    pip: true,
+    playnext: {
+        urlList: true
+    },
+    mini: true,
+   
+}
+const danmuconfig = {
+
+    duration: 3000,           //弹幕出现时间, 单位：ms 毫秒
+    prior: true,          //该条弹幕优先显示，默认false
+    color: true,          //该条弹幕为彩色弹幕，默认false
+    //弹幕文字内容
+    style: {                 //弹幕自定义样式
+        color: '#0aaee0',         //例：'#ff9500',
+        fontSize: '20px',      // 例：'20px',
+        padding: '2px 11px'        //例： 2px 11px',
+    },
+    mode: 'scroll',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+}
+//#endregion
+//#region 被管理的数据
+// 视频列表分集
+const videolist = reactive([])
+//弹幕文本
+const danmutxt = ref('')
+
+
+//uuid 每次刷新都会生一个唯一uuid websocket使用
+const uuid = ref('')
+//#endregion
+//#region  播放器 websocket
+let player = null
+let socket = null
+//#endregion
+//#region 初始化
+onMounted(async () => {
+    uuid.value = dataUtils.uuid()
+
+    const index = route.query.index ?? 1
+    await GetVideoListvideos(route.params.id)
+        .then(list => {
+            list.forEach(video => {
+                videolist.push(video)
+            });
+            player = new Player({
+                ...playerconfig,
+                el: document.getElementById('playpage_bofanqi'),
+                url: videolist.find(v => v.index == (route.query.index ?? 1)).path
+            })
+            initon()
+        })
+    await CreateVideoDanmuRedis(videolist.find(v => v.index == (route.query.index ?? 1)).id);
+    await GetDanmuAll()
+
+    CreateWebsocket();
+})
+
+
+const initon = () => {
+    player.on(Events.PLAY, () => {
+        //播放
+    })
+    player.on(Events.PAUSE, () => {
+        //暂停
+
+    })
+    //播放下一个
+    player.on(Events.PLAYNEXT, () => {
+
+        const index = route.query.index ?? 1
+        if (!videolist.find(v => v.index > index)) {
+            router.push(`/play/${route.params.id}?index=1`)
+            return
+        }
+        router.push(`/play/${route.params.id}?index=${parseInt(index) + 1}`)
+    })
+    
+    player.on(Events.USER_ACTION,(data)=>{
+        
+        if((data.action=='click'&&data.event=='click')||(data.action=='seek')){
+          
+        
+     const currentTime= parseInt(  player.currentTime*1000)
+    //  console.log(route.query.index)
+    //  console.log(videolist)
+        GetVideoDanmuByMoment(videolist.find(v => v.index == (route.query.index??1))?.id,currentTime,uuid.value)
+        .then(list=>{
+           player.plugins.danmu.updateComments(list,true)
+        })
+        }
+    })
+}
+//#endregion
+//#region 获取全部弹幕
+const GetDanmuAll = async () => {
+    const index = route.query.index ?? 1
+    const video = videolist.find(v => v.index == index)
+    await GetVideoDanmuAll(video.id)
+        .then(list => {
+            // console.log(list[0])
+            // player.plugins.danmu.
+            player.plugins.danmu.updateComments(list, true)
+        })
+}
+//#endregion
+//#region  监听分集改变
+watch(() => route.query.index, () => {
+    const index = route.query.index ?? 1
+    const video = videolist.find(v => v.index == index)
+    // console.log(video)
+
+
+    //切换视频源
+    player.replay()
+    player.switchURL(video.path)
+    //
+
+})
+//更改弹幕相关
+watch(() => route.query.index, async () => {
+
+    const index = route.query.index ?? 1
+    const video = videolist.find(v => v.index == index)
+
+    //清除弹幕池
+    player.plugins.danmu.clear()
+
+    await CreateVideoDanmuRedis(video.id);
+    await GetDanmuAll();
+
+danmutxt.value=''
+})
+//更换websocket
+watch(() => route.query.index, () => {
+    socket.close()
+    CreateWebsocket()
+})
+//#endregion
+
+//#region websocket相关
+const CreateWebsocket = () => {
+    uuid.value = dataUtils.uuid();
+    const ws = `ws://localhost:8081/danmu/ws/${videolist.find(v => v.index == (route.query.index ?? 1)).id
+        }/${uuid.value}`
+    socket = new WebSocket(ws)
+    socket.onopen = () => {
+        // console.log('打开连接' + uuid.value)
+    }
+    socket.onmessage = (event) => {
+        console.log('消息过来了')
+        // console.log(JSON.parse(event.data))
+        if (!event || !event.data || event.data == '') return
+        const comment = dataUtils.toCommentWebsocket(JSON.parse(event.data))
+        //    console.log(JSON.stringify(comment))
+        player.plugins.danmu.sendComment(comment)
+    }
+    socket.onclose = () => {
+        // console.log('连接销毁')
+    }
+}
+const sendDanmu = () => {
+    //发送弹幕
+    //  console.log(danmutxt.value)
+    const txt = danmutxt.value.trim()
+    if (txt == '') {
+        ElNotification({
+            title: '不能发送空弹幕',
+            // message: 'This is an info message',
+            type: 'info',
+            zIndex: 10087,
+        })
+        return
+    }
+
+    const comment = {
+        ...danmuconfig,
+        txt: txt,
+        // txt: mock('@word(10)'),
+        id: mock('@id()')
+    }
+
+    player.plugins.danmu.sendComment(comment)
+    danmutxt.value = ''
+    const currentTime = parseInt(player.currentTime * 1000)
+    // console.log(currentTime)
+    const danmu = dataUtils.toDanmuEntity(comment)
+    danmu.start = currentTime
+    // console.log(socket)
+    //  console.log(JSON.stringify(danmu.start))
+    if (socket.readyState == 1) {
+        socket.send(JSON.stringify(danmu))
+    } else {
+        ElNotification({
+            title: '警告',
+            message: '弹幕无法发送到后台',
+            zIndex: 10087,
+            type: 'warning',
+        })
+    }
+
+}
 //#endregion
 </script>
 <style scoped>
