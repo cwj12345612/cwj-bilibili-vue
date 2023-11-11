@@ -55,12 +55,13 @@ const route = useRoute()
 const router = useRouter()
 import { ElNotification } from 'element-plus'
 import dataUtils from '@/utils/dataUtils'
-import { GetVideoListvideos, CreateVideoDanmuRedis, GetVideoDanmuAll ,GetVideoDanmuByMoment} from '@/api/danmu'
+import { GetVideoListvideos, CreateVideoDanmuRedis, GetVideoDanmuAll, GetVideoDanmuByMoment } from '@/api/danmu'
 // #endregion
 
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
+
 
 
 const mock = (str) => { return Mock.mock(str) }
@@ -76,20 +77,22 @@ const playerconfig = {
         urlList: true
     },
     mini: true,
-   
+
 }
 const danmuconfig = {
 
-    duration: 3000,           //弹幕出现时间, 单位：ms 毫秒
+    duration: 5500,         //弹幕持续显示时间,毫秒(最低为5000毫秒)
+    //   id: String,               //弹幕id，需唯一
+    //   start?: Number,           //弹幕出现时间, 单位：ms 毫秒
     prior: true,          //该条弹幕优先显示，默认false
     color: true,          //该条弹幕为彩色弹幕，默认false
-    //弹幕文字内容
+    //   txt: String,              //弹幕文字内容
     style: {                 //弹幕自定义样式
         color: '#0aaee0',         //例：'#ff9500',
-        fontSize: '20px',      // 例：'20px',
-        padding: '2px 11px'        //例： 2px 11px',
-    },
-    mode: 'scroll',           // 例：'top', 显示模式，top顶部居中，bottom底部居中，scroll滚动，默认为scroll
+        fontSize: '30px',      // 例：'20px',
+        // padding: '2px 11px'        //例： 2px 11px',
+    }
+
 }
 //#endregion
 //#region 被管理的数据
@@ -148,19 +151,20 @@ const initon = () => {
         }
         router.push(`/play/${route.params.id}?index=${parseInt(index) + 1}`)
     })
-    
-    player.on(Events.USER_ACTION,(data)=>{
-        
-        if((data.action=='click'&&data.event=='click')||(data.action=='seek')){
-          
-        
-     const currentTime= parseInt(  player.currentTime*1000)
-    //  console.log(route.query.index)
-    //  console.log(videolist)
-        GetVideoDanmuByMoment(videolist.find(v => v.index == (route.query.index??1))?.id,currentTime,uuid.value)
-        .then(list=>{
-           player.plugins.danmu.updateComments(list,true)
-        })
+
+    player.on(Events.USER_ACTION, (data) => {
+
+        if ((data.action == 'click' && data.event == 'click') || (data.action == 'seek')) {
+
+
+            const currentTime = parseInt(player.currentTime * 1000)
+            //  console.log(route.query.index)
+            //  console.log(videolist)
+            GetVideoDanmuByMoment(videolist.find(v => v.index == (route.query.index ?? 1))?.id, currentTime, uuid.value)
+                .then(list => {
+                    // console.log(list)
+                    player.plugins.danmu.updateComments(list, true)
+                })
         }
     })
 }
@@ -171,7 +175,7 @@ const GetDanmuAll = async () => {
     const video = videolist.find(v => v.index == index)
     await GetVideoDanmuAll(video.id)
         .then(list => {
-            // console.log(list[0])
+            // console.log(list)
             // player.plugins.danmu.
             player.plugins.danmu.updateComments(list, true)
         })
@@ -202,7 +206,7 @@ watch(() => route.query.index, async () => {
     await CreateVideoDanmuRedis(video.id);
     await GetDanmuAll();
 
-danmutxt.value=''
+    danmutxt.value = ''
 })
 //更换websocket
 watch(() => route.query.index, () => {
@@ -221,12 +225,16 @@ const CreateWebsocket = () => {
         // console.log('打开连接' + uuid.value)
     }
     socket.onmessage = (event) => {
-        console.log('消息过来了')
+
         // console.log(JSON.parse(event.data))
         if (!event || !event.data || event.data == '') return
         const comment = dataUtils.toCommentWebsocket(JSON.parse(event.data))
-        //    console.log(JSON.stringify(comment))
+        // console.log('消息过来了' + comment.txt)
+        // console.log(player.plugins.danmu.danmujs)
+        // console.log(comment)
+        // console.log(typeof comment.start)
         player.plugins.danmu.sendComment(comment)
+        // console.log(player.plugins.danmu.danmujs)
     }
     socket.onclose = () => {
         // console.log('连接销毁')
@@ -245,24 +253,26 @@ const sendDanmu = () => {
         })
         return
     }
-
+    // console.log('发送弹幕')
+    const currentTime = parseInt(player.currentTime * 1000)
     const comment = {
         ...danmuconfig,
         txt: txt,
         // txt: mock('@word(10)'),
-        id: mock('@id()')
+        id: dataUtils.uuid()
     }
-
     player.plugins.danmu.sendComment(comment)
     danmutxt.value = ''
-    const currentTime = parseInt(player.currentTime * 1000)
+
     // console.log(currentTime)
     const danmu = dataUtils.toDanmuEntity(comment)
     danmu.start = currentTime
     // console.log(socket)
     //  console.log(JSON.stringify(danmu.start))
     if (socket.readyState == 1) {
+
         socket.send(JSON.stringify(danmu))
+        // console.log(danmu.start + '#' + danmu.txt)
     } else {
         ElNotification({
             title: '警告',

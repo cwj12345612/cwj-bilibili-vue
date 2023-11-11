@@ -29,7 +29,7 @@ export default    {
         var temp_url = URL.createObjectURL(new Blob());
         var uuid = temp_url.toString(); // blob:https://xxx.com/b250d159-e1b6-4a87-9002-885d90033be3
         URL.revokeObjectURL(temp_url);
-        return uuid.substr(uuid.lastIndexOf("/") + 1);
+        return uuid.substring(uuid.lastIndexOf("/") + 1);
       },
       
 //#region 前后端弹幕格式转换
@@ -56,7 +56,7 @@ export default    {
 
     const comment = {
         duration: danmuEntity.duration,         //弹幕持续显示时间,毫秒(最低为5000毫秒)
-        id: JSON.stringify(danmuEntity.duration+'#'+danmuEntity.start+'#'+danmuEntity.txt),               //弹幕id，需唯一
+        id: JSON.stringify(danmuEntity.duration+danmuEntity.start+danmuEntity.txt),               //弹幕id，需唯一
         // start: parseInt(player.currentTime*1000),           //弹幕出现时间, 单位：ms 毫秒
         start: danmuEntity.start,
         prior: danmuEntity.prior,          //该条弹幕优先显示，默认false

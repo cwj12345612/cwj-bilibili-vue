@@ -32,7 +32,7 @@
         <left_main_toolbar></left_main_toolbar>
         <leftmain_videodesc :synopsis="videolist.synopsis"></leftmain_videodesc>
         <leftmain_tags :channels="videolist.tags"></leftmain_tags>
-        <!-- <leftmain_comment></leftmain_comment> -->
+        <leftmain_comment></leftmain_comment>
     </div>
 </template>
 
