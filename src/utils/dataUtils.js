@@ -33,7 +33,11 @@ export default    {
       },
       
 //#region 前后端弹幕格式转换
-//处理前端向后端发送弹幕 弹幕进行格式化
+/**
+ * 处理前端向后端发送弹幕 弹幕进行格式化
+ * @param {*} comment 
+ * @returns 
+ */
  toDanmuEntity : (comment) => {
 
     const danmu = {}
@@ -51,7 +55,11 @@ export default    {
     delete danmu.id
     return danmu
 },
-// 前端向后端请求弹幕
+/**
+ * 前端向后端请求弹幕 实体类转客户端弹幕
+ * @param {*} danmuEntity 
+ * @returns 
+ */
  toCommentAJax : (danmuEntity) => {
 
     const comment = {
@@ -89,7 +97,11 @@ export default    {
     // console.log('轮询#'+comment.txt+'#'+JSON.stringify(Object.values(danmuEntity)));
     return comment
 },
-// websocket接收后端主动发过来的弹幕
+/**
+ * websocket接收后端主动发过来的弹幕 实体类转客户端弹幕
+ * @param {*} danmuEntity 
+ * @returns 
+ */
  toCommentWebsocket :(danmuEntity) => {
    
     const comment = {

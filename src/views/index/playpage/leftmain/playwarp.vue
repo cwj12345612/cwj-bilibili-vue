@@ -227,9 +227,10 @@ const CreateWebsocket = () => {
     socket.onmessage = (event) => {
 
         // console.log(JSON.parse(event.data))
+        // if ((event?.data??'')=='') return
         if (!event || !event.data || event.data == '') return
         const comment = dataUtils.toCommentWebsocket(JSON.parse(event.data))
-        // console.log('消息过来了' + comment.txt)
+        console.log('消息过来了' + comment.txt)
         // console.log(player.plugins.danmu.danmujs)
         // console.log(comment)
         // console.log(typeof comment.start)
@@ -263,7 +264,6 @@ const sendDanmu = () => {
     }
     player.plugins.danmu.sendComment(comment)
     danmutxt.value = ''
-
     // console.log(currentTime)
     const danmu = dataUtils.toDanmuEntity(comment)
     danmu.start = currentTime

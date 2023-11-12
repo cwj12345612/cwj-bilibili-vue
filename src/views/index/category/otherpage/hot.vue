@@ -2,7 +2,7 @@
     <div class="hot">
         <h3>前方高能</h3>
         <ul class="lists">
-            <li v-for="index in 10" >
+            <li v-for="index in 10">
                 <div class="img">
                     <a href="#">
                         <img src="@\assets\images\category_p.webp" alt="">
@@ -118,13 +118,16 @@ const mock = (str) => { return Mock.mock(str) }
                     font-size: 15px;
                     color: #18191c;
                 }
-                &:hover a{
+
+                &:hover a {
                     color: #0aaee0;
                 }
             }
-            .detail{
+
+            .detail {
                 font-size: 12px;
                 color: #9499a0;
+
                 &:hover {
                     color: #0aaee0;
                 }
