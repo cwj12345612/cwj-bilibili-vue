@@ -153,7 +153,7 @@
 // #region 引入vue pinia 路由
 import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, defineEmits } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
+import { filetypename } from 'magic-bytes.js'
 import { GetCategoryAndSubarea, uploadFrom, uploadCover, uploadVideos, WirteSql } from '@/api/uploadvideo'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
@@ -201,6 +201,7 @@ const changeCover = async (e) => {
         const fileReader = new FileReader();
         fileReader.onloadend = (f) => {
             const bytes = new Uint8Array(f.target.result);
+
             const ar = filetypename(bytes)
             if (ar == null || ar.length == 0 || !config.cover.types.includes('.' + ar[0])) {
                 rej()
@@ -216,7 +217,7 @@ const changeCover = async (e) => {
         }
         fileReader.readAsArrayBuffer(files[0])
 
-    }).then(res => { emit('changeCover', files[0]) }, rej => { emit('changeCover', null) })
+    }).then(() => { emit('changeCover', files[0]) }, () => { emit('changeCover', null) })
 
 
 }
@@ -282,20 +283,20 @@ const clicksu = (sid) => {
 //禁用按钮
 const isdis = ref(false)
 const submit = async () => {
-    isdis.value=true
+    isdis.value = true
     if (upfile.videos.length == 0 || upfile.cover == null) {
         errormsg()
-        isdis.value=false
+        isdis.value = false
         return
     }
     if (form.type != 'zhuanzai') { delete form.zhuanzai }
     // console.log(form)
-    const pro= uploadFrom(form).then(
+    const pro = uploadFrom(form).then(
         () => {
             uploadCover(upfile.cover, form).then(
                 () => {
                     emit('changestatus', 'ing')
-                    isdis.value=false
+                    isdis.value = false
                     uploadVideos(upfile.videos)
                         .then(() => {
                             WirteSql().then(() => {
@@ -316,7 +317,7 @@ const submit = async () => {
         //改变状态
         window.uploadover('fail')
     })
-   
+
     // emit('changestatus', 'ing')
     // uploadVideos(upfile.videos)
 }

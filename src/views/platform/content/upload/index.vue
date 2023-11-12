@@ -2,7 +2,7 @@
     <ul class="header" 
     v-if="!noneArray.includes(uploadstatus)"
     >
-        <li v-for="(li, index) in list.splice(0, 1)">
+        <li v-for="(li, index) in list">
             <router-link :to="li.href">
                 {{ li.title }}</router-link>
         </li>
