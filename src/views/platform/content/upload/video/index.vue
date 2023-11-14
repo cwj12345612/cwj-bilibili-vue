@@ -22,15 +22,12 @@ import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmou
 import { useRoute, useRouter } from 'vue-router'
 import { ElLoading } from 'element-plus'
 import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
-const route = useRoute()
-const router = useRouter()
 import md5 from "js-md5";
 // #endregion
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
 
-const mock = (str) => { return Mock.mock(str) }
 
 //#endregion
 //#region  需要上传的视频 封面1
@@ -198,10 +195,10 @@ const addvideos = async (el) => {
                     }
                 }
                 fileReader.readAsArrayBuffer(video)
-            }).then(res => {
+            }).then(() => {
                 videostaus = true
             },
-                req => {
+                () => {
                     videostaus = false
                 }
             )

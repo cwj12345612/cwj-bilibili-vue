@@ -141,6 +141,15 @@ const initon = () => {
         //暂停
 
     })
+    player.on(Events.ENDED,()=>{
+        
+        const index = route.query.index ?? 1
+        if (!videolist.find(v => v.index > index)) {
+            router.push(`/play/${route.params.id}?index=1`)
+            return
+        }
+        router.push(`/play/${route.params.id}?index=${parseInt(index) + 1}`)
+    })
     //播放下一个
     player.on(Events.PLAYNEXT, () => {
 

@@ -1,7 +1,5 @@
 <template>
-    <div 
-    v-if="videos.length>1"
-    class="rightlist_videolist">
+    <div v-if="videos.length > 1" class="rightlist_videolist">
         <div class="header">
             <div class="videos">
                 <span>视频选集</span>
@@ -19,7 +17,8 @@
                 <router-link :class="nowplayvideoindex == video.index ? 'now' : undefined" :to="video.href">
                     <span class="index">P{{ video.index }}</span>
                     <span class="title">{{ video.title }}</span>
-                    <span class="duration">{{ (parseInt(video.duration / 60) !=0 ?(parseInt(video.duration / 60) + ':'): null) + parseInt(video.duration % 60) }}</span>
+                    <span class="duration">{{ (parseInt(video.duration / 60) != 0 ? (parseInt(video.duration / 60) + ':') :
+                        null) + parseInt(video.duration % 60) }}</span>
                 </router-link>
             </li>
         </ul>
@@ -52,11 +51,11 @@ onMounted(() => {
     GetVideosByVideolistId(route.params.id)
         .then(list => {
             // console.log(list)
-          list.sort((a,b)=>a.index-b.index)
+            list.sort((a, b) => a.index - b.index)
             list.forEach(li => {
                 videos.push(li)
             });
-            
+
         })
 })
 //#endregion

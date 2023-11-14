@@ -200,46 +200,46 @@ const popular = {
         { path: 'weekly', component: () => import('@/views/index/popularpage/weekly.vue') },
     ]
 }
-const channelpage={
-    path:'channel',
-    name:'channelpage',
-    component:()=>import('@/views/index/channelpage/index.vue'),
-    redirect:"/channel/index",
-    children:[
+const channelpage = {
+    path: 'channel',
+    name: 'channelpage',
+    component: () => import('@/views/index/channelpage/index.vue'),
+    redirect: "/channel/index",
+    children: [
         {
-            path:'index',
-            component:()=>import('@/views/index/channelpage/home.vue')
+            path: 'index',
+            component: () => import('@/views/index/channelpage/home.vue')
         },
         {
-            path:'type/:id',
-            component:()=>import('@/views/index/channelpage/channel_type.vue')
-           
+            path: 'type/:id',
+            component: () => import('@/views/index/channelpage/channel_type.vue')
+
         },
         {
-            path:':id',
-            component:()=>import('@/views/index/channelpage/channel.vue'),
-            beforeEnter:(to,from,next)=>{
-               if(to.params.id=='type'){
-                alert('非法路径')
-                next('/channel')
-                return
-               }
+            path: ':id',
+            component: () => import('@/views/index/channelpage/channel.vue'),
+            beforeEnter: (to, from, next) => {
+                if (to.params.id == 'type') {
+                    alert('非法路径')
+                    next('/channel')
+                    return
+                }
                 next()
             }
         },
         {
-            path:'search',
-            component:()=>import('@/views/index/channelpage/channelsearch.vue'),
-            beforeEnter:(to,from,next)=>{
-                const text=  to.query.text
-                
-                if(!text||text.trim()==''){
-                  alert('请输入要寻找的频道')
-                  next('/channel')
-                  return
+            path: 'search',
+            component: () => import('@/views/index/channelpage/channelsearch.vue'),
+            beforeEnter: (to, from, next) => {
+                const text = to.query.text
+
+                if (!text || text.trim() == '') {
+                    alert('请输入要寻找的频道')
+                    next('/channel')
+                    return
                 }
                 next()
-              }
+            }
         }
     ]
 }
@@ -249,11 +249,13 @@ const main = [
         redirect: { name: 'homepage' },
         component: () => import('@/views/index'),
         children: [
+            ...category,
             {
                 path: '',
                 name: 'homepage',
                 component: () => import('@/views/index/homepage')
             },
+
             {
                 path: 'search',
                 name: 'searchpage',
@@ -265,12 +267,13 @@ const main = [
                 component: () => import('@/views/index/playpage')
             },
             popular,
-            ...category,
+
             space,
             readpage,
             channelpage,
         ]
     },
+
 ]
 //#endregion
 import { useUserStore } from '@/pinia/userStore'
@@ -289,20 +292,20 @@ const upload = {
         //
         // next()
         // return
-     
-            const userStore = useUserStore()
-            // console.log(!userStore.isLogin)
-            if (!userStore.isLogin) {
-                alert("需要登录才能投稿")
-                { next({ name: 'homepage' }) }
 
-            } else {
-                next()
-            }
-      
+        const userStore = useUserStore()
+        // console.log(!userStore.isLogin)
+        if (!userStore.isLogin) {
+            alert("需要登录才能投稿")
+             next({ name: 'homepage' }) 
+return
+        } else {
+            next()
+        }
+
 
     },
- 
+
     children: [
         {
             path: 'video',
@@ -323,6 +326,23 @@ const upload_manager = {
     path: 'upload-manager',
     component: () => import('@/views/platform/content/upload-manager'),
     redirect: { name: 'upload-manager_article' },
+    beforeEnter: (to, from, next) => {
+        //
+        // next()
+        // return
+
+        const userStore = useUserStore()
+        // console.log(!userStore.isLogin)
+        if (!userStore.isLogin) {
+            alert("需要登录才能投稿")
+            next({ name: 'homepage' }) 
+return
+        } else {
+            next()
+        }
+
+
+    },
     children: [
         {
             path: 'article',
@@ -360,6 +380,23 @@ const platform = {
     name: 'platform',
     redirect: { name: 'platform_home' },
     component: () => import('@/views/platform/index.vue'),
+    beforeEnter: (to, from, next) => {
+        //
+        // next()
+        // return
+     
+            const userStore = useUserStore()
+            // console.log(!userStore.isLogin)
+            if (!userStore.isLogin) {
+                alert("需要登录才能投稿")
+                 next({ name: 'homepage' }) 
+                return
+            } else {
+                next()
+            }
+      
+
+    },
     children: [
         {
             path: 'home',
@@ -418,6 +455,7 @@ const routes = [
 
     platform,
     ...dev,
+
 
 ]
 export default routes
