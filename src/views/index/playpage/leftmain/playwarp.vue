@@ -152,7 +152,6 @@ const initon = () => {
     })
     //播放下一个
     player.on(Events.PLAYNEXT, () => {
-
         const index = route.query.index ?? 1
         if (!videolist.find(v => v.index > index)) {
             router.push(`/play/${route.params.id}?index=1`)

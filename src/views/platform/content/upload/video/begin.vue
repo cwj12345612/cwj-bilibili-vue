@@ -15,7 +15,6 @@
                                         return p + c.size
                                     }, 0) / (1024 * 1024))
                                 ))
-
                             )
                         )
                     }}MB</span>
@@ -28,6 +27,7 @@
         <div class="form">
             <ul class="videos">
                 <li v-for="(video, index) in videos">
+                    
                     <div class="icon">
                         <i class="colourless bofangshu"></i>
                     </div>
@@ -283,6 +283,10 @@ const clicksu = (sid) => {
 //禁用按钮
 const isdis = ref(false)
 const submit = async () => {
+//    upfile.videos.forEach(video => {
+//     console.log(video.name)
+//    });
+    // return
     isdis.value = true
     if (upfile.videos.length == 0 || upfile.cover == null) {
         errormsg()
@@ -348,6 +352,12 @@ const errormsg = () => {
             })
         })
 }
+//#endregion
+
+//#region 页面跳转提示
+onBeforeUnmount((to,from,next)=>{
+console.log('用户卸载')
+})
 //#endregion
 </script>
 <style scoped lang="less">

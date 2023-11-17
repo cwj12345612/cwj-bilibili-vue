@@ -61,7 +61,6 @@ const { schedule } = defineProps({
 const videolist = computed(() => {
     const list = []
     // console.log(schedule.videolist)
-
     const videos = schedule.videolist
 
     for (let vv of Object.keys(videos)) {

@@ -18,7 +18,7 @@ import uploadvideo_fail from './fail.vue'
 //  #endregion
 
 // #region 引入vue pinia 路由
-import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, defineEmits } from 'vue'
+import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, defineEmits,onBeforeUpdate } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElLoading } from 'element-plus'
 import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
@@ -56,7 +56,9 @@ const schedule = reactive({
     videolist: {}
 })
 watch(() => upfile.videos.length, () => {
+  
     const videos = upfile.videos
+    schedule.videolist={}
     for (let video of videos) {
         schedule.videolist[video.name] = {
             name: video.name,
@@ -67,6 +69,7 @@ watch(() => upfile.videos.length, () => {
             nowsize: 0
         }
     }
+
     // console.log(schedule.videolist)
 }, { immediate: true })
 watch(() => schedule.isover, () => {
