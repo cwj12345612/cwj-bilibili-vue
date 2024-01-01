@@ -1,5 +1,5 @@
 <template>
-<h3>index页面</h3>
+<div class="content"></div>
 </template>
 <script setup>
 // #region  引入组件
@@ -8,21 +8,11 @@
 
 // #region 引入vue pinia 路由
 import {computed,ref,reactive,watch,toRef,toRefs,onMounted,onBeforeUnmount,} from 'vue'
+import { usepageconfigStore } from '@/pinia/pageconfig.js'
 import {useRoute,useRouter} from 'vue-router'
+const pageconfigStore = usepageconfigStore()
 const route=useRoute()
 const router=useRouter()
-// #endregion
-
-// #region 第三方库
-
-// #endregion
-
-// #region  发送请求 正常情况应该放入onMounted
-
-    onMounted(() => {
-
-})
-
 // #endregion
 
 // #region  模拟数据 mockjs
@@ -34,6 +24,15 @@ const mock=(str)=>{return Mock.mock(str)}
 //#endregion
 
 </script>
-<style scoped  lang="less">
+<style scoped>
+.content{
+  background-clip: content-box;
+    background-color: olive;
+    width: 100%;
+    height: 100%;
+    padding-left: 120px;
+    display: flex;
+    flex-direction: column;
 
+}
 </style>
