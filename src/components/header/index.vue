@@ -25,7 +25,7 @@ header {
     padding: 0 24px;
     max-width: 2560px;
     min-width: 1060px;
-    width: 100vw;
+    width: 100%;
     height: 64px;
     /* 弹性布局flex */
     display: flex;
