@@ -16,7 +16,7 @@
         </div>
     </div>
     <ul class="items">
-        <li v-for="index in 9" >
+        <li v-for="index in 9">
             <div class="img">
                 <router-link :to="`/space/compilations/${mock('@id()')}`">
                     <img src="@\assets\images\spacepage\合集\1.webp" alt="">
@@ -32,10 +32,9 @@
                 </router-link>
             </div>
             <h3 class="title">
-               <router-link
-               :to="`/space/compilations/${mock('@id()')}`">
-                {{ mock('@cword(100)') }}
-               </router-link>
+                <router-link :to="`/space/compilations/${mock('@id()')}`">
+                    {{ mock('@cword(100)') }}
+                </router-link>
             </h3>
             <div class="desc">
                 <span>{{ mock('@datetime(yyyy-MM-dd)') }}</span>
@@ -119,7 +118,7 @@ const mock = (str) => { return Mock.mock(str) }
 }
 
 .items {
-   
+
     /* flex-grow: 1; */
     width: 100%;
     /* background-color: darkolivegreen; */
@@ -130,7 +129,7 @@ const mock = (str) => { return Mock.mock(str) }
 }
 
 .items li {
- width: 100%;
+    width: 100%;
     aspect-ratio: 1;
     display: flex;
     flex-direction: column;
@@ -176,7 +175,8 @@ li .img .num span.logo {
     align-self: flex-end;
     margin-right: 5px;
 }
-.items li .title a{
+
+.items li .title a {
     font-weight: normal;
     font-size: 12px;
     color: #222;
@@ -186,10 +186,12 @@ li .img .num span.logo {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
-.items li .title a:hover{
+
+.items li .title a:hover {
     color: #0aaee0;
 }
-.items li .desc{
+
+.items li .desc {
     display: flex;
     align-items: center;
     justify-content: flex-start;

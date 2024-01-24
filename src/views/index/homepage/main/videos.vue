@@ -28,10 +28,11 @@ const mock=(str)=>{return Mock.mock(str)}
 //#endregion
 
 </script>
-<style scoped>
+<style scoped lang="less">
 .videos{
    grid-row: span 2;
    grid-column: span 3;
+
     /* background-color: goldenrod; */
     display: grid;
     grid-gap: 20px;

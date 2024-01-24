@@ -3,7 +3,7 @@
         <li class="item" v-for="li in list" :key="li.id" :class="pageconfigStore.globalclass">
             <a :href="li.href" :class="pageconfigStore.globalclass">
                 <i v-if="li.icon" :class="li.icon"></i>
-                <span v-if="isshowspan || !li.icon">{{ li.title }}</span>
+                <span :class="li.icon  ?'icon' :undefined">{{ li.title }}</span>
             </a>
 
         </li>
@@ -33,11 +33,6 @@ const list = reactive([
     { id: 9, title: 'LPL', href: '/admindev' },
     { id: 10, icon: 'colourless xiazai', title: '下载客户端', href: '/admindev' },
 ])
-const isshowspan = computed(() => {
-    const width = pageconfigStore.width * 0.32
-    const min = 380
-    return (width > min)
-})
 
 // #endregion
 </script>
@@ -68,7 +63,11 @@ const isshowspan = computed(() => {
 .item a {
     color: #ffffff;
 }
-
+@media (max-width: 1187px){
+    .item span.icon{
+        display: none;
+    }
+}
 .item:has(>a:hover) {
     transform: translateY(-10%);
 }

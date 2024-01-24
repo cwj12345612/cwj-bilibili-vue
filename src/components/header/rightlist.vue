@@ -1,58 +1,53 @@
 <template>
     <ul class="rightlist">
-     
+
         <li class="headavatar">
             <router-link :to="headavatar.href" v-if="userStore.isLogin">
                 <img :src="headavatar.avatarsrc" :alt="headavatar.id">
             </router-link>
-            <a
-            @click="dialogFormVisible=true"
-            to="javascript:;" 
-            v-if="!userStore.isLogin" >
-                    <span>
-                        登录
-                    </span>
-                </a>
-                
+            <a @click="dialogFormVisible = true" to="javascript:;" v-if="!userStore.isLogin">
+                <span>
+                    登录
+                </span>
+            </a>
+
         </li>
 
         <li class="item" v-for="li in list">
             <router-link :to="li.href" class="item" :title="li.title" :class="pageconfigStore.globalclass">
                 <i :class="li.icon" v-if="li.icon"></i>
-                <span v-if="isshowspan">{{ li.title }}</span>
+                <span>{{ li.title }}</span>
             </router-link>
 
         </li>
         <li class="constcontribute">
             <a :href="constcontribute.url">
                 <i v-if="constcontribute.icon" :class="constcontribute.icon"></i>
-                <span v-if="isshowspan">
+                <span >
                     {{ constcontribute.span }}
                 </span>
             </a>
         </li>
     </ul>
-<!-- 登录对话框 -->
-    <el-dialog
-    style="width: 50%;"
-    v-model="dialogFormVisible" title="登录" >
-    <el-form :model="form">
-      <el-form-item label="请输入邮箱" :label-width="100">
-        <el-input v-model="form.email" autocomplete="off"  />
-      </el-form-item>
-      <el-form-item label="请输入密码" :label-width="100">
-        <el-input type="password" v-model="form.password" autocomplete="off"  />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="submit">
-          登录
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
+    <!-- 登录对话框 -->
+    <el-dialog style="width: 50%;" v-model="dialogFormVisible" title="登录">
+        <el-form :model="form">
+            <el-form-item label="请输入邮箱" :label-width="100">
+                <el-input v-model="form.email" autocomplete="off" />
+            </el-form-item>
+            <el-form-item label="请输入密码" :label-width="100">
+                <el-input type="password" v-model="form.password" autocomplete="off" />
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="submit">
+                    登录
+                </el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 <script setup>
 // #region  引入组件
@@ -64,20 +59,16 @@ import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmou
 import { ElMessage } from 'element-plus'
 import { usepageconfigStore } from '@/pinia/pageconfig.js'
 import { useRoute, useRouter } from 'vue-router'
-import {useUserStore} from '@/pinia/userStore'
+import { useUserStore } from '@/pinia/userStore'
 const pageconfigStore = usepageconfigStore()
-const userStore =useUserStore()
+const userStore = useUserStore()
 const route = useRoute()
 const router = useRouter()
-import {login} from '@/api/user'
+import { login } from '@/api/user'
 // #endregion
 
 
-const isshowspan = computed(() => {
-    const width = pageconfigStore.width * 0.32
-    const min = 380
-    return width > min
-})
+
 // #region  模拟数据 mockjs
 import Mock from 'mockjs';
 const mock = (str) => {
@@ -94,7 +85,7 @@ const constcontribute = reactive({
     icon: 'colourless tianjia'
 })
 const list = reactive([
-    { id: 1, title: '大会员',  icon: "colourless wodedahuiyuan", href: '/admindev' },
+    { id: 1, title: '大会员', icon: "colourless wodedahuiyuan", href: '/admindev' },
     { id: 2, title: '消息', icon: "colourless sixin", href: '/admindev' },
     { id: 3, title: '动态', icon: "colourless zhuti", href: '/space/dynamic' },
     { id: 4, title: '收藏', icon: "colourless wodeshoucang", href: '/space/favlist' },
@@ -106,21 +97,21 @@ const list = reactive([
 const dialogFormVisible = ref(false)
 
 const form = reactive({
-  email:'',
-  password:''
+    email: '',
+    password: ''
 })
-const submit=()=>{
-    if(form.email.trim()==''||form.password.trim()==''){
-alert('请输入邮箱和密码')
-return
+const submit = () => {
+    if (form.email.trim() == '' || form.password.trim() == '') {
+        alert('请输入邮箱和密码')
+        return
     }
-login(form)
-dialogFormVisible.value=false
+    login(form)
+    dialogFormVisible.value = false
 }
 </script>
-<style scoped>
+<style scoped lang="less">
 .rightlist {
-  /* flex-grow: 1; */
+    /* flex-grow: 1; */
 
     height: 50px;
     /* background-color: teal; */
@@ -141,7 +132,7 @@ dialogFormVisible.value=false
 }
 
 .headavatar a {
-    
+
 
     display: flex;
     justify-content: flex-end;
@@ -149,14 +140,15 @@ dialogFormVisible.value=false
 }
 
 .headavatar img {
-/* background-color: #fb7299; */
+    /* background-color: #fb7299; */
     height: 38px;
     width: 38px;
     border-radius: 50%;
 }
-.headavatar span{
+
+.headavatar span {
     color: #fff;
-  background-color: #0aaee0;  
+    background-color: #0aaee0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -164,8 +156,9 @@ dialogFormVisible.value=false
     width: 38px;
     border-radius: 50%;
 }
+
 .constcontribute {
-flex-shrink: 0;
+    flex-shrink: 0;
     max-width: 90px;
     min-width: 34px;
     width: 7vw;
@@ -180,11 +173,13 @@ flex-shrink: 0;
 .constcontribute a {
     color: #ffffff;
 }
+
 .item {
     flex-shrink: 0;
     flex-grow: 1;
     margin-right: 5px;
 }
+
 .item a {
     flex-shrink: 0;
     flex-grow: 1;
@@ -201,7 +196,15 @@ flex-shrink: 0;
 .item span {
     font-size: 16px;
 }
+@media (max-width: 1187px){
+.item span ,
+.constcontribute span
+{
+    display: none;
 
+}
+
+}
 .item i {
     font-size: 20px;
     transition: all 0.3s;
@@ -217,8 +220,8 @@ flex-shrink: 0;
 
 .item a.searchpage,
 .item a.playpage,
-.item a.spacepage ,
-.item a.readpage ,
+.item a.spacepage,
+.item a.readpage,
 .item a.channelpage {
     color: #18191c;
 }

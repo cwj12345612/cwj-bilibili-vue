@@ -14,21 +14,26 @@ export const useUserStore = defineStore('useUserStore', {
     }
   }),
   actions: {
-    login(user) {
+    /**
+     * 把登录用户存储在pinia中
+     * 
+     * @param {object} user 
+     */
+    login(_user) {
       Object.keys(this.user).forEach(key => {
-        this.user[key] = user[key]
+        this.user[key] = _user[key]
       })
-      this.user.Authorization = user.token
+      this.user.Authorization = _user.token
       ElNotification({
         title: '登录成功',
-        message: user.loginTime,
+        message: _user.loginTime,
         // position: 'Top-right',
         type: 'success',
         zIndex:10087
       })
     },
     /**
-     * 退出登录 清除pinia中的数据
+     * 退出登录 清除pinia中的用户数据
      */
     logout() {
       Object.keys(this.user).forEach(key => {
@@ -36,8 +41,8 @@ export const useUserStore = defineStore('useUserStore', {
       })
     },
     /**
-     * 解决刷新页面状态丢失
-     * @param {} user 
+     * 解决刷新页面用户登录状态丢失
+     * @param {object} user 
      */
     refresh(userinfo) {
       Object.keys(this.user).forEach(key => {
@@ -49,7 +54,7 @@ export const useUserStore = defineStore('useUserStore', {
   },
   getters: {
     /**
-     * 
+     * 根据pinia中的用户数据 判断用户是否已登录
      * @returns 是否已经登录
      */
     isLogin() {

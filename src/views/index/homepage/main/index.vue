@@ -30,12 +30,14 @@ const mock=(str)=>{return Mock.mock(str)}
 //#endregion
 
 </script>
-<style scoped>
+<style scoped lang="less">
 .homepage_main{
     /* background-color: teal; */
     display: grid;
     grid-column-gap: 20px;
-    grid-template-columns: repeat(5,1fr);
+
+ grid-template-columns: repeat(5,1fr);
+
     /* 
     :style="pageconfigStore.dynamicWH({normal:1305,max:1980,min:1020},{normal:213*2+20,max:297*2+20,min:206*2+20})"
     */

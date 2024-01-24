@@ -1,21 +1,15 @@
 <template>
     <div class="carousel">
 
-        <ul class="imgs"  >
-            <el-carousel
-            arrow="never"
-            ref="homepage_carousel"
-style="width: 100%;height: 100%;"
-@change="change"
-            indicator-position="none">
-    <el-carousel-item 
-    :name="li.id"
-    v-for="li in list" :key="li.id" >
-      <router-link :to="li.url">
-        <el-image style="width: 100%;height: 100%;" :src="li.src" ></el-image>
-      </router-link>
-    </el-carousel-item>
-  </el-carousel>
+        <ul class="imgs">
+            <el-carousel arrow="never" ref="homepage_carousel" style="width: 100%;height: 100%;" @change="change"
+                indicator-position="none">
+                <el-carousel-item :name="li.id" v-for="li in list" :key="li.id">
+                    <router-link :to="li.url">
+                        <el-image style="width: 100%;height: 100%;" :src="li.src"></el-image>
+                    </router-link>
+                </el-carousel-item>
+            </el-carousel>
         </ul>
         <div class="bottom">
             <div class="top">
@@ -28,17 +22,14 @@ style="width: 100%;height: 100%;"
                     <button @click="prevnext(false)">
                         <i class="colourless fanhui"></i>
                     </button>
-                    <button  @click="prevnext(true)">
+                    <button @click="prevnext(true)">
                         <i class="colourless gengduo"></i>
                     </button>
                 </div>
             </div>
             <ol class="indicator">
-                <li 
-                    v-for="(li,index) in list" 
-                    @click="skip(li.id)"
-                    :class="index==nowindex ?'checked':undefined"
-                    ></li>
+                <li v-for="(li, index) in list" @click="skip(li.id)" :class="index == nowindex ? 'checked' : undefined">
+                </li>
             </ol>
         </div>
     </div>
@@ -71,12 +62,12 @@ const list = reactive([])
 //获取轮播图
 onMounted(() => {
     const ls = [
-        { id: mock('@id()'),title:mock('@cword(4,20)'), src: require('@/assets/images/1.webp'),url:'#' },
-        { id: mock('@id()'),title:mock('@cword(4,20)'), src: require('@/assets/images/2.webp') ,url:'#'},
-        { id: mock('@id()'),title:mock('@cword(4,20)'), src: require('@/assets/images/3.webp') ,url:'#'},
-        { id: mock('@id()'),title:mock('@cword(4,20)'), src: require('@/assets/images/4.webp') ,url:'#'},
-        { id: mock('@id()'),title:mock('@cword(4,20)'), src: require('@/assets/images/5.webp') ,url:'#'},
-        { id: mock('@id()'),title:mock('@cword(4,20)'), src: require('@/assets/images/6.webp') ,url:'#'},
+        { id: mock('@id()'), title: mock('@cword(4,20)'), src: require('@/assets/images/1.webp'), url: '#' },
+        { id: mock('@id()'), title: mock('@cword(4,20)'), src: require('@/assets/images/2.webp'), url: '#' },
+        { id: mock('@id()'), title: mock('@cword(4,20)'), src: require('@/assets/images/3.webp'), url: '#' },
+        { id: mock('@id()'), title: mock('@cword(4,20)'), src: require('@/assets/images/4.webp'), url: '#' },
+        { id: mock('@id()'), title: mock('@cword(4,20)'), src: require('@/assets/images/5.webp'), url: '#' },
+        { id: mock('@id()'), title: mock('@cword(4,20)'), src: require('@/assets/images/6.webp'), url: '#' },
         // { id: mock('@id()'), src: require('@/assets/images/7.webp') },
         // { id: mock('@id()'), src: require('@/assets/images/8.webp') },
         // { id: mock('@id()'), src: require('@/assets/images/9.webp') },
@@ -86,19 +77,19 @@ onMounted(() => {
         list.push(li)
     })
 })
-const nowindex=ref(0)
-const change=(nl)=>{
-nowindex.value=nl
+const nowindex = ref(0)
+const change = (nl) => {
+    nowindex.value = nl
 }
-const homepage_carousel=ref()
-const prevnext=(b)=>{
-if(b){
-    homepage_carousel.value.next()
-}else{
-    homepage_carousel.value.prev()
+const homepage_carousel = ref()
+const prevnext = (b) => {
+    if (b) {
+        homepage_carousel.value.next()
+    } else {
+        homepage_carousel.value.prev()
+    }
 }
-}
-const skip=(id)=>{
+const skip = (id) => {
     homepage_carousel.value.setActiveItem(id)
 }
 // #endregion
@@ -120,25 +111,25 @@ const skip=(id)=>{
 }
 
 .carousel .imgs {
- 
+
     /* width: 1000%; */
     /* width: auto; */
     width: 100%;
     height: 80%;
     position: absolute;
-    
-  
+
+
 }
 
 
 .bottom {
-  
+
     position: absolute;
     bottom: 0;
     height: 20%;
     width: 100%;
     /* background: var(--transparency); */
-background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.2);
     padding: 5px 10px 15px;
     display: flex;
     flex-direction: column;

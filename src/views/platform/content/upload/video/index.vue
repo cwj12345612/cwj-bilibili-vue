@@ -1,12 +1,12 @@
 <template>
-    <uploadvideo_no :config="config" @addvideos="addvideos" v-if="status == 'no'"></uploadvideo_no>
-   
+    <uploadvideo_no :config="config" @addvideos="addvideos" v-if="status == Status.no"></uploadvideo_no>
+
     <uploadvideo_begin :config="config" :upfile="upfile" @addvideos="addvideos" @delvideo="delvideo"
-        @changeCover="changeCover" @clearupfile="clearupfile" @changestatus="changestatus" v-if="status == 'begin'">
+        @changeCover="changeCover" @clearupfile="clearupfile" @changestatus="changestatus" v-if="status == Status.begin">
     </uploadvideo_begin>
-    <uploadvideo_ing :schedule="schedule" v-if="status == 'ing'"></uploadvideo_ing>
-    <uploadvideo_succeed v-if="status == 'succeed'"></uploadvideo_succeed>
-    <uploadvideo_fail v-if="status == 'fail'"></uploadvideo_fail>
+    <uploadvideo_ing :schedule="schedule" v-if="status == Status.ing"></uploadvideo_ing>
+    <uploadvideo_succeed v-if="status == Status.succeed"></uploadvideo_succeed>
+    <uploadvideo_fail v-if="status == Status.fail"></uploadvideo_fail>
 </template>
 <script setup >
 // #region  引入组件
@@ -18,7 +18,7 @@ import uploadvideo_fail from './fail.vue'
 //  #endregion
 
 // #region 引入vue pinia 路由
-import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, defineEmits,onBeforeUpdate } from 'vue'
+import { computed, ref, reactive, watch, toRef, toRefs, onMounted, onBeforeUnmount, defineEmits, onBeforeUpdate } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElLoading } from 'element-plus'
 import { filetypeinfo, filetypeextension, filetypename } from 'magic-bytes.js'
@@ -27,7 +27,13 @@ import md5 from "js-md5";
 // #region  模拟数据 mockjs
 
 import Mock from 'mockjs'
-
+const Status = reactive({
+    succeed: 'succeed',
+    fail: 'fail',
+    ing: 'ing',
+    no: 'no',
+    begin: 'begin'
+})
 
 //#endregion
 //#region  需要上传的视频 封面1
@@ -56,9 +62,9 @@ const schedule = reactive({
     videolist: {}
 })
 watch(() => upfile.videos.length, () => {
-  
+
     const videos = upfile.videos
-    schedule.videolist={}
+    schedule.videolist = {}
     for (let video of videos) {
         schedule.videolist[video.name] = {
             name: video.name,
@@ -75,8 +81,8 @@ watch(() => upfile.videos.length, () => {
 watch(() => schedule.isover, () => {
     if (schedule.isover == 'succeed') {
         status.value = 'succeed'
-    }else if(schedule.isover=='fail'){
-        status.value='fail'
+    } else if (schedule.isover == 'fail') {
+        status.value = 'fail'
     }
 
 })
@@ -147,7 +153,7 @@ const config = reactive({
     cover: {
         //图片大小不能超过50Mb
         size: 50,
-        types: ['.png', '.jpeg', '.jpg','.webp'],
+        types: ['.png', '.jpeg', '.jpg', '.webp'],
         //正则表达式校验图片名
         namereg: new RegExp('[\\\\/:*?\"<>|]')
     },
