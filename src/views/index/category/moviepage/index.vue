@@ -34,6 +34,7 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style scoped>
 .moviepage{
+    height: auto;
     width: 100%;
     flex-shrink: 0;
     flex-grow: 1;

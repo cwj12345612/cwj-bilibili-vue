@@ -52,7 +52,9 @@ const mock = (str) => { return Mock.mock(str) }
 <style scoped>
 .becoming {
     margin-top: 30px;
-    
+    flex-shrink: 0;
+    flex-shrink: 0;
+    flex-grow: 1; 
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -63,9 +65,9 @@ const mock = (str) => { return Mock.mock(str) }
     :style="pageconfigStore.dynamicWH(undefined,
      { normal: 345, min: 345, max: 493 })"
     */
-    min-height: 293px;
+    /* min-height: 293px;
     max-height: 345px;
-  height: 345px;
+  height: 345px; */
 }
 
 .top {

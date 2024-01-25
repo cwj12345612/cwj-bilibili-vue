@@ -51,17 +51,19 @@ const mock = (str) => { return Mock.mock(str) }
 </script>
 <style scoped>
 .exclusive {
+    flex-shrink: 0;
+    flex-grow: 1;
     margin-top: 30px;
-   
+    flex-shrink: 0;  
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     /* background-color: #242628; */
-    min-height: 293px;
+    /* min-height: 293px;
     max-height: 345px;
-    height: 345px;
+    height: 345px; */
 }
 
 .top {

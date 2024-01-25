@@ -34,7 +34,9 @@ const mock=(str)=>{return Mock.mock(str)}
 <style scoped>
 .moviepage_main{
    margin-top: 20px;
-    width: 95%;
+   max-width: 1980px;
+min-width: 1020px;
+width: 91vw;
     /* background-color: chocolate; */
     display: grid;
     grid-column-gap: 16px;

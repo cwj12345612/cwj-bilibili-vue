@@ -19,6 +19,7 @@ import { usepageconfigStore } from '@/pinia/pageconfig'
 import { useRoute, useRouter } from 'vue-router'
 const pageconfigStore = usepageconfigStore()
 const route = useRoute()
+
 const router = useRouter()
 // #endregion
 // #region  模拟数据 mockjs

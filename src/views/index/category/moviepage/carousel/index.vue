@@ -83,15 +83,15 @@ const hover=(id)=>{
 <style scoped>
 .carousel {
     width: 100%;
-    /* background-color: antiquewhite; */
+    background-color: antiquewhite;
     position: relative;
     /* 
     :style="pageconfigStore.dynamicWH(undefined, 
     { normal: 360, max: 494, min: 360 })"
     */
-    min-height: 360px;
-    max-height: 494px;
-    height: 50vh;
+    /* min-height: 360px;
+    max-height: 494px; */
+    /* height: 50vh; */
 }
 
 

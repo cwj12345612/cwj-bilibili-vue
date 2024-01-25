@@ -83,7 +83,9 @@ const mock = (str) => { return Mock.mock(str) }
 </script>
 <style scoped>
 .moviepage_navlist {
-    width: 95%;
+    max-width: 1980px;
+min-width: 1020px;
+width: 91vw;
     margin-top: 10px;
     /* background-color: teal; */
     display: flex;

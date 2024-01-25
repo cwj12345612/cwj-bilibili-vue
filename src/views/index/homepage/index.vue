@@ -25,7 +25,7 @@ const router=useRouter()
 </script>
 <style scoped>
 #homepage{
-  width: 100%;
+     width: 100%;
    
     /* background-color: thistle; */
     display: flex;

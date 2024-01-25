@@ -29,6 +29,7 @@ const mock=(str)=>{return Mock.mock(str)}
 </script>
 <style>
 #app:has(>header.moviepage){
+  height: auto;
 background-color: #242628;
 }
 </style>

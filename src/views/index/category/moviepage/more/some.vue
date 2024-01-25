@@ -8,7 +8,7 @@
 
         <ul class="items">
             <li 
-            v-for="index in 70"
+            v-for="index in parseInt( mock('@integer(35,75)'))"
            >
         <div class="img">
             <a href="/play"><img :src="require(`@/assets/images/ml${mock('@integer(1,5)')}.webp`)" alt=""></a>

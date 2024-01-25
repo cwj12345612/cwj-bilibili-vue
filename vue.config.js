@@ -4,6 +4,7 @@ module.exports = defineConfig({
   lintOnSave:false,
   devServer: {
     port:80,
+    open:true, //是否自动打开浏览器
     // 配置服务器代理
     proxy: {
       "/api": { // 代理接口前缀为/apis的请求
@@ -20,7 +21,8 @@ module.exports = defineConfig({
         "secure": false,
         "changeOrigin": true,
       },
-    }
+    },
+  
   },
 
 
